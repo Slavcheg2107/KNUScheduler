@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">KNUScheduler</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="action_settings">Настройки</string>
+    <string name="week_string">Неділя: %1$d</string>
+</resources>
