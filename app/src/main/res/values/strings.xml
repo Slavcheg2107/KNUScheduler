@@ -11,4 +11,7 @@
     <string name="Wednesday">Середа</string>
     <string name="Thursday">Четвер</string>
     <string name="Friday">П\'ятниця</string>
+    <string name="Reload">Reload</string>
+    <string name="reload" />
+    <string name="GroupLoaded">GroupLoaded</string>
 </resources>

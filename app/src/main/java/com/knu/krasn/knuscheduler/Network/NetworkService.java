@@ -1,10 +1,12 @@
 package com.knu.krasn.knuscheduler.Network;
 
 
+import android.content.SharedPreferences;
 import android.util.Log;
 
 
 import com.knu.krasn.knuscheduler.ApplicationClass;
+import com.knu.krasn.knuscheduler.Events.ErrorEvent;
 import com.knu.krasn.knuscheduler.Events.GettingGroupsEvent;
 import com.knu.krasn.knuscheduler.Events.GettingScheduleEvent;
 import com.knu.krasn.knuscheduler.Models.GroupModel.Group;
@@ -78,31 +80,40 @@ public class NetworkService {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(schedules -> {
                     Realm realm = ApplicationClass.getRealm();
-                    realm.beginTransaction();
-                    List<Schedule> week1Schedule = new ArrayList<>();
-                    List<Schedule> week2Schedule = new ArrayList<>();
-                    if (schedules != null) {
-                        for (Schedule schedule : schedules.getSchedule()) {
-                            schedule.setTime(timeRealmList.get(schedule.getLesson() - 1));
-                            switch (schedule.getWeek()) {
-                                case 1:
-                                    week1Schedule.add(schedule);
-                                    break;
-                                case 2:
-                                    week2Schedule.add(schedule);
-                                    break;
+                    Group group1 = realm.where(Group.class).equalTo("title", group).findFirst();
+                    if (group1 == null) {
+                        SharedPreferences.Editor sharedPreferences = ApplicationClass.getPreferences().edit();
+                        sharedPreferences.putString("Reload", "reload");
+                        sharedPreferences.apply();
+                        NYBus.get().post(new ErrorEvent("reload"));
+                    }
+                    else{
+                        realm.beginTransaction();
+                        List<Schedule> week1Schedule = new ArrayList<>();
+                        List<Schedule> week2Schedule = new ArrayList<>();
+                        if (schedules != null) {
+                            for (Schedule schedule : schedules.getSchedule()) {
+                                schedule.setTime(timeRealmList.get(schedule.getLesson() - 1));
+                                switch (schedule.getWeek()) {
+                                    case 1:
+                                        week1Schedule.add(schedule);
+                                        break;
+                                    case 2:
+                                        week2Schedule.add(schedule);
+                                        break;
+                                }
                             }
                         }
+                        Week1 week1 = new Week1(week1Schedule);
+                        Week2 week2 = new Week2(week2Schedule);
+                        Week1 managedWeek1 = realm.copyToRealm(week1);
+                        Week2 managedWeek2 = realm.copyToRealm(week2);
+                        group1.setWeek1(managedWeek1);
+                        group1.setWeek2(managedWeek2);
+                        realm.commitTransaction();
+                        NYBus.get().post(new GettingScheduleEvent(group));
                     }
-                    Week1 week1 = new Week1(week1Schedule);
-                    Week2 week2 = new Week2(week2Schedule);
-                    Week1 managedWeek1 = realm.copyToRealm(week1);
-                    Week2 managedWeek2 = realm.copyToRealm(week2);
-                    Group group1 = realm.where(Group.class).equalTo("title", group).findFirst();
-                    group1.setWeek1(managedWeek1);
-                    group1.setWeek2(managedWeek2);
-                    realm.commitTransaction();
-                    NYBus.get().post(new GettingScheduleEvent(group));
+
                 }, throwable -> {
                     if (throwable.getMessage().equals("timeout")) {
                         getSchedule(group);

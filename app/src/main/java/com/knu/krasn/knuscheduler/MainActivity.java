@@ -60,7 +60,13 @@ public class MainActivity extends AppCompatActivity {
         pb.getIndeterminateDrawable().setColorFilter(Color.BLACK, PorterDuff.Mode.MULTIPLY);
         realm = ApplicationClass.getRealm();
         SharedPreferences prefs = ApplicationClass.getPreferences();
-        groupTitle = prefs.getString("GroupLoaded", "");
+        if(getIntent().hasExtra(getString(R.string.Reload))){
+            realm.beginTransaction();
+            realm.deleteAll();
+            realm.commitTransaction();
+            prefs.edit().putString(getString(R.string.GroupLoaded), "").apply();
+        }
+        groupTitle = prefs.getString(getString(R.string.GroupLoaded), "");
         if(!groupTitle.equals("")){
             NYBus.get().post(new MoveToNextEvent(groupTitle));
         }
@@ -77,7 +83,6 @@ public class MainActivity extends AppCompatActivity {
         }
         networkService = new NetworkService();
         setupRecyclerView();
-
         if(!getIntent().hasExtra("getGroup")) {
             facultyRecyclerAdapter = new FacultyRecyclerAdapter(this, facultets, networkService);
             recyclerView.setAdapter(facultyRecyclerAdapter);

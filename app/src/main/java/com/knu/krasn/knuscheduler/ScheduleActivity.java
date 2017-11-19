@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import com.knu.krasn.knuscheduler.Events.ErrorEvent;
 import com.knu.krasn.knuscheduler.Events.GettingScheduleEvent;
 import com.knu.krasn.knuscheduler.Events.ShowScheduleEvent;
 import com.knu.krasn.knuscheduler.Events.UpdateAdapterEvent;
@@ -164,7 +165,14 @@ public class ScheduleActivity extends AppCompatActivity implements OnTabSelectLi
             toolbar.setTitle(groupTitle);
         }
     }
-    
+
+    @Subscribe
+    public void onErrorEvent(ErrorEvent event){
+        if(event.getError().equals("reload")){
+            startActivity(new Intent(this, MainActivity.class).putExtra(getString(R.string.Reload), "reload"));
+            finish();
+        }
+    }
 
     @Override
     protected void onDestroy() {
