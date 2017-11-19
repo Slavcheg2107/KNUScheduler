@@ -3,9 +3,9 @@
         <tab
             id="@+id/tab_week1"
             icon="@drawable/ic_week1_tab"
-            title="Неділя" />
+            title="Тиждень" />
         <tab
             id="@+id/tab_week2"
             icon="@drawable/ic_week2_tab"
-            title="Неділя" />
+            title="Тиждень" />
     </tabs>

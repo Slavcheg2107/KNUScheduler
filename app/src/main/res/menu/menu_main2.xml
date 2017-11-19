@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.krasn.knuscheduler.ScheduleActivity">
+    tools:context="com.knu.krasn.knuscheduler.ScheduleActivity">
     <item
         android:id="@+id/change_group"
         android:orderInCategory="100"

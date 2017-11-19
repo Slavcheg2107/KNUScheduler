@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     style="@style/Theme.AppCompat.NoActionBar"
     android:layout_height="match_parent"
-    tools:context="com.example.krasn.knuscheduler.MainActivity">
+    tools:context="com.knu.krasn.knuscheduler.MainActivity">
 
 <include layout="@layout/content_main"/>
 </RelativeLayout>

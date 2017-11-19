@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:layout_gravity="center">
+
+
+    <Button
+        android:id="@+id/negative_button"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="17dp"
+        android:text="Ні, дякую" />
+
+    <Button
+        android:id="@+id/neutral"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/negative_button"
+        android:layout_alignStart="@+id/negative_button"
+        android:layout_below="@+id/negative_button"
+        android:text="Нагадати пізніше" />
+
+    <Button
+        android:id="@+id/positive_button"
+        style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/neutral"
+        android:layout_alignStart="@+id/neutral"
+        android:layout_below="@+id/neutral"
+        android:text="Оцінити" />
+
+</RelativeLayout>

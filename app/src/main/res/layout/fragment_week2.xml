@@ -7,14 +7,13 @@
     android:paddingLeft="0dp"
     android:paddingRight="0dp"
     android:paddingTop="0dp"
-    tools:context="com.example.krasn.knuscheduler.Fragments.Week2Fragment">
+    tools:context="com.knu.krasn.knuscheduler.Fragments.Week2Fragment">
 
   <RelativeLayout
       android:id="@+id/wheel2"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:alpha="0.5"
-      android:background="@color/cardview_dark_background"
       android:gravity="center"
       android:visibility="visible">
 
@@ -33,14 +32,6 @@
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/header"
-        android:layout_margin="0dp"
         android:gravity="center"
-        android:paddingBottom="0dp"
-        android:paddingEnd="0dp"
-        android:paddingLeft="0dp"
-        android:paddingRight="0dp"
-        android:paddingStart="0dp"
-        android:paddingTop="0dp"
         android:scrollbars="vertical" />
 </RelativeLayout>

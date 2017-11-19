@@ -1,6 +1,14 @@
 <resources>
-    <string name="app_name">KNUScheduler</string>
+    <string name="app_name">КНУРозклад</string>
     <string name="title_activity_main2">Main2Activity</string>
-    <string name="action_settings">Настройки</string>
-    <string name="week_string">Неділя: %1$d</string>
+    <string name="Day1">Понеділок\n %1$d пари</string>
+    <string name="Day2">Вівторок\n%1$d пари</string>
+    <string name="Day3">Середа\n %1$d пари</string>
+    <string name="Day4">Четвер\n %1$d пари</string>
+    <string name="Day5">П\'ятниця\n %1$d пари</string>
+    <string name="Monday">Понеділок</string>
+    <string name="Tuesday">Вівторок</string>
+    <string name="Wednesday">Середа</string>
+    <string name="Thursday">Четвер</string>
+    <string name="Friday">П\'ятниця</string>
 </resources>
