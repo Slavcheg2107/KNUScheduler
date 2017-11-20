@@ -7,11 +7,20 @@ package com.knu.krasn.knuscheduler.Events;
 public class ShowScheduleEvent {
     private boolean isShown;
     private int dayNumber;
-    public ShowScheduleEvent(boolean isShown, int dayNumber){
+    private String adapterName;
+
+
+
+    public ShowScheduleEvent(boolean isShown, int dayNumber, String adapterName){
         this.isShown = isShown;
         this.dayNumber = dayNumber;
+        this.adapterName = adapterName;
+
     }
 
+    public String getAdapterName() {
+        return adapterName;
+    }
     public boolean isShown() {
         return isShown;
     }

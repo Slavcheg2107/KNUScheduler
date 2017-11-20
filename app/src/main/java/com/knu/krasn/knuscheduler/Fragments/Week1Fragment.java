@@ -38,7 +38,7 @@ import io.realm.Realm;
  * Created by krasn on 9/26/2017.
  */
 
-public class Week1Fragment extends Fragment {
+public class Week1Fragment extends Fragment implements BaseFragment{
     private static final String ARG_SECTION_NUMBER = "section_number";
     RecyclerView recyclerView;
     ScheduleRecyclerAdapter scheduleRecyclerAdapter;
@@ -60,6 +60,7 @@ public class Week1Fragment extends Fragment {
         Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, 1);
         Week1Fragment sampleFragment = new Week1Fragment();
+        sampleFragment.setRetainInstance(true);
         sampleFragment.setArguments(args);
 
         return sampleFragment;
@@ -135,28 +136,36 @@ public class Week1Fragment extends Fragment {
 
     @Subscribe
     public void onShowScheduleEvent(ShowScheduleEvent event) {
-        int i = event.getDayNumber();
-        DayOfWeek dayOfWeek = new DayOfWeek();
-        for (DayOfWeek dayOfWeek1 : week1.getDays()) {
-            if (dayOfWeek1.getDayNumber() == event.getDayNumber()) {
-                dayOfWeek = dayOfWeek1;
+        if (event.getAdapterName().equals(getString(R.string.week1_adapter_name))) {
+            DayOfWeek dayOfWeek = new DayOfWeek();
+            for (DayOfWeek dayOfWeek1 : week1.getDays()) {
+                if (dayOfWeek1.getDayNumber() == event.getDayNumber()) {
+                    dayOfWeek = dayOfWeek1;
+                }
+            }
+            if (event.isShown()) {
+                scheduleRecyclerAdapter = new ScheduleRecyclerAdapter(ApplicationClass.getContext(), dayOfWeek.getScheduleList(), networkService);
+                recyclerView.setAdapter(scheduleRecyclerAdapter);
+                scheduleRecyclerAdapter.notifyDataSetChanged();
+            } else if (!event.isShown()) {
+                week1RecyclerAdapter = new Week1RecyclerAdapter(ApplicationClass.getContext(), week1.getDays(), networkService);
+                recyclerView.setAdapter(week1RecyclerAdapter);
+                week1RecyclerAdapter.notifyDataSetChanged();
             }
         }
-        if (event.isShown()) {
-            scheduleRecyclerAdapter = new ScheduleRecyclerAdapter(ApplicationClass.getContext(), dayOfWeek.getScheduleList(), networkService);
-            recyclerView.setAdapter(scheduleRecyclerAdapter);
-            scheduleRecyclerAdapter.notifyDataSetChanged();
-        } else if (!event.isShown()) {
-            week1RecyclerAdapter = new Week1RecyclerAdapter(ApplicationClass.getContext(), week1.getDays(), networkService);
-            recyclerView.setAdapter(week1RecyclerAdapter);
-            week1RecyclerAdapter.notifyDataSetChanged();
-        }
     }
-
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         realm.close();
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        if(recyclerView.getAdapter() instanceof ScheduleRecyclerAdapter){
+            recyclerView.setAdapter(week1RecyclerAdapter);
+        }
+        return true;
     }
 }

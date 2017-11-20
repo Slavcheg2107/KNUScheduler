@@ -43,6 +43,7 @@ public class ScheduleActivity extends AppCompatActivity implements OnTabSelectLi
     String week2Tag = "week2";
     String groupTitle;
     Toolbar toolbar;
+    BottomBar bottomBar;
     private boolean isScheduleShown = false;
     private boolean doubleBackToExitPressedOnce = false;
 
@@ -61,7 +62,7 @@ public class ScheduleActivity extends AppCompatActivity implements OnTabSelectLi
 
         viewPager = findViewById(R.id.view_pager);
         container = findViewById(R.id.contentContainer);
-        BottomBar bottomBar = findViewById(R.id.bottomBar);
+         bottomBar = findViewById(R.id.bottomBar);
         bottomBar.setOnTabSelectListener(this);
         bottomBar.setOnTabReselectListener(this);
 
@@ -104,27 +105,40 @@ public class ScheduleActivity extends AppCompatActivity implements OnTabSelectLi
     public void onTabSelected(@IdRes int tabId) {
         ft = manager.beginTransaction();
 
-
         if (tabId == R.id.tab_week1) {
             week1Fragment = (Week1Fragment) getSupportFragmentManager().findFragmentByTag(week1Tag);
-
             if (week1Fragment == null) {
                 week1Fragment = Week1Fragment.newInstance();
-                ft.replace(R.id.contentContainer, week1Fragment, week1Tag).commit();
+                ft.add(container.getId(), week1Fragment, week1Tag);
+                if(week2Fragment!=null){
+                    ft.hide(week2Fragment).commit();
+                }else{
+                    ft.commit();
+                }
             } else {
-                ft.replace(R.id.contentContainer, week1Fragment, week1Tag).commit();
+                ft.show(week1Fragment);
+                if(week2Fragment!=null){
+                    ft.hide(week2Fragment).commit();
+                }
             }
         } else if (tabId == R.id.tab_week2) {
             week2Fragment = (Week2Fragment) getSupportFragmentManager().findFragmentByTag(week2Tag);
 
             if (week2Fragment == null) {
-                week2Fragment = Week2Fragment.newInstance(2);
-                ft.replace(R.id.contentContainer, week2Fragment, week2Tag).commit();
+                week2Fragment = Week2Fragment.newInstance();
+                ft.add(container.getId(), week2Fragment, week2Tag);
+                if(week1Fragment!=null){
+                    ft.hide(week1Fragment).commit();
+                }
+
             } else {
-                ft.replace(R.id.contentContainer, week2Fragment, week2Tag).commit();
+                ft.show( week2Fragment);
+                if(week1Fragment!=null){
+                    ft.hide(week1Fragment).commit();
+                }else ft.commit();
             }
         }
-        NYBus.get().post(new ShowScheduleEvent(false, 0));
+//        NYBus.get().post(new ShowScheduleEvent(false, 0));
         NYBus.get().post(new UpdateAdapterEvent());
     }
 
@@ -182,8 +196,13 @@ public class ScheduleActivity extends AppCompatActivity implements OnTabSelectLi
 
     @Override
     public void onBackPressed() {
+        if(bottomBar.getCurrentTabPosition() == 0) {
+            week1Fragment.onBackPressed();
+        }else if(bottomBar.getCurrentTabPosition() == 1){
+            week2Fragment.onBackPressed();
+        }
         if(isScheduleShown){
-            NYBus.get().post(new ShowScheduleEvent(false, 0));
+            NYBus.get().post(new ShowScheduleEvent(false, 0, "noAdapter"));
         }
         else{
             if (doubleBackToExitPressedOnce) {
@@ -192,13 +211,7 @@ public class ScheduleActivity extends AppCompatActivity implements OnTabSelectLi
             }
             this.doubleBackToExitPressedOnce = true;
             Toast.makeText(this, "Натисніть знову для виходу", Toast.LENGTH_SHORT).show();
-            new Handler().postDelayed(new Runnable() {
-
-                @Override
-                public void run() {
-                    doubleBackToExitPressedOnce=false;
-                }
-            }, 2000);
+            new Handler().postDelayed(() -> doubleBackToExitPressedOnce=false, 2000);
         }
     }
 }

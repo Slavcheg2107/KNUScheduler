@@ -38,7 +38,7 @@ import io.realm.Realm;
  * Created by krasn on 9/26/2017.
  */
 
-public class Week2Fragment extends Fragment {
+public class Week2Fragment extends Fragment implements BaseFragment{
     private static final String ARG_SECTION_NUMBER = "section_number";
     RecyclerView recyclerView;
     Week2RecyclerAdapter week2RecyclerAdapter;
@@ -53,11 +53,12 @@ public class Week2Fragment extends Fragment {
     public Week2Fragment(){}
 
 
-    public static Week2Fragment newInstance(Integer number) {
+    public static Week2Fragment newInstance() {
         Bundle args = new Bundle();
-        args.putInt(ARG_SECTION_NUMBER, number);
+        args.putInt(ARG_SECTION_NUMBER, 2);
 
         Week2Fragment sampleFragment = new Week2Fragment();
+        sampleFragment.setRetainInstance(true);
         sampleFragment.setArguments(args);
 
         return sampleFragment;
@@ -122,27 +123,28 @@ public class Week2Fragment extends Fragment {
         }
     }
     @Subscribe
-    public void onShowScheduleEvent(ShowScheduleEvent event){
-        int i = event.getDayNumber();
-        DayOfWeek dayOfWeek = new DayOfWeek();
-        for(DayOfWeek dayOfWeek1: week2.getDays()){
-            if(dayOfWeek1.getDayNumber() == event.getDayNumber()){
-                dayOfWeek= dayOfWeek1;
+    public void onShowScheduleEvent(ShowScheduleEvent event) {
+        if (event.getAdapterName().equals(getString(R.string.week2_adapter_name))) {
+            DayOfWeek dayOfWeek = new DayOfWeek();
+            for (DayOfWeek dayOfWeek1 : week2.getDays()) {
+                if (dayOfWeek1.getDayNumber() == event.getDayNumber()) {
+                    dayOfWeek = dayOfWeek1;
+                }
+            }
+            if (event.isShown()) {
+                scheduleRecyclerAdapter = new ScheduleRecyclerAdapter(ApplicationClass.getContext(),
+                        dayOfWeek.getScheduleList(), networkService);
+                recyclerView.setAdapter(scheduleRecyclerAdapter);
+                scheduleRecyclerAdapter.notifyDataSetChanged();
+            } else if (!event.isShown()) {
+                week2RecyclerAdapter = new Week2RecyclerAdapter(ApplicationClass.getContext(),
+                        week2.getDays(), networkService);
+                recyclerView.setAdapter(week2RecyclerAdapter);
+                week2RecyclerAdapter.notifyDataSetChanged();
             }
         }
-        if(event.isShown()){
-            scheduleRecyclerAdapter = new ScheduleRecyclerAdapter(ApplicationClass.getContext(),
-                    dayOfWeek.getScheduleList(), networkService);
-            recyclerView.setAdapter(scheduleRecyclerAdapter);
-            scheduleRecyclerAdapter.notifyDataSetChanged();
-        }
-        else if(!event.isShown()){
-            week2RecyclerAdapter = new Week2RecyclerAdapter(ApplicationClass.getContext(),
-                    week2.getDays(), networkService);
-            recyclerView.setAdapter(week2RecyclerAdapter);
-            week2RecyclerAdapter.notifyDataSetChanged();
-        }
     }
+
     @Subscribe
     public void onUpdateAdapter(UpdateAdapterEvent event){
         if(week2RecyclerAdapter!=null) {
@@ -152,6 +154,7 @@ public class Week2Fragment extends Fragment {
             scheduleRecyclerAdapter.notifyDataSetChanged();
         }
     }
+
 
     @Override
     public void onPause() {
@@ -163,5 +166,13 @@ public class Week2Fragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         realm.close();
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        if(recyclerView.getAdapter() instanceof ScheduleRecyclerAdapter){
+            recyclerView.setAdapter(week2RecyclerAdapter);
+        }
+        return true;
     }
 }

@@ -14,4 +14,6 @@
     <string name="Reload">Reload</string>
     <string name="reload" />
     <string name="GroupLoaded">GroupLoaded</string>
+    <string name="week1_adapter_name">week1</string>
+    <string name="week2_adapter_name">week2</string>
 </resources>
