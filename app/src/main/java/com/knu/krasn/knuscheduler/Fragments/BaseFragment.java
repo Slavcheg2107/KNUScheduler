@@ -5,5 +5,5 @@ package com.knu.krasn.knuscheduler.Fragments;
  */
 
 public interface BaseFragment {
-    boolean onBackPressed();
+     void onBackPressed();
 }

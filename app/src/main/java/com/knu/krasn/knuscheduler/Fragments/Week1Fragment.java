@@ -162,10 +162,9 @@ public class Week1Fragment extends Fragment implements BaseFragment{
     }
 
     @Override
-    public boolean onBackPressed() {
+    public void onBackPressed() {
         if(recyclerView.getAdapter() instanceof ScheduleRecyclerAdapter){
             recyclerView.setAdapter(week1RecyclerAdapter);
         }
-        return true;
     }
 }

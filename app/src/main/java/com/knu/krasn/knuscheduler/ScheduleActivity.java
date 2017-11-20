@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import com.knu.krasn.knuscheduler.Adapters.TabAdapter;
 import com.knu.krasn.knuscheduler.Events.ErrorEvent;
 import com.knu.krasn.knuscheduler.Events.GettingScheduleEvent;
 import com.knu.krasn.knuscheduler.Events.ShowScheduleEvent;
@@ -39,8 +40,7 @@ public class ScheduleActivity extends AppCompatActivity implements OnTabSelectLi
     FrameLayout container;
     Week1Fragment week1Fragment;
     Week2Fragment week2Fragment;
-    String week1Tag = "week1";
-    String week2Tag = "week2";
+    TabAdapter tabAdapter;
     String groupTitle;
     Toolbar toolbar;
     BottomBar bottomBar;
@@ -59,7 +59,7 @@ public class ScheduleActivity extends AppCompatActivity implements OnTabSelectLi
         toolbar.setTitle(groupTitle);
         setSupportActionBar(toolbar);
         manager = getSupportFragmentManager();
-
+        tabAdapter = new TabAdapter(manager);
         viewPager = findViewById(R.id.view_pager);
         container = findViewById(R.id.contentContainer);
          bottomBar = findViewById(R.id.bottomBar);
@@ -103,43 +103,7 @@ public class ScheduleActivity extends AppCompatActivity implements OnTabSelectLi
 
     @Override
     public void onTabSelected(@IdRes int tabId) {
-        ft = manager.beginTransaction();
-
-        if (tabId == R.id.tab_week1) {
-            week1Fragment = (Week1Fragment) getSupportFragmentManager().findFragmentByTag(week1Tag);
-            if (week1Fragment == null) {
-                week1Fragment = Week1Fragment.newInstance();
-                ft.add(container.getId(), week1Fragment, week1Tag);
-                if(week2Fragment!=null){
-                    ft.hide(week2Fragment).commit();
-                }else{
-                    ft.commit();
-                }
-            } else {
-                ft.show(week1Fragment);
-                if(week2Fragment!=null){
-                    ft.hide(week2Fragment).commit();
-                }
-            }
-        } else if (tabId == R.id.tab_week2) {
-            week2Fragment = (Week2Fragment) getSupportFragmentManager().findFragmentByTag(week2Tag);
-
-            if (week2Fragment == null) {
-                week2Fragment = Week2Fragment.newInstance();
-                ft.add(container.getId(), week2Fragment, week2Tag);
-                if(week1Fragment!=null){
-                    ft.hide(week1Fragment).commit();
-                }
-
-            } else {
-                ft.show( week2Fragment);
-                if(week1Fragment!=null){
-                    ft.hide(week1Fragment).commit();
-                }else ft.commit();
-            }
-        }
-//        NYBus.get().post(new ShowScheduleEvent(false, 0));
-        NYBus.get().post(new UpdateAdapterEvent());
+        tabAdapter.selectTab(tabId);
     }
 
     @Override
@@ -153,31 +117,7 @@ public class ScheduleActivity extends AppCompatActivity implements OnTabSelectLi
     }
     @Subscribe
     public void onShowScheduleEvent(ShowScheduleEvent event){
-        isScheduleShown = event.isShown();
-        if(isScheduleShown){
-            if(event.getDayNumber()!=0) {
-                switch (event.getDayNumber()) {
-                    case 1:
-                        toolbar.setTitle(getString(R.string.Monday));
-                        break;
-                    case 2:
-                        toolbar.setTitle(getString(R.string.Tuesday));
-                        break;
-                    case 3:
-                        toolbar.setTitle(getString(R.string.Wednesday));
-                        break;
-                    case 4:
-                        toolbar.setTitle(getString(R.string.Thursday));
-                        break;
-                    case 5:
-                        toolbar.setTitle(getString(R.string.Friday));
-                        break;
-                }
-            }
-        }
-        if( event.getDayNumber() == 0){
-            toolbar.setTitle(groupTitle);
-        }
+    tabAdapter.updateUI(groupTitle, event.isShown(), event.getDayNumber(), toolbar);
     }
 
     @Subscribe
@@ -214,4 +154,6 @@ public class ScheduleActivity extends AppCompatActivity implements OnTabSelectLi
             new Handler().postDelayed(() -> doubleBackToExitPressedOnce=false, 2000);
         }
     }
+
+
 }
