@@ -3,7 +3,6 @@ package com.knu.krasn.knuscheduler.Models.DayOfWeek;
 import com.knu.krasn.knuscheduler.Models.Schedule.Schedule;
 
 import java.util.List;
-import java.util.Objects;
 
 import io.realm.RealmList;
 import io.realm.RealmObject;
@@ -20,9 +19,7 @@ public class DayOfWeek extends RealmObject {
     }
 
     public DayOfWeek(Integer dayNumber,List<Schedule> scheduleList) {
-        for(Schedule schedule:scheduleList){
-        this.scheduleList.add(schedule);
-        }
+        this.scheduleList.addAll(scheduleList);
         this.dayNumber = dayNumber;
     }
     public DayOfWeek(Integer dayNumber){
@@ -48,21 +45,13 @@ public class DayOfWeek extends RealmObject {
     }
 
     public void setScheduleList(List<Schedule> scheduleList) {
-        for(Schedule schedule: scheduleList)
-        this.scheduleList.add(schedule);
+        this.scheduleList.addAll(scheduleList);
     }
 
     public void addSchedule(Schedule schedule) {
         scheduleList.add(schedule);
     }
 
-    public void deleteSchedule(Schedule schedule) {
-        for (int i = 0; i < scheduleList.size(); i++) {
-            if (Objects.equals(scheduleList.get(i).getDay(), schedule.getDay())) {
-                scheduleList.remove(i);
-            }
-        }
-    }
 
     public void clearSchedule(){
         this.scheduleList.clear();

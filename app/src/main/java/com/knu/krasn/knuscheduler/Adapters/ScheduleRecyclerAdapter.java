@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-
 import com.knu.krasn.knuscheduler.Events.MoveToNextEvent;
 import com.knu.krasn.knuscheduler.Models.Schedule.Schedule;
 import com.knu.krasn.knuscheduler.Network.NetworkService;
@@ -52,7 +51,7 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<ScheduleRecycl
         itemHolder.room.setText(schedules.get(position).getRoom() + " " + "ауд.");
         itemHolder.teacher.setText(schedules.get(position).getTeachers());
         itemHolder.lessonNumber.setText(String.valueOf(schedules.get(position).getLesson()));
-        String time = schedules.get(position).getTime().getBegin();
+        String time = schedules.get(position).getTime().getBegin() + " - " + schedules.get(position).getTime().getEnd();
         itemHolder.time.setText(time);
         Log.e("TIME", schedules.get(position).getTime().getBegin() + schedules.get(position).getTime().getEnd());
 

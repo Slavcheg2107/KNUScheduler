@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
-
 import com.knu.krasn.knuscheduler.Adapters.ScheduleRecyclerAdapter;
 import com.knu.krasn.knuscheduler.Adapters.Week1RecyclerAdapter;
 import com.knu.krasn.knuscheduler.ApplicationClass;
@@ -165,6 +164,7 @@ public class Week1Fragment extends Fragment implements BaseFragment{
     public void onBackPressed() {
         if(recyclerView.getAdapter() instanceof ScheduleRecyclerAdapter){
             recyclerView.setAdapter(week1RecyclerAdapter);
+            NYBus.get().post(new ShowScheduleEvent(false, 0, "noName"));
         }
     }
 }

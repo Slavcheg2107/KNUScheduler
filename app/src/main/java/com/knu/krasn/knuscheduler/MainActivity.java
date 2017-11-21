@@ -16,7 +16,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import com.knu.krasn.knuscheduler.Adapters.FacultyRecyclerAdapter;
 import com.knu.krasn.knuscheduler.Adapters.GroupRecyclerAdapter;
 import com.knu.krasn.knuscheduler.Decor.GridSpacingItemDecoration;

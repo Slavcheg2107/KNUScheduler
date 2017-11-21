@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-
 import com.knu.krasn.knuscheduler.ApplicationClass;
 import com.knu.krasn.knuscheduler.Events.ConnectionEvent;
 import com.knu.krasn.knuscheduler.Events.MoveToNextEvent;
@@ -27,10 +26,9 @@ import geek.owl.com.ua.KNUSchedule.R;
  */
 
 public class GroupRecyclerAdapter extends RecyclerView.Adapter<GroupRecyclerAdapter.ItemHolder> {
+    private List<Group> groups;
+    private Context context;
     private LayoutInflater inflater = null;
-    List<Group> groups;
-
-    Context context;
     private NetworkService networkService;
 
     public GroupRecyclerAdapter(Context context, List<Group> groups, NetworkService networkService) {

@@ -1,15 +1,18 @@
 package com.knu.krasn.knuscheduler.Adapters;
 
 import android.content.Context;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 
 import com.knu.krasn.knuscheduler.ApplicationClass;
-import com.knu.krasn.knuscheduler.Events.UpdateAdapterEvent;
 import com.knu.krasn.knuscheduler.Fragments.Week1Fragment;
 import com.knu.krasn.knuscheduler.Fragments.Week2Fragment;
-import com.mindorks.nybus.NYBus;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import geek.owl.com.ua.KNUSchedule.R;
 
 /**
@@ -26,7 +29,7 @@ public class TabAdapter {
         this.fm = fm;
     }
 
-    public void selectTab(int tabId){
+    public List<Fragment> selectTab(int tabId) {
         FragmentTransaction ft = fm.beginTransaction();
         if (tabId == R.id.tab_week1) {
             week1Fragment = (Week1Fragment) fm.findFragmentByTag(context.getString(R.string.week1_adapter_name));
@@ -44,6 +47,7 @@ public class TabAdapter {
                     ft.hide(week2Fragment).commit();
                 }
             }
+
         } else if (tabId == R.id.tab_week2) {
             week2Fragment = (Week2Fragment) fm.findFragmentByTag(context.getString(R.string.week2_adapter_name));
             if (week2Fragment == null) {
@@ -60,7 +64,10 @@ public class TabAdapter {
                 }else ft.commit();
             }
         }
-        NYBus.get().post(new UpdateAdapterEvent());
+        List<Fragment> fragments = new ArrayList<>();
+        fragments.add(week1Fragment);
+        fragments.add(week2Fragment);
+        return fragments;
     }
 
     public void updateUI(String groupTitle, boolean isScheduleShown, int dayNumber, Toolbar toolbar){
@@ -87,9 +94,6 @@ public class TabAdapter {
             }
         }
         else{
-            toolbar.setTitle(groupTitle);
-        }
-        if( dayNumber == 0){
             toolbar.setTitle(groupTitle);
         }
     }

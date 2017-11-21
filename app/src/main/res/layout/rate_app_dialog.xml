@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_marginTop="17dp"
         android:text="Ні, дякую" />
@@ -20,6 +21,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignEnd="@+id/negative_button"
+        android:layout_alignLeft="@+id/negative_button"
+        android:layout_alignRight="@+id/negative_button"
         android:layout_alignStart="@+id/negative_button"
         android:layout_below="@+id/negative_button"
         android:text="Нагадати пізніше" />
@@ -30,6 +33,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignEnd="@+id/neutral"
+        android:layout_alignLeft="@+id/neutral"
+        android:layout_alignRight="@+id/neutral"
         android:layout_alignStart="@+id/neutral"
         android:layout_below="@+id/neutral"
         android:text="Оцінити" />

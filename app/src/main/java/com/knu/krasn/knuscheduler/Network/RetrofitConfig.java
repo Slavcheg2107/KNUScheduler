@@ -12,7 +12,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by krasn on 10/29/2017.
  */
 
-public class RetrofitConfig {
+class RetrofitConfig {
     private final static String BASE_URL = "https://immense-refuge-24759.herokuapp.com/api/";
 
     private HttpLoggingInterceptor logging = new HttpLoggingInterceptor()
@@ -33,7 +33,7 @@ public class RetrofitConfig {
 
     private ApiInterface apiNetwork = retrofit.create(ApiInterface.class);
 
-    public ApiInterface getApiNetwork() {
+    ApiInterface getApiNetwork() {
         return apiNetwork;
     }
 }

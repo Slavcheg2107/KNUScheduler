@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.IdRes;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
@@ -19,7 +20,6 @@ import com.knu.krasn.knuscheduler.Adapters.TabAdapter;
 import com.knu.krasn.knuscheduler.Events.ErrorEvent;
 import com.knu.krasn.knuscheduler.Events.GettingScheduleEvent;
 import com.knu.krasn.knuscheduler.Events.ShowScheduleEvent;
-import com.knu.krasn.knuscheduler.Events.UpdateAdapterEvent;
 import com.knu.krasn.knuscheduler.Fragments.Week1Fragment;
 import com.knu.krasn.knuscheduler.Fragments.Week2Fragment;
 import com.knu.krasn.knuscheduler.Utils.AppRater;
@@ -29,11 +29,12 @@ import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabReselectListener;
 import com.roughike.bottombar.OnTabSelectListener;
 
+import java.util.List;
+
 import geek.owl.com.ua.KNUSchedule.R;
 
 
 public class ScheduleActivity extends AppCompatActivity implements OnTabSelectListener, OnTabReselectListener {
-
     FragmentTransaction ft;
     FragmentManager manager;
     ViewPager viewPager;
@@ -44,6 +45,7 @@ public class ScheduleActivity extends AppCompatActivity implements OnTabSelectLi
     String groupTitle;
     Toolbar toolbar;
     BottomBar bottomBar;
+    List<Fragment> fragments;
     private boolean isScheduleShown = false;
     private boolean doubleBackToExitPressedOnce = false;
 
@@ -70,8 +72,14 @@ public class ScheduleActivity extends AppCompatActivity implements OnTabSelectLi
 
     @Override
     protected void onPause() {
-        NYBus.get().register(this);
+
         super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        NYBus.get().register(this);
+        super.onResume();
     }
 
     @Override
@@ -96,14 +104,14 @@ public class ScheduleActivity extends AppCompatActivity implements OnTabSelectLi
             startActivity(i);
             finish();
         }
-
         return super.onOptionsItemSelected(item);
     }
 
 
     @Override
     public void onTabSelected(@IdRes int tabId) {
-        tabAdapter.selectTab(tabId);
+        fragments = tabAdapter.selectTab(tabId);
+        NYBus.get().post(new ShowScheduleEvent(false, 0, "noName"));
     }
 
     @Override
@@ -136,13 +144,13 @@ public class ScheduleActivity extends AppCompatActivity implements OnTabSelectLi
 
     @Override
     public void onBackPressed() {
+
+        week1Fragment = (Week1Fragment) fragments.get(0);
+        week2Fragment = (Week2Fragment) fragments.get(1);
         if(bottomBar.getCurrentTabPosition() == 0) {
             week1Fragment.onBackPressed();
         }else if(bottomBar.getCurrentTabPosition() == 1){
             week2Fragment.onBackPressed();
-        }
-        if(isScheduleShown){
-            NYBus.get().post(new ShowScheduleEvent(false, 0, "noAdapter"));
         }
         else{
             if (doubleBackToExitPressedOnce) {

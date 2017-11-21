@@ -18,6 +18,22 @@ public class ApplicationClass extends Application {
     static SharedPreferences prefs;
     static Context context;
 
+    public static Realm getRealm() {
+        return Realm.getDefaultInstance();
+    }
+
+    public static NetworkService getNetwork() {
+        return new NetworkService();
+    }
+
+    public static SharedPreferences getPreferences() {
+        return prefs;
+    }
+
+    public static Context getContext() {
+        return context;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -29,18 +45,6 @@ public class ApplicationClass extends Application {
         prefs = getSharedPreferences("Prefs", MODE_PRIVATE);
         context = getApplicationContext();
 
-    }
-    public static Realm getRealm(){
-        return Realm.getDefaultInstance();
-    }
-    public static NetworkService getNetwork(){
-        return new NetworkService();
-    }
-    public static SharedPreferences getPreferences(){
-        return prefs;
-    }
-    public static Context getContext(){
-        return context;
     }
 
 }

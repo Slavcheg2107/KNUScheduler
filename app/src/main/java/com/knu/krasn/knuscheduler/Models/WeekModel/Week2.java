@@ -25,9 +25,7 @@ public class Week2 extends RealmObject {
     }
 
     public Week2(List<Schedule> week2Schedule) {
-        for (Schedule schedule : week2Schedule) {
-            schedules.add(schedule);
-        }
+        schedules.addAll(week2Schedule);
     }
 
 //    public List<Schedule> schedules = new ArrayList<>();
@@ -72,12 +70,12 @@ public class Week2 extends RealmObject {
         this.day5 = day5;
     }
 
-    public void setSchedules(List<Schedule> schedules) {
-        this.schedules = (RealmList<Schedule>) schedules;
-    }
-
     public List<Schedule> getSchedules() {
         return this.schedules;
+    }
+
+    public void setSchedules(List<Schedule> schedules) {
+        this.schedules = (RealmList<Schedule>) schedules;
     }
 
     public void addScheduleToWeek1(Schedule schedule_) {

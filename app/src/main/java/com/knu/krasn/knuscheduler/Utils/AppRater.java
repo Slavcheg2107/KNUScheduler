@@ -5,10 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.view.View;
 import android.widget.Button;
 
 import com.knu.krasn.knuscheduler.ApplicationClass;
+
 import geek.owl.com.ua.KNUSchedule.R;
 
 
@@ -47,42 +47,36 @@ public class AppRater {
             }
         }
 
-        editor.commit();
+        editor.apply();
     }
 
-    public static void showRateDialog(final Context mContext, final SharedPreferences.Editor editor) {
+    private static void showRateDialog(final Context mContext, final SharedPreferences.Editor editor) {
         final Dialog dialog = new Dialog(mContext);
         dialog.setContentView(R.layout.rate_app_dialog);
         dialog.setTitle("Оцініть наш додаток");
-        Button b1 = (Button) dialog.findViewById(R.id.positive_button);
-        b1.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + APP_PNAME)));
-                dialog.dismiss();
-            }
+        Button b1 = dialog.findViewById(R.id.positive_button);
+        b1.setOnClickListener(v -> {
+            mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + APP_PNAME)));
+            dialog.dismiss();
         });
 
-        Button b2 = (Button) dialog.findViewById(R.id.neutral);
-        b2.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if (editor != null) {
-                    editor.putLong("launch_count", 0);
-                    editor.putLong("date_firstlaunch", 0);
-                    editor.commit();
-                }
-                dialog.dismiss();
+        Button b2 = dialog.findViewById(R.id.neutral);
+        b2.setOnClickListener(v -> {
+            if (editor != null) {
+                editor.putLong("launch_count", 0);
+                editor.putLong("date_firstlaunch", 0);
+                editor.commit();
             }
+            dialog.dismiss();
         });
 
-        Button b3 = (Button) dialog.findViewById(R.id.negative_button);
-        b3.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if (editor != null) {
-                    editor.putBoolean("dontshowagain", true);
-                    editor.commit();
-                }
-                dialog.dismiss();
+        Button b3 = dialog.findViewById(R.id.negative_button);
+        b3.setOnClickListener(v -> {
+            if (editor != null) {
+                editor.putBoolean("dontshowagain", true);
+                editor.commit();
             }
+            dialog.dismiss();
         });
         dialog.show();
     }

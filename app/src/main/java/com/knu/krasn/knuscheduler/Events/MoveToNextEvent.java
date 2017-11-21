@@ -5,6 +5,8 @@ package com.knu.krasn.knuscheduler.Events;
  */
 
 public class MoveToNextEvent {
+    private String message;
+
     public MoveToNextEvent(String message) {
         this.message = message;
     }
@@ -16,6 +18,4 @@ public class MoveToNextEvent {
     public void setMessage(String message) {
         this.message = message;
     }
-
-    private String message;
 }
