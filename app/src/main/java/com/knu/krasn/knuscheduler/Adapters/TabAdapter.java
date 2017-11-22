@@ -22,8 +22,8 @@ import geek.owl.com.ua.KNUSchedule.R;
 public class TabAdapter {
     private String groupTitle;
     private Toolbar toolbar;
-    private Week1Fragment week1Fragment;
-    private Week2Fragment week2Fragment;
+    private Week1Fragment week1Fragment = Week1Fragment.newInstance();
+    private Week2Fragment week2Fragment = Week2Fragment.newInstance();
     private Context context = ApplicationClass.getContext();
     private List<BaseFragment> fragments = new ArrayList<>();
 
@@ -37,41 +37,24 @@ public class TabAdapter {
 
         FragmentTransaction ft = fm.beginTransaction();
         int contentContainer = R.id.contentContainer;
-        if (tabId == R.id.tab_week1) {
-            week1Fragment = (Week1Fragment) fm.findFragmentByTag(context.getString(R.string.week1_adapter_name));
-            if (week1Fragment == null) {
-                week1Fragment = Week1Fragment.newInstance();
-                ft.add(contentContainer, week1Fragment, context.getString(R.string.week1_adapter_name));
-                if (week2Fragment != null) {
-                    ft.hide(week2Fragment).commit();
-                } else {
-                    ft.commit();
-                }
-            } else {
+        if (fm.getFragments().size() == 0) {
+            ft.add(contentContainer, week1Fragment, context.getString(R.string.week1_adapter_name));
+            ft.add(contentContainer, week2Fragment, context.getString(R.string.week2_adapter_name));
+            fragments.add(week1Fragment);
+            fragments.add(week2Fragment);
+            ft.hide(week2Fragment);
+            ft.commit();
+        } else {
+            if (tabId == R.id.tab_week1) {
+                ft.hide(week2Fragment);
                 ft.show(week1Fragment);
-                if (week2Fragment != null) {
-                    ft.hide(week2Fragment).commit();
-                }
-            }
-        } else if (tabId == R.id.tab_week2) {
-            week2Fragment = (Week2Fragment) fm.findFragmentByTag(context.getString(R.string.week2_adapter_name));
-            if (week2Fragment == null) {
-                week2Fragment = Week2Fragment.newInstance();
-                ft.add(contentContainer, week2Fragment, context.getString(R.string.week2_adapter_name));
-                if (week1Fragment != null) {
-                    ft.hide(week1Fragment).commit();
-                }
-
-            } else {
+                ft.commit();
+            } else if (tabId == R.id.tab_week2) {
+                ft.hide(week1Fragment);
                 ft.show(week2Fragment);
-                if (week1Fragment != null) {
-                    ft.hide(week1Fragment).commit();
-                } else ft.commit();
+                ft.commit();
             }
         }
-        fragments.clear();
-        fragments.add(week1Fragment);
-        fragments.add(week2Fragment);
         return fragments;
     }
 
