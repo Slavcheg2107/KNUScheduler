@@ -27,6 +27,7 @@ public class TabAdapter {
     private Context context = ApplicationClass.getContext();
     private List<BaseFragment> fragments = new ArrayList<>();
 
+
     public TabAdapter(String groupTitle, Toolbar toolbar) {
         this.toolbar = toolbar;
         this.groupTitle = groupTitle;
@@ -77,24 +78,26 @@ public class TabAdapter {
 
     public void updateUI(int dayNumber) {
 
-        if (dayNumber != 0) {
-            switch (dayNumber) {
-                case 1:
-                    toolbar.setTitle(context.getString(R.string.Monday));
-                    break;
-                case 2:
-                    toolbar.setTitle(context.getString(R.string.Tuesday));
-                    break;
-                case 3:
-                    toolbar.setTitle(context.getString(R.string.Wednesday));
-                    break;
-                case 4:
-                    toolbar.setTitle(context.getString(R.string.Thursday));
-                    break;
-                case 5:
-                    toolbar.setTitle(context.getString(R.string.Friday));
-                    break;
-            }
-        } else toolbar.setTitle(groupTitle);
+
+        switch (dayNumber) {
+            case 0:
+                toolbar.setTitle(groupTitle);
+                break;
+            case 1:
+                toolbar.setTitle(context.getString(R.string.Monday));
+                break;
+            case 2:
+                toolbar.setTitle(context.getString(R.string.Tuesday));
+                break;
+            case 3:
+                toolbar.setTitle(context.getString(R.string.Wednesday));
+                break;
+            case 4:
+                toolbar.setTitle(context.getString(R.string.Thursday));
+                break;
+            case 5:
+                toolbar.setTitle(context.getString(R.string.Friday));
+                break;
+        }
     }
 }

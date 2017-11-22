@@ -15,8 +15,6 @@ import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.knu.krasn.knuscheduler.Adapters.TabAdapter;
-import com.knu.krasn.knuscheduler.Adapters.Week1RecyclerAdapter;
-import com.knu.krasn.knuscheduler.Adapters.Week2RecyclerAdapter;
 import com.knu.krasn.knuscheduler.Events.ErrorEvent;
 import com.knu.krasn.knuscheduler.Events.GettingScheduleEvent;
 import com.knu.krasn.knuscheduler.Events.ShowScheduleEvent;
@@ -112,29 +110,11 @@ public class ScheduleActivity extends AppCompatActivity implements OnTabSelectLi
     @Override
     public void onTabSelected(@IdRes int tabId) {
         fragments = tabAdapter.selectTab(tabId, manager);
-
     }
 
     @Override
     public void onTabReSelected(@IdRes int tabId) {
-        switch (tabId) {
-            case R.id.tab_week1:
-                week1Fragment = (Week1Fragment) fragments.get(0);
-                if (week1Fragment.getAdapter() != null) {
-                    if (week1Fragment.getAdapter() instanceof Week1RecyclerAdapter) {
-                        tabAdapter.updateUI(0);
-                    }
-                }
-                break;
-            case R.id.tab_week2:
-                week2Fragment = (Week2Fragment) fragments.get(1);
-                if (week2Fragment.getAdapter() != null) {
-                    if (week2Fragment.getAdapter() instanceof Week2RecyclerAdapter) {
-                        tabAdapter.updateUI(0);
-                    }
-                }
-                break;
-        }
+
     }
 
     @Subscribe
