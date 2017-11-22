@@ -59,7 +59,6 @@ public class Week2Fragment extends Fragment implements BaseFragment {
     public static Week2Fragment newInstance() {
         Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, 2);
-
         Week2Fragment sampleFragment = new Week2Fragment();
         sampleFragment.setRetainInstance(true);
         sampleFragment.setArguments(args);
@@ -140,8 +139,9 @@ public class Week2Fragment extends Fragment implements BaseFragment {
 
     @Subscribe
     public void onShowScheduleEvent(ShowScheduleEvent event) {
-        dayNumber = event.getDayNumber();
+
         if (event.getAdapterName().equals(getString(R.string.week2_adapter_name))) {
+            dayNumber = event.getDayNumber();
             DayOfWeek dayOfWeek = new DayOfWeek();
             for (DayOfWeek dayOfWeek1 : week2.getDays()) {
                 if (dayOfWeek1.getDayNumber() == event.getDayNumber()) {
@@ -159,8 +159,9 @@ public class Week2Fragment extends Fragment implements BaseFragment {
                 recyclerView.setAdapter(week2RecyclerAdapter);
                 week2RecyclerAdapter.notifyDataSetChanged();
             }
+            tabAdapter.updateUI(dayNumber);
         }
-        tabAdapter.updateUI(dayNumber);
+
     }
 
     @Override

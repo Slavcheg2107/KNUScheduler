@@ -52,7 +52,7 @@ public class Week1Fragment extends Fragment implements BaseFragment {
     String s = prefs.getString("GroupLoaded", "");
     RelativeLayout loadingWheel;
     private TabAdapter tabAdapter;
-    private int dayNumber = 0;
+    private int dayNumber;
 
     public Week1Fragment() {
     }
@@ -143,8 +143,9 @@ public class Week1Fragment extends Fragment implements BaseFragment {
 
     @Subscribe
     public void onShowScheduleEvent(ShowScheduleEvent event) {
-        dayNumber = event.getDayNumber();
+
         if (event.getAdapterName().equals(getString(R.string.week1_adapter_name))) {
+            dayNumber = event.getDayNumber();
             DayOfWeek dayOfWeek = new DayOfWeek();
             for (DayOfWeek dayOfWeek1 : week1.getDays()) {
                 if (dayOfWeek1.getDayNumber() == event.getDayNumber()) {
@@ -160,8 +161,9 @@ public class Week1Fragment extends Fragment implements BaseFragment {
                 recyclerView.setAdapter(week1RecyclerAdapter);
                 week1RecyclerAdapter.notifyDataSetChanged();
             }
+            tabAdapter.updateUI(dayNumber);
         }
-        tabAdapter.updateUI(dayNumber);
+
     }
 
     @Override

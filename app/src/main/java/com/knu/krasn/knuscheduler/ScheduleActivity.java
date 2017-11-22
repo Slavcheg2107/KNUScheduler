@@ -46,7 +46,6 @@ public class ScheduleActivity extends AppCompatActivity implements OnTabSelectLi
     BottomBar bottomBar;
     List<BaseFragment> fragments;
     private boolean doubleBackToExitPressedOnce = false;
-    private int dayNumber;
 
 
     @Override
@@ -124,8 +123,7 @@ public class ScheduleActivity extends AppCompatActivity implements OnTabSelectLi
 
     @Subscribe
     public void onShowScheduleEvent(ShowScheduleEvent event) {
-        this.dayNumber = event.getDayNumber();
-        tabAdapter.updateUI(event.getDayNumber());
+
     }
 
     @Subscribe

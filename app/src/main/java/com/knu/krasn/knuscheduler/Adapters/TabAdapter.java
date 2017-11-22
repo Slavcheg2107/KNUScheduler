@@ -60,8 +60,6 @@ public class TabAdapter {
 
 
     public void updateUI(int dayNumber) {
-
-
         switch (dayNumber) {
             case 0:
                 toolbar.setTitle(groupTitle);
