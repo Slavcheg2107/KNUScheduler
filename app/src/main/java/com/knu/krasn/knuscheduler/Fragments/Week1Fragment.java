@@ -22,7 +22,6 @@ import com.knu.krasn.knuscheduler.ApplicationClass;
 import com.knu.krasn.knuscheduler.Decor.GridSpacingItemDecoration;
 import com.knu.krasn.knuscheduler.Events.GettingScheduleEvent;
 import com.knu.krasn.knuscheduler.Events.ShowScheduleEvent;
-import com.knu.krasn.knuscheduler.Events.UpdateAdapterEvent;
 import com.knu.krasn.knuscheduler.Models.DayOfWeek.DayOfWeek;
 import com.knu.krasn.knuscheduler.Models.GroupModel.Group;
 import com.knu.krasn.knuscheduler.Models.WeekModel.Week1;
@@ -51,7 +50,6 @@ public class Week1Fragment extends Fragment implements BaseFragment{
     SharedPreferences.Editor editor = prefs.edit();
     String s = prefs.getString("GroupLoaded", "");
     RelativeLayout loadingWheel;
-
     public Week1Fragment() {
     }
 
@@ -128,10 +126,11 @@ public class Week1Fragment extends Fragment implements BaseFragment{
 
     }
 
-    @Subscribe
-    public void onUpdateAdapter(UpdateAdapterEvent event) {
-        week1RecyclerAdapter.notifyDataSetChanged();
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
     }
+
 
     @Subscribe
     public void onShowScheduleEvent(ShowScheduleEvent event) {
@@ -142,11 +141,11 @@ public class Week1Fragment extends Fragment implements BaseFragment{
                     dayOfWeek = dayOfWeek1;
                 }
             }
-            if (event.isShown()) {
+            if (event.getDayNumber() != 0) {
                 scheduleRecyclerAdapter = new ScheduleRecyclerAdapter(ApplicationClass.getContext(), dayOfWeek.getScheduleList(), networkService);
                 recyclerView.setAdapter(scheduleRecyclerAdapter);
                 scheduleRecyclerAdapter.notifyDataSetChanged();
-            } else if (!event.isShown()) {
+            } else {
                 week1RecyclerAdapter = new Week1RecyclerAdapter(ApplicationClass.getContext(), week1.getDays(), networkService);
                 recyclerView.setAdapter(week1RecyclerAdapter);
                 week1RecyclerAdapter.notifyDataSetChanged();
@@ -164,7 +163,16 @@ public class Week1Fragment extends Fragment implements BaseFragment{
     public void onBackPressed() {
         if(recyclerView.getAdapter() instanceof ScheduleRecyclerAdapter){
             recyclerView.setAdapter(week1RecyclerAdapter);
-            NYBus.get().post(new ShowScheduleEvent(false, 0, "noName"));
+            NYBus.get().post(new ShowScheduleEvent(0, "noName"));
         }
     }
+
+    @Override
+    public RecyclerView.Adapter getAdapter() {
+        if (recyclerView != null) {
+            return recyclerView.getAdapter();
+        } else return null;
+    }
+
+
 }

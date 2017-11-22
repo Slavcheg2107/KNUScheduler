@@ -30,6 +30,7 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<ScheduleRecycl
     private NetworkService networkService;
 
 
+
     public ScheduleRecyclerAdapter(Context context, List<Schedule> schedules, NetworkService networkService) {
 
         this.schedules = schedules;
@@ -66,6 +67,10 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<ScheduleRecycl
     @Override
     public long getItemId(int position) {
         return position;
+    }
+
+    public int getItem(int position) {
+        return schedules.get(position).getDay();
     }
 
     @Override

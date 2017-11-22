@@ -22,7 +22,6 @@ import com.knu.krasn.knuscheduler.Decor.GridSpacingItemDecoration;
 import com.knu.krasn.knuscheduler.Events.ConnectionEvent;
 import com.knu.krasn.knuscheduler.Events.GettingScheduleEvent;
 import com.knu.krasn.knuscheduler.Events.ShowScheduleEvent;
-import com.knu.krasn.knuscheduler.Events.UpdateAdapterEvent;
 import com.knu.krasn.knuscheduler.Models.DayOfWeek.DayOfWeek;
 import com.knu.krasn.knuscheduler.Models.GroupModel.Group;
 import com.knu.krasn.knuscheduler.Models.WeekModel.Week2;
@@ -131,12 +130,12 @@ public class Week2Fragment extends Fragment implements BaseFragment{
                     dayOfWeek = dayOfWeek1;
                 }
             }
-            if (event.isShown()) {
+            if (event.getDayNumber() != 0) {
                 scheduleRecyclerAdapter = new ScheduleRecyclerAdapter(ApplicationClass.getContext(),
                         dayOfWeek.getScheduleList(), networkService);
                 recyclerView.setAdapter(scheduleRecyclerAdapter);
                 scheduleRecyclerAdapter.notifyDataSetChanged();
-            } else if (!event.isShown()) {
+            } else {
                 week2RecyclerAdapter = new Week2RecyclerAdapter(ApplicationClass.getContext(),
                         week2.getDays(), networkService);
                 recyclerView.setAdapter(week2RecyclerAdapter);
@@ -144,17 +143,6 @@ public class Week2Fragment extends Fragment implements BaseFragment{
             }
         }
     }
-
-    @Subscribe
-    public void onUpdateAdapter(UpdateAdapterEvent event){
-        if(week2RecyclerAdapter!=null) {
-            week2RecyclerAdapter.notifyDataSetChanged();
-        }
-        if(scheduleRecyclerAdapter!=null) {
-            scheduleRecyclerAdapter.notifyDataSetChanged();
-        }
-    }
-
 
     @Override
     public void onPause() {
@@ -172,6 +160,15 @@ public class Week2Fragment extends Fragment implements BaseFragment{
     public void onBackPressed() {
         if(recyclerView.getAdapter() instanceof ScheduleRecyclerAdapter){
             recyclerView.setAdapter(week2RecyclerAdapter);
+            NYBus.get().post(new ShowScheduleEvent(0, "noName"));
         }
+    }
+
+    @Override
+    public RecyclerView.Adapter getAdapter() {
+
+        if (recyclerView != null) {
+            return recyclerView.getAdapter();
+        } else return null;
     }
 }

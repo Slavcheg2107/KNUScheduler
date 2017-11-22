@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.knu.krasn.knuscheduler.ApplicationClass;
 import com.knu.krasn.knuscheduler.Events.ShowScheduleEvent;
 import com.knu.krasn.knuscheduler.Models.DayOfWeek.DayOfWeek;
 import com.knu.krasn.knuscheduler.Network.NetworkService;
@@ -23,10 +22,12 @@ import geek.owl.com.ua.KNUSchedule.R;
  */
 
 public class Week1RecyclerAdapter extends RecyclerView.Adapter<Week1RecyclerAdapter.ItemHolder> {
+
     private LayoutInflater inflater = null;
     private List<DayOfWeek> days;
     private Context context;
     private NetworkService networkService;
+
 
     public Week1RecyclerAdapter(Context context, List<DayOfWeek> daysList, NetworkService networkService) {
         this.context = context;
@@ -85,8 +86,8 @@ public class Week1RecyclerAdapter extends RecyclerView.Adapter<Week1RecyclerAdap
             this.days = days;
             dayTitle = itemView.findViewById(R.id.day_of_week);
             cardView = itemView.findViewById(R.id.day_card);
-            cardView.setOnClickListener(view -> NYBus.get()
-                    .post(new ShowScheduleEvent(true, days.get(getAdapterPosition()).getDayNumber(), ApplicationClass.getContext().getString(R.string.week1_adapter_name))));
+            cardView.setOnClickListener(view -> NYBus.get().post(new ShowScheduleEvent(days.get(getAdapterPosition()).getDayNumber(), "week1")));
+
         }
     }
 }

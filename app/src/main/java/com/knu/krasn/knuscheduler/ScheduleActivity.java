@@ -5,9 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.IdRes;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -17,9 +15,12 @@ import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.knu.krasn.knuscheduler.Adapters.TabAdapter;
+import com.knu.krasn.knuscheduler.Adapters.Week1RecyclerAdapter;
+import com.knu.krasn.knuscheduler.Adapters.Week2RecyclerAdapter;
 import com.knu.krasn.knuscheduler.Events.ErrorEvent;
 import com.knu.krasn.knuscheduler.Events.GettingScheduleEvent;
 import com.knu.krasn.knuscheduler.Events.ShowScheduleEvent;
+import com.knu.krasn.knuscheduler.Fragments.BaseFragment;
 import com.knu.krasn.knuscheduler.Fragments.Week1Fragment;
 import com.knu.krasn.knuscheduler.Fragments.Week2Fragment;
 import com.knu.krasn.knuscheduler.Utils.AppRater;
@@ -35,7 +36,7 @@ import geek.owl.com.ua.KNUSchedule.R;
 
 
 public class ScheduleActivity extends AppCompatActivity implements OnTabSelectListener, OnTabReselectListener {
-    FragmentTransaction ft;
+
     FragmentManager manager;
     ViewPager viewPager;
     FrameLayout container;
@@ -45,9 +46,9 @@ public class ScheduleActivity extends AppCompatActivity implements OnTabSelectLi
     String groupTitle;
     Toolbar toolbar;
     BottomBar bottomBar;
-    List<Fragment> fragments;
-    private boolean isScheduleShown = false;
+    List<BaseFragment> fragments;
     private boolean doubleBackToExitPressedOnce = false;
+    private int dayNumber;
 
 
     @Override
@@ -57,14 +58,14 @@ public class ScheduleActivity extends AppCompatActivity implements OnTabSelectLi
         setContentView(R.layout.activity_schedule);
         AppRater.app_launched(this);
         groupTitle = getIntent().getStringExtra("group");
-         toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(groupTitle);
         setSupportActionBar(toolbar);
         manager = getSupportFragmentManager();
-        tabAdapter = new TabAdapter(manager);
+        tabAdapter = new TabAdapter(groupTitle, toolbar);
         viewPager = findViewById(R.id.view_pager);
         container = findViewById(R.id.contentContainer);
-         bottomBar = findViewById(R.id.bottomBar);
+        bottomBar = findViewById(R.id.bottomBar);
         bottomBar.setOnTabSelectListener(this);
         bottomBar.setOnTabReselectListener(this);
 
@@ -98,9 +99,9 @@ public class ScheduleActivity extends AppCompatActivity implements OnTabSelectLi
             SharedPreferences.Editor editor = preferences.edit();
             editor.putString("GroupLoaded", "");
             editor.apply();
-            String s =  "getGroup";
+            String s = "getGroup";
             Intent i = new Intent(this, MainActivity.class);
-            i.putExtra(s , s);
+            i.putExtra(s, s);
             startActivity(i);
             finish();
         }
@@ -110,27 +111,46 @@ public class ScheduleActivity extends AppCompatActivity implements OnTabSelectLi
 
     @Override
     public void onTabSelected(@IdRes int tabId) {
-        fragments = tabAdapter.selectTab(tabId);
-        NYBus.get().post(new ShowScheduleEvent(false, 0, "noName"));
+        fragments = tabAdapter.selectTab(tabId, manager);
+
     }
 
     @Override
     public void onTabReSelected(@IdRes int tabId) {
-
+        switch (tabId) {
+            case R.id.tab_week1:
+                week1Fragment = (Week1Fragment) fragments.get(0);
+                if (week1Fragment.getAdapter() != null) {
+                    if (week1Fragment.getAdapter() instanceof Week1RecyclerAdapter) {
+                        tabAdapter.updateUI(0);
+                    }
+                }
+                break;
+            case R.id.tab_week2:
+                week2Fragment = (Week2Fragment) fragments.get(1);
+                if (week2Fragment.getAdapter() != null) {
+                    if (week2Fragment.getAdapter() instanceof Week2RecyclerAdapter) {
+                        tabAdapter.updateUI(0);
+                    }
+                }
+                break;
+        }
     }
-    
+
     @Subscribe
     public void onGettingScheduleEvent(GettingScheduleEvent event) {
 
     }
+
     @Subscribe
-    public void onShowScheduleEvent(ShowScheduleEvent event){
-    tabAdapter.updateUI(groupTitle, event.isShown(), event.getDayNumber(), toolbar);
+    public void onShowScheduleEvent(ShowScheduleEvent event) {
+        this.dayNumber = event.getDayNumber();
+        tabAdapter.updateUI(event.getDayNumber());
     }
 
     @Subscribe
-    public void onErrorEvent(ErrorEvent event){
-        if(event.getError().equals("reload")){
+    public void onErrorEvent(ErrorEvent event) {
+        if (event.getError().equals("reload")) {
             startActivity(new Intent(this, MainActivity.class).putExtra(getString(R.string.Reload), "reload"));
             finish();
         }
@@ -147,21 +167,17 @@ public class ScheduleActivity extends AppCompatActivity implements OnTabSelectLi
 
         week1Fragment = (Week1Fragment) fragments.get(0);
         week2Fragment = (Week2Fragment) fragments.get(1);
-        if(bottomBar.getCurrentTabPosition() == 0) {
+        if (bottomBar.getCurrentTabPosition() == 0) {
             week1Fragment.onBackPressed();
-        }else if(bottomBar.getCurrentTabPosition() == 1){
+        } else if (bottomBar.getCurrentTabPosition() == 1) {
             week2Fragment.onBackPressed();
         }
-        else{
-            if (doubleBackToExitPressedOnce) {
-                super.onBackPressed();
-                return;
-            }
-            this.doubleBackToExitPressedOnce = true;
-            Toast.makeText(this, "Натисніть знову для виходу", Toast.LENGTH_SHORT).show();
-            new Handler().postDelayed(() -> doubleBackToExitPressedOnce=false, 2000);
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
         }
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Натисніть знову для виходу", Toast.LENGTH_SHORT).show();
+        new Handler().postDelayed(() -> doubleBackToExitPressedOnce = false, 2000);
     }
-
-
 }
