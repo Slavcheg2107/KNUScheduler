@@ -113,6 +113,9 @@ public class Week2Fragment extends Fragment implements BaseFragment {
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         if (!hidden) {
+            if (recyclerView.getAdapter() instanceof Week2RecyclerAdapter) {
+                dayNumber = 0;
+            }
             tabAdapter.updateUI(dayNumber);
         }
     }
