@@ -163,7 +163,6 @@ public class Week1Fragment extends Fragment implements BaseFragment {
             }
             tabAdapter.updateUI(dayNumber);
         }
-
     }
 
     @Override

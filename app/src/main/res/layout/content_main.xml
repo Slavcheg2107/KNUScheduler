@@ -2,11 +2,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/AppTheme"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    tools:context=".MainActivity"
+    android:orientation="vertical"
+    tools:context="com.knu.krasn.knuscheduler.MainActivity"
     tools:showIn="@layout/activity_main">
 
     <TextView
@@ -25,9 +25,9 @@
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scrollbars="vertical"
-        android:gravity="center"
         android:layout_below="@+id/header"
+        android:gravity="center"
+        android:scrollbars="vertical"
         />
 
     <RelativeLayout
