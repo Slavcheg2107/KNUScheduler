@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         NYBus.get().register(this);
+
         pb = findViewById(R.id.progressBar);
         pb.getIndeterminateDrawable().setColorFilter(Color.BLACK, PorterDuff.Mode.MULTIPLY);
         realm = ApplicationClass.getRealm();
@@ -85,6 +86,8 @@ public class MainActivity extends AppCompatActivity {
         if(!getIntent().hasExtra("getGroup")) {
             facultyRecyclerAdapter = new FacultyRecyclerAdapter(this, facultets, networkService);
             recyclerView.setAdapter(facultyRecyclerAdapter);
+            facultyRecyclerAdapter.notifyDataSetChanged();
+            recyclerView.scheduleLayoutAnimation();
         }else{
             NYBus.get().post(new GettingGroupsEvent());
         }
@@ -111,11 +114,12 @@ public class MainActivity extends AppCompatActivity {
         mainHeader.setVisibility(View.GONE);
         groups = realm.where(Group.class).findAll();
         groupRecyclerAdapter = new GroupRecyclerAdapter(this, groups, networkService );
-        recyclerView.setAdapter(groupRecyclerAdapter);
-        if(loadingWheel.isShown()) {
+        if (loadingWheel.isShown()) {
             loadingWheel.setVisibility(View.GONE);
         }
+        recyclerView.setAdapter(groupRecyclerAdapter);
         groupRecyclerAdapter.notifyDataSetChanged();
+        recyclerView.scheduleLayoutAnimation();
     }
 
     @Subscribe
@@ -137,6 +141,11 @@ public class MainActivity extends AppCompatActivity {
         finish();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        recyclerView.scheduleLayoutAnimation();
+    }
 }
 
 

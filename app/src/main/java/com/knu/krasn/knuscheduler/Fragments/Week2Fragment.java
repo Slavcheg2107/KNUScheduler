@@ -116,13 +116,14 @@ public class Week2Fragment extends Fragment implements BaseFragment {
                 dayNumber = 0;
             }
             tabAdapter.updateUI(dayNumber);
+            recyclerView.scheduleLayoutAnimation();
         }
     }
 
     @Subscribe
     public void onGettingSchedulevent(GettingScheduleEvent event) {
-        Week2 week2 = null;
-        Group group = realm.where(Group.class).equalTo("title", event.getMessage()).findFirst();
+
+        group = realm.where(Group.class).equalTo("title", event.getMessage()).findFirst();
         if (group != null) {
             week2 = group.getWeek2();
         }
@@ -133,6 +134,7 @@ public class Week2Fragment extends Fragment implements BaseFragment {
             week2RecyclerAdapter = new Week2RecyclerAdapter(ApplicationClass.getContext(),
                     week2.getDays(), networkService);
             recyclerView.setAdapter(week2RecyclerAdapter);
+            recyclerView.scheduleLayoutAnimation();
             week2RecyclerAdapter.notifyDataSetChanged();
         }
     }
@@ -157,8 +159,9 @@ public class Week2Fragment extends Fragment implements BaseFragment {
                 week2RecyclerAdapter = new Week2RecyclerAdapter(ApplicationClass.getContext(),
                         week2.getDays(), networkService);
                 recyclerView.setAdapter(week2RecyclerAdapter);
-                week2RecyclerAdapter.notifyDataSetChanged();
+//                week2RecyclerAdapter.notifyDataSetChanged();
             }
+            recyclerView.scheduleLayoutAnimation();
             tabAdapter.updateUI(dayNumber);
         }
 
@@ -180,8 +183,10 @@ public class Week2Fragment extends Fragment implements BaseFragment {
     public void onBackPressed() {
         if (recyclerView.getAdapter() instanceof ScheduleRecyclerAdapter) {
             recyclerView.setAdapter(week2RecyclerAdapter);
+            recyclerView.scheduleLayoutAnimation();
             dayNumber = 0;
             tabAdapter.updateUI(dayNumber);
+
         }
     }
 }

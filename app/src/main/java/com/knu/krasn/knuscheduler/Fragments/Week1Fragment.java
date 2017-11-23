@@ -7,7 +7,6 @@ import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -79,7 +78,7 @@ public class Week1Fragment extends Fragment implements BaseFragment {
         loadingWheel = rootView.findViewById(R.id.wheel2);
         recyclerView = rootView.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext().getApplicationContext(), 1));
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
+//        recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new GridSpacingItemDecoration().getItemDecor(1, 10, false, getResources()));
         recyclerView.getLayoutManager().setAutoMeasureEnabled(true);
         group = realm.where(Group.class).equalTo("title", groupTitle).findFirst();
@@ -90,8 +89,8 @@ public class Week1Fragment extends Fragment implements BaseFragment {
             ApplicationClass.getNetwork().getSchedule(groupTitle);
         } else {
             week1RecyclerAdapter = new Week1RecyclerAdapter(getContext(), week1.getDays(), networkService);
-            recyclerView.setAdapter(week1RecyclerAdapter);
             loadingWheel.setVisibility(View.GONE);
+            recyclerView.setAdapter(week1RecyclerAdapter);
             week1RecyclerAdapter.notifyDataSetChanged();
             if (s.equals("")) {
                 editor.putString("GroupLoaded", groupTitle);
@@ -120,6 +119,7 @@ public class Week1Fragment extends Fragment implements BaseFragment {
             week1RecyclerAdapter = new Week1RecyclerAdapter(ApplicationClass.getContext(), week1.getDays(), networkService);
             loadingWheel.setVisibility(View.GONE);
             recyclerView.setAdapter(week1RecyclerAdapter);
+            recyclerView.scheduleLayoutAnimation();
             week1RecyclerAdapter.notifyDataSetChanged();
             if (s.equals("")) {
                 editor.putString("GroupLoaded", groupTitle);
@@ -137,6 +137,7 @@ public class Week1Fragment extends Fragment implements BaseFragment {
                 dayNumber = 0;
             }
             tabAdapter.updateUI(dayNumber);
+            recyclerView.scheduleLayoutAnimation();
         }
     }
 
@@ -159,8 +160,9 @@ public class Week1Fragment extends Fragment implements BaseFragment {
             } else {
                 week1RecyclerAdapter = new Week1RecyclerAdapter(ApplicationClass.getContext(), week1.getDays(), networkService);
                 recyclerView.setAdapter(week1RecyclerAdapter);
-                week1RecyclerAdapter.notifyDataSetChanged();
+//                week1RecyclerAdapter.notifyDataSetChanged();
             }
+            recyclerView.scheduleLayoutAnimation();
             tabAdapter.updateUI(dayNumber);
         }
     }
@@ -175,6 +177,7 @@ public class Week1Fragment extends Fragment implements BaseFragment {
     public void onBackPressed() {
         if (recyclerView.getAdapter() instanceof ScheduleRecyclerAdapter) {
             recyclerView.setAdapter(week1RecyclerAdapter);
+            recyclerView.scheduleLayoutAnimation();
             dayNumber = 0;
             tabAdapter.updateUI(dayNumber);
         }

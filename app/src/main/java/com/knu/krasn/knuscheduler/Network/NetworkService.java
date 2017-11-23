@@ -4,7 +4,6 @@ package com.knu.krasn.knuscheduler.Network;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-
 import com.knu.krasn.knuscheduler.ApplicationClass;
 import com.knu.krasn.knuscheduler.Events.ErrorEvent;
 import com.knu.krasn.knuscheduler.Events.GettingGroupsEvent;
@@ -93,7 +92,7 @@ public class NetworkService {
                         List<Schedule> week2Schedule = new ArrayList<>();
                         if (schedules != null) {
                             for (Schedule schedule : schedules.getSchedule()) {
-                                schedule.setTime(timeRealmList.get(schedule.getLesson() - 1));
+                                schedule.setTime(timeRealmList.get(schedule.getLesson()));
                                 switch (schedule.getWeek()) {
                                     case 1:
                                         week1Schedule.add(schedule);

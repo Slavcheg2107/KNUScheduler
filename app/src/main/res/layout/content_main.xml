@@ -28,6 +28,7 @@
         android:layout_below="@+id/header"
         android:gravity="center"
         android:scrollbars="vertical"
+        android:layoutAnimation="@anim/layout_animation_fall_down"
         />
 
     <RelativeLayout
