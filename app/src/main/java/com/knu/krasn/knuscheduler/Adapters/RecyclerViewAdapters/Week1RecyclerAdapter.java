@@ -1,4 +1,4 @@
-package com.knu.krasn.knuscheduler.Adapters;
+package com.knu.krasn.knuscheduler.Adapters.RecyclerViewAdapters;
 
 import android.content.Context;
 import android.support.v7.widget.CardView;
@@ -46,7 +46,6 @@ public class Week1RecyclerAdapter extends RecyclerView.Adapter<Week1RecyclerAdap
 
     @Override
     public void onBindViewHolder(ItemHolder itemHolder, int position) {
-
         switch (days.get(position).getDayNumber()) {
             case 1:
                 itemHolder.dayTitle.setText(context.getString(R.string.Day1, days.get(position).getScheduleSize()));

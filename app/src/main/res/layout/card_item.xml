@@ -8,6 +8,11 @@
     android:elevation="3dp"
     app:cardCornerRadius="5dp"
     android:id="@+id/group_card"
+    android:focusable="true"
+    android:clickable="true"
+    android:background="@drawable/ripple"
+
+    android:foreground="?android:attr/selectableItemBackground"
     >
     <TextView
         android:id="@+id/title"

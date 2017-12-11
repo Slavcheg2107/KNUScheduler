@@ -15,9 +15,9 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
-import com.knu.krasn.knuscheduler.Adapters.ScheduleRecyclerAdapter;
-import com.knu.krasn.knuscheduler.Adapters.TabAdapter;
-import com.knu.krasn.knuscheduler.Adapters.Week2RecyclerAdapter;
+import com.knu.krasn.knuscheduler.Adapters.FragmentController.TabController;
+import com.knu.krasn.knuscheduler.Adapters.RecyclerViewAdapters.ScheduleRecyclerAdapter;
+import com.knu.krasn.knuscheduler.Adapters.RecyclerViewAdapters.Week2RecyclerAdapter;
 import com.knu.krasn.knuscheduler.ApplicationClass;
 import com.knu.krasn.knuscheduler.Decor.GridSpacingItemDecoration;
 import com.knu.krasn.knuscheduler.Events.ConnectionEvent;
@@ -27,7 +27,7 @@ import com.knu.krasn.knuscheduler.Models.DayOfWeek.DayOfWeek;
 import com.knu.krasn.knuscheduler.Models.GroupModel.Group;
 import com.knu.krasn.knuscheduler.Models.WeekModel.Week2;
 import com.knu.krasn.knuscheduler.Network.NetworkService;
-import com.knu.krasn.knuscheduler.Utils.NetworkConnection;
+import com.knu.krasn.knuscheduler.Utils.NetworkConnectionChecker;
 import com.mindorks.nybus.NYBus;
 import com.mindorks.nybus.annotation.Subscribe;
 
@@ -49,7 +49,7 @@ public class Week2Fragment extends Fragment implements BaseFragment {
     Week2 week2 = null;
     Group group;
     RelativeLayout loadingWheel;
-    private TabAdapter tabAdapter;
+    private TabController tabController;
     private int dayNumber = 0;
 
     public Week2Fragment() {
@@ -75,7 +75,7 @@ public class Week2Fragment extends Fragment implements BaseFragment {
         pb.getIndeterminateDrawable().setColorFilter(Color.BLACK, PorterDuff.Mode.MULTIPLY);
         loadingWheel = rootView.findViewById(R.id.wheel2);
         groupTitle = getActivity().getIntent().getStringExtra("group");
-        tabAdapter = new TabAdapter(groupTitle, getActivity().findViewById(R.id.toolbar));
+        tabController = new TabController(groupTitle, getActivity().findViewById(R.id.toolbar));
         recyclerView = rootView.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new GridLayoutManager(ApplicationClass.getContext(), 1));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -87,7 +87,7 @@ public class Week2Fragment extends Fragment implements BaseFragment {
             week2 = group.getWeek2();
         }
         if (week2 == null) {
-            NetworkConnection nc = new NetworkConnection(ApplicationClass.getContext());
+            NetworkConnectionChecker nc = new NetworkConnectionChecker(ApplicationClass.getContext());
             if (nc.isOnline()) {
                 ApplicationClass.getNetwork().getSchedule(groupTitle);
             } else {
@@ -115,7 +115,7 @@ public class Week2Fragment extends Fragment implements BaseFragment {
             if (recyclerView.getAdapter() instanceof Week2RecyclerAdapter) {
                 dayNumber = 0;
             }
-            tabAdapter.updateUI(dayNumber);
+            tabController.updateUI(dayNumber);
             recyclerView.scheduleLayoutAnimation();
         }
     }
@@ -162,7 +162,7 @@ public class Week2Fragment extends Fragment implements BaseFragment {
 //                week2RecyclerAdapter.notifyDataSetChanged();
             }
             recyclerView.scheduleLayoutAnimation();
-            tabAdapter.updateUI(dayNumber);
+            tabController.updateUI(dayNumber);
         }
 
     }
@@ -180,13 +180,15 @@ public class Week2Fragment extends Fragment implements BaseFragment {
     }
 
     @Override
-    public void onBackPressed() {
-        if (recyclerView.getAdapter() instanceof ScheduleRecyclerAdapter) {
+    public RecyclerView.Adapter onBackPressed() {
+        RecyclerView.Adapter currentAdapter = recyclerView.getAdapter();
+        if (currentAdapter instanceof ScheduleRecyclerAdapter) {
             recyclerView.setAdapter(week2RecyclerAdapter);
             recyclerView.scheduleLayoutAnimation();
             dayNumber = 0;
-            tabAdapter.updateUI(dayNumber);
+            tabController.updateUI(dayNumber);
 
         }
+        return currentAdapter;
     }
 }

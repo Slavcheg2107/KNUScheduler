@@ -1,6 +1,8 @@
 package com.knu.krasn.knuscheduler.Utils;
 
 
+import android.support.annotation.NonNull;
+
 import io.realm.DynamicRealm;
 import io.realm.RealmObjectSchema;
 import io.realm.RealmSchema;
@@ -12,7 +14,7 @@ import io.realm.RealmSchema;
 public class RealmMigration implements io.realm.RealmMigration {
 
     @Override
-    public void migrate(DynamicRealm realm, long oldVersion, long newVersion) {
+    public void migrate(@NonNull DynamicRealm realm, long oldVersion, long newVersion) {
 
         final RealmSchema schema = realm.getSchema();
         if(oldVersion == 0) {

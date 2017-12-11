@@ -1,4 +1,4 @@
-package com.knu.krasn.knuscheduler.Adapters;
+package com.knu.krasn.knuscheduler.Adapters.RecyclerViewAdapters;
 
 import android.content.Context;
 import android.support.v7.widget.CardView;
@@ -69,9 +69,6 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<ScheduleRecycl
         return position;
     }
 
-    public int getItem(int position) {
-        return schedules.get(position).getDay();
-    }
 
     @Override
     public int getItemCount() {

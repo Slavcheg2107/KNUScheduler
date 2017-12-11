@@ -1,4 +1,4 @@
-package com.knu.krasn.knuscheduler.Adapters;
+package com.knu.krasn.knuscheduler.Adapters.RecyclerViewAdapters;
 
 import android.content.Context;
 import android.support.v7.widget.CardView;
@@ -10,30 +10,34 @@ import android.widget.TextView;
 
 import com.knu.krasn.knuscheduler.ApplicationClass;
 import com.knu.krasn.knuscheduler.Events.ConnectionEvent;
-import com.knu.krasn.knuscheduler.Events.MoveToNextEvent;
+import com.knu.krasn.knuscheduler.Events.ErrorEvent;
+import com.knu.krasn.knuscheduler.Events.GettingGroupsEvent;
+import com.knu.krasn.knuscheduler.Models.Facultet;
 import com.knu.krasn.knuscheduler.Models.GroupModel.Group;
 import com.knu.krasn.knuscheduler.Network.NetworkService;
-import com.knu.krasn.knuscheduler.Utils.NetworkConnection;
+import com.knu.krasn.knuscheduler.Utils.NetworkConnectionChecker;
 import com.mindorks.nybus.NYBus;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import geek.owl.com.ua.KNUSchedule.R;
-
+import io.realm.Realm;
 
 /**
  * Created by krasn on 9/3/2017.
  */
 
-public class GroupRecyclerAdapter extends RecyclerView.Adapter<GroupRecyclerAdapter.ItemHolder> {
-    private List<Group> groups;
-    private Context context;
+public class FacultyRecyclerAdapter extends RecyclerView.Adapter<FacultyRecyclerAdapter.ItemHolder> {
+    private List<Facultet> faculty = new ArrayList<>();
     private LayoutInflater inflater = null;
+    private List<Group> groups = new ArrayList<>();
+    private Context context;
     private NetworkService networkService;
 
-    public GroupRecyclerAdapter(Context context, List<Group> groups, NetworkService networkService) {
+    public FacultyRecyclerAdapter(Context context, List<Facultet> items, NetworkService networkService) {
 
-        this.groups = groups;
+        this.faculty = items;
         this.context = context;
         this.inflater = LayoutInflater.from(context);
         this.networkService = networkService;
@@ -48,7 +52,8 @@ public class GroupRecyclerAdapter extends RecyclerView.Adapter<GroupRecyclerAdap
     @Override
     public void onBindViewHolder(ItemHolder itemHolder, int position) {
 
-        itemHolder.title.setText(groups.get(position).getTitle());
+        String fac = faculty.get(position).getTitle();
+        itemHolder.title.setText(fac);
 
     }
 
@@ -59,7 +64,7 @@ public class GroupRecyclerAdapter extends RecyclerView.Adapter<GroupRecyclerAdap
 
     @Override
     public int getItemCount() {
-        return (groups == null) ? 0 : groups.size();
+        return (faculty == null) ? 0 : faculty.size();
     }
 
     static class ItemHolder extends RecyclerView.ViewHolder {
@@ -71,16 +76,19 @@ public class GroupRecyclerAdapter extends RecyclerView.Adapter<GroupRecyclerAdap
             title = itemView.findViewById(R.id.title);
             cardView = itemView.findViewById(R.id.group_card);
             cardView.setOnClickListener(view -> {
-                Group group = ApplicationClass.getRealm().where(Group.class).equalTo("title", title.getText().toString()).findFirst();
-                if (group != null && group.getWeek1() != null) {
-                    NYBus.get().post(new MoveToNextEvent(title.getText().toString()));
-                } else {
-                    NetworkConnection nc = new NetworkConnection(ApplicationClass.getContext());
+                Realm realm = ApplicationClass.getRealm();
+                if (realm.where(Group.class).findAll().isEmpty()) {
+                    NetworkConnectionChecker nc = new NetworkConnectionChecker(ApplicationClass.getContext());
                     if (nc.isOnline()) {
-                        NYBus.get().post(new MoveToNextEvent(title.getText().toString()));
+                        NYBus.get().post(new ErrorEvent("Кликнулось"));
+                        networkService.getGroups();
+                        cardView.setEnabled(false);
                     } else {
                         NYBus.get().post(new ConnectionEvent());
                     }
+                } else {
+                    NYBus.get().post(new GettingGroupsEvent());
+                    cardView.setEnabled(false);
                 }
             });
         }

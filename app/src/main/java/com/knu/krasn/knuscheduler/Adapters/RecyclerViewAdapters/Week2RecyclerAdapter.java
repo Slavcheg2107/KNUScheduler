@@ -1,4 +1,4 @@
-package com.knu.krasn.knuscheduler.Adapters;
+package com.knu.krasn.knuscheduler.Adapters.RecyclerViewAdapters;
 
 import android.content.Context;
 import android.support.v7.widget.CardView;

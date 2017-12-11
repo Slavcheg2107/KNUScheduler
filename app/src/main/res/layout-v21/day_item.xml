@@ -9,7 +9,11 @@
     android:elevation="3dp"
     app:cardCornerRadius="5dp"
     android:id="@+id/day_card"
-    >
+    android:focusable="true"
+    android:clickable="true"
+    android:background="@drawable/ripple"
+
+    android:foreground="?android:attr/selectableItemBackground">
     <TextView
         android:id="@+id/day_of_week"
         android:layout_width="match_parent"

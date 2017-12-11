@@ -1,4 +1,4 @@
-package com.knu.krasn.knuscheduler.Adapters;
+package com.knu.krasn.knuscheduler.Adapters.FragmentController;
 
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
@@ -19,7 +19,7 @@ import geek.owl.com.ua.KNUSchedule.R;
  * Created by krasn on 11/20/2017.
  */
 
-public class TabAdapter {
+public class TabController {
     private String groupTitle;
     private Toolbar toolbar;
     private Week1Fragment week1Fragment = Week1Fragment.newInstance();
@@ -28,13 +28,14 @@ public class TabAdapter {
     private List<BaseFragment> fragments = new ArrayList<>();
 
 
-    public TabAdapter(String groupTitle, Toolbar toolbar) {
+    public TabController(String groupTitle, Toolbar toolbar) {
         this.toolbar = toolbar;
         this.groupTitle = groupTitle;
     }
 
     public List<BaseFragment> selectTab(int tabId, FragmentManager fm) {
-
+//        int currentWeek = ApplicationClass.getPreferences().getInt(Settings.CURRENT_WEEK, 0);
+//        if(currentWeek!=0)
         FragmentTransaction ft = fm.beginTransaction();
         int contentContainer = R.id.contentContainer;
         if (fm.getFragments().size() == 0) {

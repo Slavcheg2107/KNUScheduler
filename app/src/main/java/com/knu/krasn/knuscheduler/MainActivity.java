@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -16,8 +18,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.knu.krasn.knuscheduler.Adapters.FacultyRecyclerAdapter;
-import com.knu.krasn.knuscheduler.Adapters.GroupRecyclerAdapter;
+import com.knu.krasn.knuscheduler.Adapters.RecyclerViewAdapters.FacultyRecyclerAdapter;
+import com.knu.krasn.knuscheduler.Adapters.RecyclerViewAdapters.GroupRecyclerAdapter;
 import com.knu.krasn.knuscheduler.Decor.GridSpacingItemDecoration;
 import com.knu.krasn.knuscheduler.Events.ConnectionEvent;
 import com.knu.krasn.knuscheduler.Events.ErrorEvent;
@@ -48,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     ProgressBar pb;
     Realm realm;
     String groupTitle;
+    private boolean doubleBackToExitPressedOnce;
 
 
     @Override
@@ -55,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         NYBus.get().register(this);
-
+        PreferenceManager.setDefaultValues(this, R.xml.prefs_main, false);
         pb = findViewById(R.id.progressBar);
         pb.getIndeterminateDrawable().setColorFilter(Color.BLACK, PorterDuff.Mode.MULTIPLY);
         realm = ApplicationClass.getRealm();
@@ -138,13 +141,23 @@ public class MainActivity extends AppCompatActivity {
         Intent i = new Intent(this, ScheduleActivity.class);
         i.putExtra("group", event.getMessage());
         startActivity(i);
-        finish();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         recyclerView.scheduleLayoutAnimation();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Натисніть знову для виходу", Toast.LENGTH_SHORT).show();
+        new Handler().postDelayed(() -> doubleBackToExitPressedOnce = false, 2000);
     }
 }
 

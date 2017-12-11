@@ -9,6 +9,9 @@
     android:orientation="vertical"
     app:cardBackgroundColor="@color/colorWhite"
     app:cardCornerRadius="5dp"
+    android:focusable="true"
+    android:clickable="true"
+    android:foreground="?android:attr/selectableItemBackground"
     >
     <TextView
         android:id="@+id/day_of_week"

@@ -1,20 +1,22 @@
 package com.knu.krasn.knuscheduler;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.IdRes;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
-import android.widget.Toast;
 
-import com.knu.krasn.knuscheduler.Adapters.TabAdapter;
+import com.knu.krasn.knuscheduler.Adapters.FragmentController.TabController;
+import com.knu.krasn.knuscheduler.Adapters.RecyclerViewAdapters.Week1RecyclerAdapter;
+import com.knu.krasn.knuscheduler.Adapters.RecyclerViewAdapters.Week2RecyclerAdapter;
 import com.knu.krasn.knuscheduler.Events.ErrorEvent;
 import com.knu.krasn.knuscheduler.Events.GettingScheduleEvent;
 import com.knu.krasn.knuscheduler.Events.ShowScheduleEvent;
@@ -25,7 +27,6 @@ import com.knu.krasn.knuscheduler.Utils.AppRater;
 import com.mindorks.nybus.NYBus;
 import com.mindorks.nybus.annotation.Subscribe;
 import com.roughike.bottombar.BottomBar;
-import com.roughike.bottombar.OnTabReselectListener;
 import com.roughike.bottombar.OnTabSelectListener;
 
 import java.util.List;
@@ -33,14 +34,14 @@ import java.util.List;
 import geek.owl.com.ua.KNUSchedule.R;
 
 
-public class ScheduleActivity extends AppCompatActivity implements OnTabSelectListener, OnTabReselectListener {
+public class ScheduleActivity extends AppCompatActivity implements OnTabSelectListener {
 
     FragmentManager manager;
     ViewPager viewPager;
     FrameLayout container;
     Week1Fragment week1Fragment;
     Week2Fragment week2Fragment;
-    TabAdapter tabAdapter;
+    TabController tabController;
     String groupTitle;
     Toolbar toolbar;
     BottomBar bottomBar;
@@ -59,13 +60,30 @@ public class ScheduleActivity extends AppCompatActivity implements OnTabSelectLi
         toolbar.setTitle(groupTitle);
         setSupportActionBar(toolbar);
         manager = getSupportFragmentManager();
-        tabAdapter = new TabAdapter(groupTitle, toolbar);
+        tabController = new TabController(groupTitle, toolbar);
         viewPager = findViewById(R.id.view_pager);
         container = findViewById(R.id.contentContainer);
         bottomBar = findViewById(R.id.bottomBar);
         bottomBar.setOnTabSelectListener(this);
-        bottomBar.setOnTabReselectListener(this);
+//        int currentWeek = ApplicationClass.getPreferences().getInt(Settings.CURRENT_WEEK, 0);
+//        if (currentWeek != 0) {
+//            bottomBar.selectTabAtPosition(currentWeek - 1, true);
+//        } else {
+//            showSettingsDialog();
+//        }
+    }
 
+    private void showSettingsDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog manageWeekDialog = builder.create();
+        manageWeekDialog.setCancelable(false);
+        manageWeekDialog.setTitle("Виберіть поточний тиждень, будьласка");
+        manageWeekDialog.setButton(DialogInterface.BUTTON_POSITIVE, "Ok", ((dialog, which)
+                -> {
+            manageWeekDialog.dismiss();
+            startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
+        }));
+        manageWeekDialog.show();
     }
 
     @Override
@@ -91,16 +109,17 @@ public class ScheduleActivity extends AppCompatActivity implements OnTabSelectLi
 
         int id = item.getItemId();
 
-        if (id == R.id.change_group) {
-            SharedPreferences preferences = ApplicationClass.getPreferences();
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putString("GroupLoaded", "");
-            editor.apply();
-            String s = "getGroup";
-            Intent i = new Intent(this, MainActivity.class);
-            i.putExtra(s, s);
-            startActivity(i);
-            finish();
+        if (id == R.id.settings) {
+            startActivity(new Intent(this, SettingsActivity.class));
+//            SharedPreferences preferences = ApplicationClass.getPreferences();
+//            SharedPreferences.Editor editor = preferences.edit();
+//            editor.putString("GroupLoaded", "");
+//            editor.apply();
+//            String s = "getGroup";
+//            Intent i = new Intent(this, MainActivity.class);
+//            i.putExtra(s, s);
+//            startActivity(i);
+//            finish();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -108,13 +127,9 @@ public class ScheduleActivity extends AppCompatActivity implements OnTabSelectLi
 
     @Override
     public void onTabSelected(@IdRes int tabId) {
-        fragments = tabAdapter.selectTab(tabId, manager);
+        fragments = tabController.selectTab(tabId, manager);
     }
 
-    @Override
-    public void onTabReSelected(@IdRes int tabId) {
-
-    }
 
     @Subscribe
     public void onGettingScheduleEvent(GettingScheduleEvent event) {
@@ -142,20 +157,16 @@ public class ScheduleActivity extends AppCompatActivity implements OnTabSelectLi
 
     @Override
     public void onBackPressed() {
-
+        RecyclerView.Adapter adapter = null;
         week1Fragment = (Week1Fragment) fragments.get(0);
         week2Fragment = (Week2Fragment) fragments.get(1);
         if (bottomBar.getCurrentTabPosition() == 0) {
-            week1Fragment.onBackPressed();
+            adapter = week1Fragment.onBackPressed();
         } else if (bottomBar.getCurrentTabPosition() == 1) {
-            week2Fragment.onBackPressed();
+            adapter = week2Fragment.onBackPressed();
         }
-        if (doubleBackToExitPressedOnce) {
+        if (adapter != null && (adapter instanceof Week1RecyclerAdapter || adapter instanceof Week2RecyclerAdapter)) {
             super.onBackPressed();
-            return;
         }
-        this.doubleBackToExitPressedOnce = true;
-        Toast.makeText(this, "Натисніть знову для виходу", Toast.LENGTH_SHORT).show();
-        new Handler().postDelayed(() -> doubleBackToExitPressedOnce = false, 2000);
     }
 }

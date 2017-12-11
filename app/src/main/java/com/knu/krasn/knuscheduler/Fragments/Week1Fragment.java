@@ -1,6 +1,7 @@
 package com.knu.krasn.knuscheduler.Fragments;
 
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -15,9 +16,9 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
-import com.knu.krasn.knuscheduler.Adapters.ScheduleRecyclerAdapter;
-import com.knu.krasn.knuscheduler.Adapters.TabAdapter;
-import com.knu.krasn.knuscheduler.Adapters.Week1RecyclerAdapter;
+import com.knu.krasn.knuscheduler.Adapters.FragmentController.TabController;
+import com.knu.krasn.knuscheduler.Adapters.RecyclerViewAdapters.ScheduleRecyclerAdapter;
+import com.knu.krasn.knuscheduler.Adapters.RecyclerViewAdapters.Week1RecyclerAdapter;
 import com.knu.krasn.knuscheduler.ApplicationClass;
 import com.knu.krasn.knuscheduler.Decor.GridSpacingItemDecoration;
 import com.knu.krasn.knuscheduler.Events.GettingScheduleEvent;
@@ -26,6 +27,7 @@ import com.knu.krasn.knuscheduler.Models.DayOfWeek.DayOfWeek;
 import com.knu.krasn.knuscheduler.Models.GroupModel.Group;
 import com.knu.krasn.knuscheduler.Models.WeekModel.Week1;
 import com.knu.krasn.knuscheduler.Network.NetworkService;
+import com.knu.krasn.knuscheduler.ServiceUtils.Notification;
 import com.mindorks.nybus.NYBus;
 import com.mindorks.nybus.annotation.Subscribe;
 
@@ -50,7 +52,7 @@ public class Week1Fragment extends Fragment implements BaseFragment {
     SharedPreferences.Editor editor = prefs.edit();
     String s = prefs.getString("GroupLoaded", "");
     RelativeLayout loadingWheel;
-    private TabAdapter tabAdapter;
+    private TabController tabController;
     private int dayNumber;
 
     public Week1Fragment() {
@@ -74,11 +76,10 @@ public class Week1Fragment extends Fragment implements BaseFragment {
         ProgressBar pb = rootView.findViewById(R.id.progressBar);
         pb.getIndeterminateDrawable().setColorFilter(Color.BLACK, PorterDuff.Mode.MULTIPLY);
         groupTitle = getActivity().getIntent().getStringExtra("group");
-        tabAdapter = new TabAdapter(groupTitle, getActivity().findViewById(R.id.toolbar));
+        tabController = new TabController(groupTitle, getActivity().findViewById(R.id.toolbar));
         loadingWheel = rootView.findViewById(R.id.wheel2);
         recyclerView = rootView.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext().getApplicationContext(), 1));
-//        recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new GridSpacingItemDecoration().getItemDecor(1, 10, false, getResources()));
         recyclerView.getLayoutManager().setAutoMeasureEnabled(true);
         group = realm.where(Group.class).equalTo("title", groupTitle).findFirst();
@@ -136,7 +137,7 @@ public class Week1Fragment extends Fragment implements BaseFragment {
             if (recyclerView.getAdapter() instanceof Week1RecyclerAdapter) {
                 dayNumber = 0;
             }
-            tabAdapter.updateUI(dayNumber);
+            tabController.updateUI(dayNumber);
             recyclerView.scheduleLayoutAnimation();
         }
     }
@@ -157,13 +158,15 @@ public class Week1Fragment extends Fragment implements BaseFragment {
                 scheduleRecyclerAdapter = new ScheduleRecyclerAdapter(ApplicationClass.getContext(), dayOfWeek.getScheduleList(), networkService);
                 recyclerView.setAdapter(scheduleRecyclerAdapter);
                 scheduleRecyclerAdapter.notifyDataSetChanged();
+                Intent notificationService = new Intent(getContext(), Notification.class);
+//                notificationService.putExtra(group.getWeek1())
             } else {
                 week1RecyclerAdapter = new Week1RecyclerAdapter(ApplicationClass.getContext(), week1.getDays(), networkService);
                 recyclerView.setAdapter(week1RecyclerAdapter);
 //                week1RecyclerAdapter.notifyDataSetChanged();
             }
             recyclerView.scheduleLayoutAnimation();
-            tabAdapter.updateUI(dayNumber);
+            tabController.updateUI(dayNumber);
         }
     }
 
@@ -174,12 +177,14 @@ public class Week1Fragment extends Fragment implements BaseFragment {
     }
 
     @Override
-    public void onBackPressed() {
-        if (recyclerView.getAdapter() instanceof ScheduleRecyclerAdapter) {
+    public RecyclerView.Adapter onBackPressed() {
+        RecyclerView.Adapter currentAdapter = recyclerView.getAdapter();
+        if (currentAdapter instanceof ScheduleRecyclerAdapter) {
             recyclerView.setAdapter(week1RecyclerAdapter);
             recyclerView.scheduleLayoutAnimation();
             dayNumber = 0;
-            tabAdapter.updateUI(dayNumber);
+            tabController.updateUI(dayNumber);
         }
+        return currentAdapter;
     }
 }

@@ -8,13 +8,22 @@
     android:elevation="3dp"
     app:cardBackgroundColor="@color/colorWhite"
     app:cardCornerRadius="5dp"
-    app:contentPadding="5dp">
+    app:contentPadding="5dp"
+    android:background="@drawable/ripple"
+
+    android:foreground="?android:attr/selectableItemBackground"
+
+    >
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="@+id/room"
-        app:layout_constraintTop_toBottomOf="@+id/room">
+        app:layout_constraintTop_toBottomOf="@+id/room"
+        android:focusable="true"
+        android:clickable="true"
+        android:hapticFeedbackEnabled="true"
+        android:foreground="?android:attr/selectableItemBackground">
 
         <TextView
             android:id="@+id/lesson_number"
@@ -22,12 +31,14 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginEnd="64dp"
-            android:layout_marginRight="64dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
             android:text="lesson_number"
+            android:textAlignment="center"
             android:textColor="@color/colorPrimaryDark"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/subgroup"
+            app:layout_constraintEnd_toEndOf="@+id/subgroup"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0" />
 

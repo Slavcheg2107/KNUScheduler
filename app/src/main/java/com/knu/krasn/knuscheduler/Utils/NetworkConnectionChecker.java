@@ -8,11 +8,10 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 
-
-public class NetworkConnection {
+public class NetworkConnectionChecker {
     public Context context;
 
-    public NetworkConnection(Context applicationContext) {
+    public NetworkConnectionChecker(Context applicationContext) {
         this.context=applicationContext;
     }
 
