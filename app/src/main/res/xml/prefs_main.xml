@@ -19,6 +19,10 @@
             android:key="@string/key_current_week"
             android:summary="@string/current_week"
             android:title="@string/choose_week_title" />
+
+        <Preference
+            android:key="@string/key_changing_group"
+            android:title="@string/title_change_group" />
     </PreferenceCategory>
     <Preference
         android:key="@string/key_go_to_market"
@@ -27,4 +31,5 @@
             android:action="android.intent.action.VIEW"
             android:data="@string/url_to_playstore" />
     </Preference>
+
 </PreferenceScreen>

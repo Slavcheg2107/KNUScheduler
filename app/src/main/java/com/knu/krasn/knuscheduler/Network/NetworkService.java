@@ -21,12 +21,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import geek.owl.com.ua.KNUSchedule.R;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 import io.realm.Realm;
 import io.realm.RealmList;
+
+import static com.knu.krasn.knuscheduler.ServiceUtils.NotificationService.currentGroup;
 
 
 /**
@@ -68,25 +71,26 @@ public class NetworkService {
     }
 
 
-    public void getSchedule(final String group) {
+    public void getSchedule(final String groupTitle) {
 
         RealmList<ScheduleTime> timeRealmList = new RealmList<>();
-        mCompositeDisposable.add(Single.zip(retrofitConfig.getApiNetwork().getSchedule(group, headerMap), retrofitConfig.getApiNetwork().getTime(headerMap),
-                (schedules, streams) -> {
+        mCompositeDisposable.add(
+                Single.zip(retrofitConfig.getApiNetwork().getSchedule(groupTitle, headerMap)
+                        , retrofitConfig.getApiNetwork().getTime(headerMap)
+                        , (schedules, streams) -> {
                     timeRealmList.addAll(streams.getData());
                     return schedules;
                 }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(schedules -> {
                     Realm realm = ApplicationClass.getRealm();
-                    Group group1 = realm.where(Group.class).equalTo("title", group).findFirst();
+                    Group group1 = realm.where(Group.class).equalTo("title", groupTitle).findFirst();
                     if (group1 == null) {
                         SharedPreferences.Editor sharedPreferences = ApplicationClass.getPreferences().edit();
                         sharedPreferences.putString("Reload", "reload");
                         sharedPreferences.apply();
                         NYBus.get().post(new ErrorEvent("reload"));
-                    }
-                    else{
+                    } else {
                         realm.beginTransaction();
                         List<Schedule> week1Schedule = new ArrayList<>();
                         List<Schedule> week2Schedule = new ArrayList<>();
@@ -110,15 +114,20 @@ public class NetworkService {
                         group1.setWeek1(managedWeek1);
                         group1.setWeek2(managedWeek2);
                         realm.commitTransaction();
-                        NYBus.get().post(new GettingScheduleEvent(group));
+                        NYBus.get().post(new GettingScheduleEvent(groupTitle));
+
+                        ApplicationClass.getPreferences().edit().putString(ApplicationClass.getContext().getString(R.string.current_group), groupTitle).apply();
+                        currentGroup = groupTitle;
                     }
 
                 }, throwable -> {
                     if (throwable.getMessage().equals("timeout")) {
-                        getSchedule(group);
+                        getSchedule(groupTitle);
                     }
                 }));
     }
+
+
 }
 
 

@@ -67,9 +67,9 @@ public class MainActivity extends AppCompatActivity {
             realm.beginTransaction();
             realm.deleteAll();
             realm.commitTransaction();
-            prefs.edit().putString(getString(R.string.GroupLoaded), "").apply();
+            prefs.edit().putString(getString(R.string.current_group), "").apply();
         }
-        groupTitle = prefs.getString(getString(R.string.GroupLoaded), "");
+        groupTitle = prefs.getString(getString(R.string.current_group), "");
         if(!groupTitle.equals("")){
             NYBus.get().post(new MoveToNextEvent(groupTitle));
         }
@@ -137,9 +137,9 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(),"Немає з'єднання", Toast.LENGTH_LONG).show();
     }
     @Subscribe
-    public void onMessageEvent(MoveToNextEvent event){
+    public void onMoveToNextEvent(MoveToNextEvent event) {
         Intent i = new Intent(this, ScheduleActivity.class);
-        i.putExtra("group", event.getMessage());
+        i.putExtra(getString(R.string.current_group), event.getMessage());
         startActivity(i);
     }
 

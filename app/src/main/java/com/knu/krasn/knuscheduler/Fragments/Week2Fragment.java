@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
-import com.knu.krasn.knuscheduler.Adapters.FragmentController.TabController;
+import com.knu.krasn.knuscheduler.Adapters.FragmentController.ToolbarUpdater;
 import com.knu.krasn.knuscheduler.Adapters.RecyclerViewAdapters.ScheduleRecyclerAdapter;
 import com.knu.krasn.knuscheduler.Adapters.RecyclerViewAdapters.Week2RecyclerAdapter;
 import com.knu.krasn.knuscheduler.ApplicationClass;
@@ -49,7 +49,7 @@ public class Week2Fragment extends Fragment implements BaseFragment {
     Week2 week2 = null;
     Group group;
     RelativeLayout loadingWheel;
-    private TabController tabController;
+    private ToolbarUpdater toolbarUpdater;
     private int dayNumber = 0;
 
     public Week2Fragment() {
@@ -74,8 +74,8 @@ public class Week2Fragment extends Fragment implements BaseFragment {
         ProgressBar pb = rootView.findViewById(R.id.progressBar);
         pb.getIndeterminateDrawable().setColorFilter(Color.BLACK, PorterDuff.Mode.MULTIPLY);
         loadingWheel = rootView.findViewById(R.id.wheel2);
-        groupTitle = getActivity().getIntent().getStringExtra("group");
-        tabController = new TabController(groupTitle, getActivity().findViewById(R.id.toolbar));
+        groupTitle = getActivity().getIntent().getStringExtra(getString(R.string.current_group));
+        toolbarUpdater = new ToolbarUpdater(groupTitle, getActivity().findViewById(R.id.toolbar));
         recyclerView = rootView.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new GridLayoutManager(ApplicationClass.getContext(), 1));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -115,7 +115,7 @@ public class Week2Fragment extends Fragment implements BaseFragment {
             if (recyclerView.getAdapter() instanceof Week2RecyclerAdapter) {
                 dayNumber = 0;
             }
-            tabController.updateUI(dayNumber);
+            toolbarUpdater.updateUI(dayNumber);
             recyclerView.scheduleLayoutAnimation();
         }
     }
@@ -162,7 +162,7 @@ public class Week2Fragment extends Fragment implements BaseFragment {
 //                week2RecyclerAdapter.notifyDataSetChanged();
             }
             recyclerView.scheduleLayoutAnimation();
-            tabController.updateUI(dayNumber);
+            toolbarUpdater.updateUI(dayNumber);
         }
 
     }
@@ -186,7 +186,7 @@ public class Week2Fragment extends Fragment implements BaseFragment {
             recyclerView.setAdapter(week2RecyclerAdapter);
             recyclerView.scheduleLayoutAnimation();
             dayNumber = 0;
-            tabController.updateUI(dayNumber);
+            toolbarUpdater.updateUI(dayNumber);
 
         }
         return currentAdapter;

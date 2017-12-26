@@ -3,6 +3,7 @@ package com.knu.krasn.knuscheduler;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
@@ -48,14 +49,24 @@ public class SettingsActivity extends AppPreferencesActivity {
             // feedback preference click listener
             Preference goToMarket = findPreference(getString(R.string.key_go_to_market));
             goToMarket.setOnPreferenceClickListener(preference -> {
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                Context context = getActivity();
-                i.setData(Uri.parse("market://details?id=" + context.getPackageName()));
-                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(Intent.createChooser(i, null));
+                goToMarket(getActivity());
                 return true;
             });
+            Preference changeGroup = findPreference(getString(R.string.key_changing_group));
+            changeGroup.setOnPreferenceClickListener(preference -> {
 
+                SharedPreferences preferences = ApplicationClass.getPreferences();
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putString("GroupLoaded", "");
+                editor.apply();
+                String s = "getGroup";
+                Intent i = new Intent(getActivity(), MainActivity.class);
+                i.putExtra(s, s);
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(i);
+                getActivity().finish();
+                return true;
+            });
         }
 
 
@@ -89,12 +100,10 @@ public class SettingsActivity extends AppPreferencesActivity {
 
         boolean notificationsEnabled = true;
         if (preference instanceof ListPreference) {
-            // For list preferences, look up the correct display value in
-            // the preference's 'entries' list.
+
             ListPreference listPreference = (ListPreference) preference;
             int index = listPreference.findIndexOfValue(stringValue);
 
-            // Set the summary to reflect the new value.
             preference.setSummary(
                     index >= 0
                             ? listPreference.getEntries()[index]
@@ -109,11 +118,17 @@ public class SettingsActivity extends AppPreferencesActivity {
         return true;
     };
 
-    private static void goToMarket(final Context mContext) {
-
+    private static void goToMarket(Context context) {
         Intent i = new Intent(Intent.ACTION_VIEW);
-        i.setData(Uri.parse("market://details?id=" + mContext.getPackageName()));
-        mContext.startActivity(Intent.createChooser(i, null));
+        i.setData(Uri.parse("market://details?id=" + context.getPackageName()));
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(Intent.createChooser(i, null));
+    }
+
+    private static boolean changeGroup(Context context) {
+
+
+        return true;
     }
 }
 

@@ -74,10 +74,12 @@ public class GroupRecyclerAdapter extends RecyclerView.Adapter<GroupRecyclerAdap
                 Group group = ApplicationClass.getRealm().where(Group.class).equalTo("title", title.getText().toString()).findFirst();
                 if (group != null && group.getWeek1() != null) {
                     NYBus.get().post(new MoveToNextEvent(title.getText().toString()));
+
                 } else {
                     NetworkConnectionChecker nc = new NetworkConnectionChecker(ApplicationClass.getContext());
                     if (nc.isOnline()) {
                         NYBus.get().post(new MoveToNextEvent(title.getText().toString()));
+
                     } else {
                         NYBus.get().post(new ConnectionEvent());
                     }

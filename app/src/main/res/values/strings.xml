@@ -12,7 +12,7 @@
     <string name="Thursday">Четвер</string>
     <string name="Friday">П\'ятниця</string>
     <string name="Reload">Reload</string>
-    <string name="GroupLoaded">GroupLoaded</string>
+    <string name="current_group">GroupLoaded</string>
     <string name="week1_adapter_name">week1</string>
     <string name="week2_adapter_name">week2</string>
     <string-array name="week_selection">
@@ -30,4 +30,7 @@
     <string name="notifications_enabled">Нотифікації ввімкнено</string>
     <string name="notifications_disabled">Нотифікації вимкнено</string>
     <string name="key_go_to_market">key_go_to_market</string>
+    <string name="key_changing_group">change_group</string>
+    <string name="title_change_group">Змінити групу</string>
+    <string name="week">Тиждень</string>
 </resources>
