@@ -6,7 +6,7 @@
     android:paddingLeft="0dp"
     android:paddingRight="0dp"
     android:paddingTop="0dp"
-    tools:context="com.knu.krasn.knuscheduler.Fragments.Week2Fragment">
+    tools:context="com.knu.krasn.knuscheduler.View.Fragments.Week2Fragment">
 
   <RelativeLayout
       android:id="@+id/wheel2"
@@ -30,7 +30,7 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:gravity="center"
         android:scrollbars="vertical"
         android:layoutAnimation="@anim/layout_animation_fall_down" />

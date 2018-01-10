@@ -11,10 +11,21 @@
         <item name="android:textColorSecondary">@color/colorWhite</item>
         <item name="android:text">@color/colorSecondaryDark</item>
         <item name="android:title">@color/colorSecondaryDark</item>
+        <item name="autoCompleteTextViewStyle">@style/cursorColor</item>
     </style>
 
     <style name="AppTheme.withActionBar" parent="Theme.AppCompat.DayNight.DarkActionBar">
         <item name="colorControlActivated">@color/colorPrimaryDark</item>
         <item name="colorControlNormal">@color/colorSecondaryDark</item>
     </style>
+
+    <style name="cursorColor" parent="Widget.AppCompat.AutoCompleteTextView">
+        <item name="android:textCursorDrawable">@drawable/cursor</item>
+    </style>
+
+    <style name="SplashTheme" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/splash</item>
+
+    </style>
+
 </resources>

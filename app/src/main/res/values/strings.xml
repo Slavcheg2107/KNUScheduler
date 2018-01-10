@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">КНУРозклад</string>
-    <string name="title_activity_main2">Main2Activity</string>
     <string name="Day1">Понеділок\n %1$d пари</string>
     <string name="Day2">Вівторок\n%1$d пари</string>
     <string name="Day3">Середа\n %1$d пари</string>
@@ -17,8 +16,9 @@
     <string name="week2_adapter_name">week2</string>
     <string-array name="week_selection">
         <item>Тиждень 1</item>
-        <item> Тиждень 2</item>
+        <item>Тиждень 2</item>
     </string-array>
+    <string name="title_activity_main2">Activity 2</string>
     <string name="notifications_title">Нотифікації</string>
     <string name="choose_week_title">Виберіть поточний тиждень</string>
     <string name="current_week">Поточний тиждень</string>
@@ -33,4 +33,6 @@
     <string name="key_changing_group">change_group</string>
     <string name="title_change_group">Змінити групу</string>
     <string name="week">Тиждень</string>
+    <string name="key_current_week_of_year">CurrentWeekOfYear</string>
+    <string name="choose_fac_title">Виберіть факультет</string>
 </resources>

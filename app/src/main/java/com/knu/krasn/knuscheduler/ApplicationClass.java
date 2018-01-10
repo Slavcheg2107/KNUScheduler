@@ -3,8 +3,9 @@ package com.knu.krasn.knuscheduler;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
-import com.knu.krasn.knuscheduler.Network.NetworkService;
+import com.knu.krasn.knuscheduler.Presenter.Network.NetworkService;
 import com.knu.krasn.knuscheduler.Utils.RealmMigration;
 
 import io.realm.Realm;
@@ -17,6 +18,7 @@ import io.realm.RealmConfiguration;
 public class ApplicationClass extends Application {
     static SharedPreferences prefs;
     static Context context;
+    public static SharedPreferences settings;
 
     public static Realm getRealm() {
         return Realm.getDefaultInstance();
@@ -41,10 +43,12 @@ public class ApplicationClass extends Application {
         RealmConfiguration config = new RealmConfiguration.Builder().name("KNUSchedule.realm")
                 .schemaVersion(1).deleteRealmIfMigrationNeeded().migration(new RealmMigration()).build();
         Realm.setDefaultConfiguration(config);
-
+//        checkCurrentWeek();
         prefs = getSharedPreferences("Prefs", MODE_PRIVATE);
+        settings = PreferenceManager.getDefaultSharedPreferences(this);
         context = getApplicationContext();
 
     }
+
 
 }
