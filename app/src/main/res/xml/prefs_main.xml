@@ -21,8 +21,8 @@
             android:title="@string/choose_week_title" />
 
         <Preference
-            android:key="@string/key_changing_group"
-            android:title="@string/title_change_group" />
+            android:key="@string/key_reload"
+            android:title="@string/title_reload_schedule" />
     </PreferenceCategory>
     <Preference
         android:key="@string/key_go_to_market"

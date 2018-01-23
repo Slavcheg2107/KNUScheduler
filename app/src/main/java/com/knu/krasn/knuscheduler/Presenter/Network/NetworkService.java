@@ -1,17 +1,19 @@
 package com.knu.krasn.knuscheduler.Presenter.Network;
 
 
-import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.knu.krasn.knuscheduler.ApplicationClass;
+import com.knu.krasn.knuscheduler.Model.Models.Pojos.Faculties.Faculties;
+import com.knu.krasn.knuscheduler.Model.Models.Pojos.Faculties.Faculty;
 import com.knu.krasn.knuscheduler.Model.Models.Pojos.GroupModel.Group;
 import com.knu.krasn.knuscheduler.Model.Models.Pojos.GroupModel.Groups;
 import com.knu.krasn.knuscheduler.Model.Models.Pojos.Schedule.Schedule;
-import com.knu.krasn.knuscheduler.Model.Models.Pojos.ScheduleTime.ScheduleTime;
+import com.knu.krasn.knuscheduler.Model.Models.Pojos.Schedule.Schedules;
 import com.knu.krasn.knuscheduler.Model.Models.Pojos.WeekModel.Week1;
 import com.knu.krasn.knuscheduler.Model.Models.Pojos.WeekModel.Week2;
 import com.knu.krasn.knuscheduler.Presenter.Events.ErrorEvent;
+import com.knu.krasn.knuscheduler.Presenter.Events.GetFacultiesEvent;
 import com.knu.krasn.knuscheduler.Presenter.Events.GettingGroupsEvent;
 import com.knu.krasn.knuscheduler.Presenter.Events.GettingScheduleEvent;
 import com.mindorks.nybus.NYBus;
@@ -23,13 +25,15 @@ import java.util.Map;
 
 import geek.owl.com.ua.KNUSchedule.R;
 import io.reactivex.Single;
+import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import io.realm.Realm;
-import io.realm.RealmList;
 
-import static com.knu.krasn.knuscheduler.Utils.ServiceUtils.NotificationService.currentGroup;
+import static com.knu.krasn.knuscheduler.ApplicationClass.settings;
+import static com.knu.krasn.knuscheduler.Presenter.Utils.ServiceUtils.NotificationService.currentGroup;
 
 
 /**
@@ -48,47 +52,82 @@ public class NetworkService {
 
     }
 
-    public void getGroups() {
-        mCompositeDisposable.add(retrofitConfig.getApiNetwork().getGroups(headerMap)
+    public void getFaculties() {
+        retrofitConfig.getApiNetwork().getFaculties(headerMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .subscribe(new SingleObserver<Faculties>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(Faculties faculties) {
+                        Realm realm = ApplicationClass.getRealm();
+                        realm.beginTransaction();
+                        List<Faculty> facultyList = faculties.getFaculties();
+                        for (Faculty faculty : facultyList) {
+                            Faculty faculty1 = realm.createObject(Faculty.class);
+                            faculty1.setId(faculty.getId());
+                            faculty1.setName(faculty.getName());
+//                    String title = faculty.getName();
+//                    realm.copyToRealm(faculty);
+
+                        }
+                        realm.commitTransaction();
+                        NYBus.get().post(new GetFacultiesEvent());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (e.getMessage().contains("timeout")) {
+                            getFaculties();
+                        }
+                    }
+                });
+    }
+
+    public void getGroups(String facultyID) {
+        mCompositeDisposable.add(retrofitConfig.getApiNetwork().getGroups(facultyID, headerMap)
                 .subscribeOn(Schedulers.io())
                 .map(Groups::getGroups)
                 .observeOn(Schedulers.io())
                 .subscribe(groups -> {
                     Realm realm = ApplicationClass.getRealm();
+                    realm.beginTransaction();
+                    Faculty detachedFaculty;
+                    Faculty faculty = realm.where(Faculty.class).equalTo("id", facultyID).findFirst();
                     for (Group group : groups) {
-                        realm.beginTransaction();
                         Group group1 = realm.createObject(Group.class);
                         group1.setTitle(group.getTitle());
                         group.setWeek1(new Week1());
                         group.setWeek2(new Week2());
-                        realm.commitTransaction();
+                        if (faculty != null) {
+                            faculty.addGroup(group);
+                        }
                         Log.e("TAG", group.getTitle().concat(","));
                     }
-                    NYBus.get().post(new GettingGroupsEvent());
+                    detachedFaculty = realm.copyFromRealm(faculty);
+                    realm.commitTransaction();
+                    NYBus.get().post(new GettingGroupsEvent(detachedFaculty.getGroups()));
                 }, throwable -> {
-                    if (throwable.getMessage().equals("timeout")) getGroups();
+                    if (throwable.getMessage().equals("timeout")) getGroups(facultyID);
                 }));
     }
 
 
     public void getSchedule(final String groupTitle) {
 
-        RealmList<ScheduleTime> timeRealmList = new RealmList<>();
-        mCompositeDisposable.add(
-                Single.zip(retrofitConfig.getApiNetwork().getSchedule(groupTitle, headerMap)
-                        , retrofitConfig.getApiNetwork().getTime(headerMap)
-                        , (schedules, streams) -> {
-                    timeRealmList.addAll(streams.getData());
-                    return schedules;
-                }).subscribeOn(Schedulers.io())
+
+        mCompositeDisposable.add((retrofitConfig.getApiNetwork().getSchedule(groupTitle, headerMap))
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(schedules -> {
                     Realm realm = ApplicationClass.getRealm();
                     Group group1 = realm.where(Group.class).equalTo("title", groupTitle).findFirst();
                     if (group1 == null) {
-                        SharedPreferences.Editor sharedPreferences = ApplicationClass.getPreferences().edit();
-                        sharedPreferences.putString("Reload", "reload");
-                        sharedPreferences.apply();
+                        settings.edit().putString("Reload", "reload").apply();
                         NYBus.get().post(new ErrorEvent("reload"));
                     } else {
                         realm.beginTransaction();
@@ -96,8 +135,6 @@ public class NetworkService {
                         List<Schedule> week2Schedule = new ArrayList<>();
                         if (schedules != null) {
                             for (Schedule schedule : schedules.getSchedule()) {
-                                Log.e("TAG", schedule.getLesson().toString());
-                                schedule.setTime(timeRealmList.get(schedule.getLesson()));
                                 switch (schedule.getWeek()) {
                                     case 1:
                                         week1Schedule.add(schedule);
@@ -117,7 +154,7 @@ public class NetworkService {
                         realm.commitTransaction();
                         NYBus.get().post(new GettingScheduleEvent(groupTitle));
 
-                        ApplicationClass.getPreferences().edit().putString(ApplicationClass.getContext().getString(R.string.current_group), groupTitle).apply();
+                        settings.edit().putString(ApplicationClass.getContext().getString(R.string.current_group), groupTitle).apply();
                         currentGroup = groupTitle;
                     }
 
@@ -128,7 +165,16 @@ public class NetworkService {
                 }));
     }
 
+    public Single<List<Schedule>> getSearchQuery(String searchQuery) {
+        Single result;
+        return retrofitConfig.getApiNetwork().getSearchingSchedule(searchQuery, headerMap)
+                .map(Schedules::getSchedule)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .doOnError(throwable -> getSearchQuery(searchQuery));
 
+
+    }
 }
 
 

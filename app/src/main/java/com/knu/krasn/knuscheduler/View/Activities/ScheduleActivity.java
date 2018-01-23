@@ -1,4 +1,4 @@
-package com.knu.krasn.knuscheduler.Activities;
+package com.knu.krasn.knuscheduler.View.Activities;
 
 import android.animation.LayoutTransition;
 import android.app.AlertDialog;
@@ -17,7 +17,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
@@ -31,8 +30,8 @@ import com.knu.krasn.knuscheduler.Presenter.Adapters.RecyclerViewAdapters.Week2R
 import com.knu.krasn.knuscheduler.Presenter.Events.ErrorEvent;
 import com.knu.krasn.knuscheduler.Presenter.Events.GettingScheduleEvent;
 import com.knu.krasn.knuscheduler.Presenter.Events.ShowScheduleEvent;
-import com.knu.krasn.knuscheduler.Utils.AppRater;
-import com.knu.krasn.knuscheduler.Utils.ServiceUtils.NotificationService;
+import com.knu.krasn.knuscheduler.Presenter.Utils.AppRater;
+import com.knu.krasn.knuscheduler.Presenter.Utils.ServiceUtils.NotificationService;
 import com.knu.krasn.knuscheduler.View.Fragments.Week1Fragment;
 import com.knu.krasn.knuscheduler.View.Fragments.Week2Fragment;
 import com.mindorks.nybus.NYBus;
@@ -44,7 +43,7 @@ import java.util.List;
 import geek.owl.com.ua.KNUSchedule.R;
 
 import static com.knu.krasn.knuscheduler.ApplicationClass.settings;
-import static com.knu.krasn.knuscheduler.Utils.ServiceUtils.NotificationService.currentGroup;
+import static com.knu.krasn.knuscheduler.Presenter.Utils.ServiceUtils.NotificationService.currentGroup;
 
 
 public class ScheduleActivity extends AppCompatActivity implements MenuItem.OnActionExpandListener {
@@ -57,6 +56,7 @@ public class ScheduleActivity extends AppCompatActivity implements MenuItem.OnAc
     TabLayout tabLayout;
     SchedulePagerAdapter adapter;
     private String currentWeek;
+    private SearchView sv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +65,7 @@ public class ScheduleActivity extends AppCompatActivity implements MenuItem.OnAc
         setContentView(R.layout.activity_schedule);
         AppRater.app_launched(this);
         groupTitle = getIntent().getStringExtra(getString(R.string.current_group));
+        settings.edit().putString(getString(R.string.current_group), groupTitle).apply();
         toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(groupTitle);
         toolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
@@ -89,9 +90,11 @@ public class ScheduleActivity extends AppCompatActivity implements MenuItem.OnAc
         searchEditText.setText("");
         searchEditText.setTextColor(getResources().getColor(R.color.colorWhite));
         LinearLayout searchBar = searchView.findViewById(R.id.search_bar);
+        searchView.setMaxWidth(Integer.MAX_VALUE);
         LayoutTransition transition = new LayoutTransition();
         transition.setDuration(200);
         searchBar.setLayoutTransition(transition);
+
     }
 
 
@@ -104,6 +107,7 @@ public class ScheduleActivity extends AppCompatActivity implements MenuItem.OnAc
     }
 
     private void setupTabLayout(TabLayout tabLayout) {
+        tabLayout.setLayoutTransition(new LayoutTransition());
         List<String> weekList = Arrays.asList(getResources().getStringArray(R.array.week_selection));
         currentWeek = settings.getString(getString(R.string.key_current_week), getString(R.string.choose_week_title));
         for (int i = 0; i < weekList.size(); i++) {
@@ -117,6 +121,7 @@ public class ScheduleActivity extends AppCompatActivity implements MenuItem.OnAc
         }
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_week1_tab);
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_week2_tab);
+
     }
 
     private void showSettingsDialog() {
@@ -147,6 +152,7 @@ public class ScheduleActivity extends AppCompatActivity implements MenuItem.OnAc
     protected void onResume() {
         NYBus.get().register(this);
         currentGroup = groupTitle;
+        setupTabLayout(tabLayout);
         super.onResume();
     }
 
@@ -159,8 +165,7 @@ public class ScheduleActivity extends AppCompatActivity implements MenuItem.OnAc
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main2, menu);
-
-        SearchView sv = (SearchView) menu.findItem(R.id.search).getActionView();
+        sv = (SearchView) menu.findItem(R.id.search).getActionView();
         setUpSearchView(sv);
         MenuItem item = menu.findItem(R.id.search);
         item.setOnActionExpandListener(this);
@@ -173,6 +178,9 @@ public class ScheduleActivity extends AppCompatActivity implements MenuItem.OnAc
         int id = item.getItemId();
         if (id == R.id.settings) {
             startActivity(new Intent(this, SettingsActivity.class));
+        }
+        if (id == R.id.search) {
+            startActivity(new Intent(this, SearchActivity.class));
         }
 
         return super.onOptionsItemSelected(item);
@@ -212,7 +220,9 @@ public class ScheduleActivity extends AppCompatActivity implements MenuItem.OnAc
             adapter = ((Week2Fragment) fragment).onBackPressed();
         }
         if (adapter != null && (adapter instanceof Week1RecyclerAdapter || adapter instanceof Week2RecyclerAdapter)) {
-            super.onBackPressed();
+            Intent i = new Intent(this, MainActivity.class);
+            setResult(RESULT_OK, i);
+            finish();
         }
     }
 
@@ -238,14 +248,14 @@ public class ScheduleActivity extends AppCompatActivity implements MenuItem.OnAc
 
     @Override
     public boolean onMenuItemActionExpand(MenuItem item) {
-        tabLayout.setLayoutTransition(new LayoutTransition());
-        tabLayout.setVisibility(View.GONE);
-        return true;
+
+
+        return false;
     }
 
     @Override
     public boolean onMenuItemActionCollapse(MenuItem item) {
-        tabLayout.setVisibility(View.VISIBLE);
-        return true;
+
+        return false;
     }
 }

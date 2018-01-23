@@ -19,55 +19,13 @@ public class Week1 extends RealmObject {
     private DayOfWeek day3 = new DayOfWeek(3);
     private DayOfWeek day4 = new DayOfWeek(4);
     private DayOfWeek day5 = new DayOfWeek(5);
+    private DayOfWeek day6 = new DayOfWeek(6);
     public Week1() {
     }
 
     public Week1(List<Schedule> week1Schedule) {
         schedules.addAll(week1Schedule);
     }
-
-    public DayOfWeek getDay1() {
-        return day1;
-    }
-
-    public void setDay1(DayOfWeek day1) {
-        this.day1 = day1;
-    }
-
-    public DayOfWeek getDay2() {
-        return day2;
-    }
-
-    public void setDay2(DayOfWeek day2) {
-        this.day2 = day2;
-    }
-
-    public DayOfWeek getDay3() {
-        return day3;
-    }
-
-    public void setDay3(DayOfWeek day3) {
-        this.day3 = day3;
-    }
-
-    public DayOfWeek getDay4() {
-        return day4;
-    }
-
-    public void setDay4(DayOfWeek day4) {
-        this.day4 = day4;
-    }
-
-    public DayOfWeek getDay5() {
-        return day5;
-    }
-
-    public void setDay5(DayOfWeek day5) {
-        this.day5 = day5;
-    }
-
-
-//    public List<Schedule> schedule_list = new ArrayList<>();
 
     public List<Schedule> getSchedules() {
         return this.schedules;
@@ -101,10 +59,12 @@ public class Week1 extends RealmObject {
             else if(schedule.getDay() == 4){
                 if (!day4.getScheduleList().contains(schedule))
                     day4.addSchedule(schedule);
-            }
-            else if(schedule.getDay() == 5){
+            } else if(schedule.getDay() == 5){
                 if (!day5.getScheduleList().contains(schedule))
                     day5.addSchedule(schedule);
+            } else if (schedule.getDay() == 6) {
+                if (!day6.getScheduleList().contains(schedule))
+                    day6.addSchedule(schedule);
             }
         }
         List<DayOfWeek> days = new ArrayList<>();
@@ -122,6 +82,9 @@ public class Week1 extends RealmObject {
         }
         if(day5.getScheduleSize()!=0) {
             days.add(day5);
+        }
+        if (day6.getScheduleSize() != 0) {
+            days.add(day6);
         }
         realm.commitTransaction();
         return days;

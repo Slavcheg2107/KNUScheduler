@@ -1,9 +1,9 @@
-package com.knu.krasn.knuscheduler.Activities;
+package com.knu.krasn.knuscheduler.View.Activities;
 
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
@@ -12,9 +12,10 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.support.annotation.Nullable;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.knu.krasn.knuscheduler.ApplicationClass;
-import com.knu.krasn.knuscheduler.Utils.ServiceUtils.AppPreferencesActivity;
+import com.knu.krasn.knuscheduler.Presenter.Utils.ServiceUtils.AppPreferencesActivity;
 
 import java.util.Calendar;
 
@@ -39,12 +40,14 @@ public class SettingsActivity extends AppPreferencesActivity {
     }
 
     public static class MainPreferencesFragment extends PreferenceFragment {
+        static Preference currentWeek;
+
         @Override
         public void onCreate(@Nullable Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
 
             addPreferencesFromResource(R.xml.prefs_main);
-            Preference currentWeek = findPreference(getString(R.string.key_current_week));
+            currentWeek = findPreference(getString(R.string.key_current_week));
 
             // current week change listener
             bindPreferenceSummaryToValue(findPreference(getString(R.string.key_current_week)));
@@ -59,24 +62,30 @@ public class SettingsActivity extends AppPreferencesActivity {
                 return true;
             });
             // current group change listener
-            Preference changeGroup = findPreference(getString(R.string.key_changing_group));
-            changeGroup.setOnPreferenceClickListener(preference -> {
+            Preference changeGroup = findPreference(getString(R.string.key_reload));
+            changeGroup.setOnPreferenceClickListener(preference -> showDialog());
 
-                SharedPreferences preferences = ApplicationClass.getPreferences();
-                SharedPreferences.Editor editor = preferences.edit();
-                editor.putString("GroupLoaded", "");
-                editor.apply();
+        }
+
+        private boolean showDialog() {
+            AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+            dialog.setTitle(R.string.are_you_sure);
+            dialog.setCancelable(false);
+            dialog.setPositiveButton("Так", (dialog12, which) -> {
+                settings.edit().putString(getString(R.string.current_group), "").apply();
                 String s = "getGroup";
                 Intent i = new Intent(getActivity(), MainActivity.class);
-                i.putExtra(s, s);
+                i.putExtra(getString(R.string.key_reload), " ");
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(i);
                 getActivity().finish();
-                return true;
+
+
             });
+            dialog.setNegativeButton("Ні", (dialog1, which) -> dialog1.dismiss());
+            dialog.show();
+            return true;
         }
-
-
     }
 
     @Override
@@ -123,6 +132,17 @@ public class SettingsActivity extends AppPreferencesActivity {
         return true;
     };
 
+    @Override
+    public void onBackPressed() {
+        String s = settings.getString(getString(R.string.key_current_week), getString(R.string.current_week));
+        if (!s.equals(getString(R.string.choose_week_title))) {
+            super.onBackPressed();
+
+        } else {
+            Toast.makeText(this, "Ви не вибрали поточний тиждень", Toast.LENGTH_LONG).show();
+        }
+    }
+
     private static void goToMarket(Context context) {
         Intent i = new Intent(Intent.ACTION_VIEW);
         i.setData(Uri.parse("market://details?id=" + context.getPackageName()));
@@ -130,10 +150,6 @@ public class SettingsActivity extends AppPreferencesActivity {
         context.startActivity(Intent.createChooser(i, null));
     }
 
-    private static boolean changeGroup(Context context) {
 
-
-        return true;
-    }
 }
 

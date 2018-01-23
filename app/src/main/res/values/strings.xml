@@ -30,9 +30,12 @@
     <string name="notifications_enabled">Нотифікації ввімкнено</string>
     <string name="notifications_disabled">Нотифікації вимкнено</string>
     <string name="key_go_to_market">key_go_to_market</string>
-    <string name="key_changing_group">change_group</string>
-    <string name="title_change_group">Змінити групу</string>
+    <string name="key_reload">reload</string>
+    <string name="title_reload_schedule">Обрати інший розклад</string>
     <string name="week">Тиждень</string>
     <string name="key_current_week_of_year">CurrentWeekOfYear</string>
     <string name="choose_fac_title">Виберіть факультет</string>
+    <string name="key_get_group">getGroup</string>
+
+    <string name="are_you_sure">Ви впевнені?</string>
 </resources>

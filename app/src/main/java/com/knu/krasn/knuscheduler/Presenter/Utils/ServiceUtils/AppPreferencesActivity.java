@@ -1,4 +1,4 @@
-package com.knu.krasn.knuscheduler.Utils.ServiceUtils;
+package com.knu.krasn.knuscheduler.Presenter.Utils.ServiceUtils;
 
 import android.content.res.Configuration;
 import android.os.Bundle;

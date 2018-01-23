@@ -26,8 +26,8 @@ import com.knu.krasn.knuscheduler.Presenter.Events.ConnectionEvent;
 import com.knu.krasn.knuscheduler.Presenter.Events.GettingScheduleEvent;
 import com.knu.krasn.knuscheduler.Presenter.Events.ShowScheduleEvent;
 import com.knu.krasn.knuscheduler.Presenter.Network.NetworkService;
-import com.knu.krasn.knuscheduler.Utils.Decor.GridSpacingItemDecoration;
-import com.knu.krasn.knuscheduler.Utils.NetworkConnectionChecker;
+import com.knu.krasn.knuscheduler.Presenter.Utils.Decor.GridSpacingItemDecoration;
+import com.knu.krasn.knuscheduler.Presenter.Utils.ServiceUtils.NetworkConnectionChecker;
 import com.mindorks.nybus.NYBus;
 import com.mindorks.nybus.annotation.Subscribe;
 

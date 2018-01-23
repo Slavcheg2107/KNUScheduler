@@ -1,4 +1,4 @@
-package com.knu.krasn.knuscheduler.Utils.Decor;
+package com.knu.krasn.knuscheduler.Presenter.Utils.Decor;
 
 import android.content.res.Resources;
 import android.graphics.Rect;

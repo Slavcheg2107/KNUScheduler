@@ -1,4 +1,4 @@
-package com.knu.krasn.knuscheduler.Utils;
+package com.knu.krasn.knuscheduler.Presenter.Utils.ServiceUtils;
 
 /**
  * Created by krasn on 9/30/2017.

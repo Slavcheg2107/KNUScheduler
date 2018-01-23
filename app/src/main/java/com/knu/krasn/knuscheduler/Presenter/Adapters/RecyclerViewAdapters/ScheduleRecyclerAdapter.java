@@ -3,7 +3,6 @@ package com.knu.krasn.knuscheduler.Presenter.Adapters.RecyclerViewAdapters;
 import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,9 +51,8 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<ScheduleRecycl
         itemHolder.room.setText(schedules.get(position).getRoom() + " " + "ауд.");
         itemHolder.teacher.setText(schedules.get(position).getTeachers());
         itemHolder.lessonNumber.setText(String.valueOf(schedules.get(position).getLesson()));
-        String time = schedules.get(position).getTime().getBegin() + " - " + schedules.get(position).getTime().getEnd();
+        String time = schedules.get(position).getBeginTime() + " - " + schedules.get(position).getEndTime();
         itemHolder.time.setText(time);
-        Log.e("TIME", schedules.get(position).getTime().getBegin() + schedules.get(position).getTime().getEnd());
 
         String subgroup = schedules.get(position).getSubgroup();
         if (subgroup != null) {
@@ -69,6 +67,15 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<ScheduleRecycl
         return position;
     }
 
+    public void updateData(List<Schedule> newData) {
+        this.schedules = newData;
+        notifyDataSetChanged();
+    }
+
+    public void addData(List<Schedule> newData) {
+        this.schedules.addAll(newData);
+        notifyDataSetChanged();
+    }
 
     @Override
     public int getItemCount() {

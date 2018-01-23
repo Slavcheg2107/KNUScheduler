@@ -2,7 +2,6 @@ package com.knu.krasn.knuscheduler.Model.Models.Pojos.Schedule;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.knu.krasn.knuscheduler.Model.Models.Pojos.ScheduleTime.ScheduleTime;
 
 import io.realm.RealmObject;
 
@@ -38,12 +37,17 @@ public class Schedule extends RealmObject {
     @SerializedName("subgroup")
     @Expose
     private String subgroup;
-    private ScheduleTime time;
+    @SerializedName("class_begin")
+    @Expose
+    private String beginTime;
+    @SerializedName("class_end")
+    @Expose
+    private String endTime;
 
     public Schedule() {
     }
 
-    public Schedule(String teachers, Integer day, String room, String discipline, String group, Integer week, Integer lesson, String lessontype, String subgroup, ScheduleTime time) {
+    public Schedule(String teachers, Integer day, String room, String discipline, String group, Integer week, Integer lesson, String lessontype, String subgroup, String beginTime, String endTime) {
         this.teachers = teachers;
         this.day = day;
         this.room = room;
@@ -53,15 +57,16 @@ public class Schedule extends RealmObject {
         this.lesson = lesson;
         this.lessontype = lessontype;
         this.subgroup = subgroup;
-        this.time = time;
+        this.beginTime = beginTime;
+        this.endTime = endTime;
     }
 
-    public ScheduleTime getTime() {
-        return time;
+    public String getBeginTime() {
+        return beginTime;
     }
 
-    public void setTime(ScheduleTime time) {
-        this.time = time;
+    public String getEndTime() {
+        return endTime;
     }
 
     public String getTeachers() {

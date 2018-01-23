@@ -1,4 +1,4 @@
-package com.knu.krasn.knuscheduler.Utils;
+package com.knu.krasn.knuscheduler.Presenter.Utils;
 
 import android.app.Dialog;
 import android.content.Context;

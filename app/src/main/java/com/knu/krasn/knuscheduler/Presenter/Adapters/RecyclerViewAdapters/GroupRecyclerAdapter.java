@@ -13,12 +13,16 @@ import com.knu.krasn.knuscheduler.Model.Models.Pojos.GroupModel.Group;
 import com.knu.krasn.knuscheduler.Presenter.Events.ConnectionEvent;
 import com.knu.krasn.knuscheduler.Presenter.Events.MoveToNextEvent;
 import com.knu.krasn.knuscheduler.Presenter.Network.NetworkService;
-import com.knu.krasn.knuscheduler.Utils.NetworkConnectionChecker;
+import com.knu.krasn.knuscheduler.Presenter.Utils.ServiceUtils.NetworkConnectionChecker;
 import com.mindorks.nybus.NYBus;
 
 import java.util.List;
 
 import geek.owl.com.ua.KNUSchedule.R;
+import io.realm.RealmResults;
+
+import static com.knu.krasn.knuscheduler.ApplicationClass.getContext;
+import static com.knu.krasn.knuscheduler.ApplicationClass.settings;
 
 
 /**
@@ -32,7 +36,6 @@ public class GroupRecyclerAdapter extends RecyclerView.Adapter<GroupRecyclerAdap
     private NetworkService networkService;
 
     public GroupRecyclerAdapter(Context context, List<Group> groups, NetworkService networkService) {
-
         this.groups = groups;
         this.context = context;
         this.inflater = LayoutInflater.from(context);
@@ -62,6 +65,17 @@ public class GroupRecyclerAdapter extends RecyclerView.Adapter<GroupRecyclerAdap
         return (groups == null) ? 0 : groups.size();
     }
 
+
+    public void updateData(RealmResults<Group> newData) {
+        groups = newData;
+        notifyDataSetChanged();
+    }
+
+    public void clearData() {
+        groups.clear();
+        notifyDataSetChanged();
+    }
+
     static class ItemHolder extends RecyclerView.ViewHolder {
         TextView title;
         CardView cardView;
@@ -78,6 +92,7 @@ public class GroupRecyclerAdapter extends RecyclerView.Adapter<GroupRecyclerAdap
                 } else {
                     NetworkConnectionChecker nc = new NetworkConnectionChecker(ApplicationClass.getContext());
                     if (nc.isOnline()) {
+                        settings.edit().putString(getContext().getResources().getString(R.string.current_group), title.getText().toString()).apply();
                         NYBus.get().post(new MoveToNextEvent(title.getText().toString()));
 
                     } else {

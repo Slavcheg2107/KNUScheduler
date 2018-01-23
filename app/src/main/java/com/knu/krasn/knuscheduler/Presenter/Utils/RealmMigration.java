@@ -1,4 +1,4 @@
-package com.knu.krasn.knuscheduler.Utils;
+package com.knu.krasn.knuscheduler.Presenter.Utils;
 
 
 import android.support.annotation.NonNull;
@@ -18,15 +18,14 @@ public class RealmMigration implements io.realm.RealmMigration {
 
         final RealmSchema schema = realm.getSchema();
         if(oldVersion == 0) {
-            if (!schema.contains("ScheduleTime")) {
-                schema.create("ScheduleTime").addField("begin", String.class).addField("end", String.class);
-            }
             final RealmObjectSchema scheduleSchema = schema.get("Schedule");
-            if (!scheduleSchema.hasField("time")) {
-                RealmObjectSchema scheduleTimeSchema = schema.get("ScheduleTime");
-                if (scheduleTimeSchema != null) {
-                    scheduleSchema.addRealmObjectField("time", scheduleTimeSchema);
-                }
+            if (scheduleSchema != null && !scheduleSchema.hasField("beginTime")) {
+                scheduleSchema.addField("beginTime", String.class);
+                scheduleSchema.addField("endTime", String.class);
+            }
+            final RealmObjectSchema facultySchema = schema.get("Faculty");
+            if (facultySchema != null && !facultySchema.hasField("id")) {
+                facultySchema.addField("id", String.class);
             }
         }
     }

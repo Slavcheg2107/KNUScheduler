@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/SplashTheme">
         <activity
-            android:name="com.knu.krasn.knuscheduler.Activities.MainActivity"
+            android:name="com.knu.krasn.knuscheduler.View.Activities.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,17 +25,21 @@
 
         </activity>
         <activity
-            android:name="com.knu.krasn.knuscheduler.Activities.ScheduleActivity"
+            android:name="com.knu.krasn.knuscheduler.View.Activities.ScheduleActivity"
             android:label="@string/title_activity_main2"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name="com.knu.krasn.knuscheduler.Activities.SettingsActivity"
+            android:name="com.knu.krasn.knuscheduler.View.Activities.SettingsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.withActionBar" />
+        <activity
+            android:name="com.knu.krasn.knuscheduler.View.Activities.SearchActivity"
+            android:theme="@style/AppTheme"
+            android:screenOrientation="portrait" />
 
         <service
-            android:name="com.knu.krasn.knuscheduler.Utils.ServiceUtils.NotificationService"
+            android:name="com.knu.krasn.knuscheduler.Presenter.Utils.ServiceUtils.NotificationService"
             android:exported="false" />
     </application>
 

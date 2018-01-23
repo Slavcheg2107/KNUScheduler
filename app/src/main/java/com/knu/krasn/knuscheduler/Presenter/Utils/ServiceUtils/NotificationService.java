@@ -1,4 +1,4 @@
-package com.knu.krasn.knuscheduler.Utils.ServiceUtils;
+package com.knu.krasn.knuscheduler.Presenter.Utils.ServiceUtils;
 
 import android.app.IntentService;
 import android.app.Notification;
@@ -14,11 +14,11 @@ import android.text.format.DateUtils;
 import android.util.Log;
 import android.widget.RemoteViews;
 
-import com.knu.krasn.knuscheduler.Activities.ScheduleActivity;
 import com.knu.krasn.knuscheduler.ApplicationClass;
 import com.knu.krasn.knuscheduler.Model.Models.Pojos.DayOfWeek.DayOfWeek;
 import com.knu.krasn.knuscheduler.Model.Models.Pojos.GroupModel.Group;
 import com.knu.krasn.knuscheduler.Model.Models.Pojos.Schedule.Schedule;
+import com.knu.krasn.knuscheduler.View.Activities.ScheduleActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -46,7 +46,7 @@ public class NotificationService extends IntentService {
     private Disposable dis;
 
     public NotificationService() {
-        super("com.knu.krasn.knuscheduler.Utils.ServiceUtils.NotificationService");
+        super("com.knu.krasn.knuscheduler.Presenter.Utils.ServiceUtils.NotificationService");
     }
 
     @Override
@@ -87,7 +87,7 @@ public class NotificationService extends IntentService {
         if (nextSchedule != null) {
 
             remoteViews.setTextViewText(R.id.lesson_type, nextSchedule.getDiscipline());
-            remoteViews.setTextViewText(R.id.lesson_time, nextSchedule.getTime().getBegin());
+            remoteViews.setTextViewText(R.id.lesson_time, nextSchedule.getBeginTime() + " " + nextSchedule.getEndTime());
             remoteViews.setTextViewText(R.id.teacher, nextSchedule.getTeachers());
             remoteViews.setTextViewText(R.id.room, nextSchedule.getRoom());
             remoteViews.setImageViewResource(R.id.imageView2, R.drawable.runersilhouetterunningfast);
@@ -164,7 +164,7 @@ public class NotificationService extends IntentService {
                         for (Schedule schedule : schedules) {
 
                             Date curDate = format.parse(curTime);
-                            Date scheduleDate = format.parse(schedule.getTime().getBegin());
+                            Date scheduleDate = format.parse(schedule.getBeginTime());
 
                             if (curDate.getTime() - scheduleDate.getTime() > 0 && curDate.getTime() - scheduleDate.getTime() < (1000 * 60 * 30)) {
                                 nextSchedule = schedule;
