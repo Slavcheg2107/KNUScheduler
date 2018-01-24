@@ -21,7 +21,7 @@ public class SearchSuccesEvent {
         return schedules;
     }
 
-    public int WhatToDo() {
+    public int whatToDo() {
         return whatToDo;
     }
 }

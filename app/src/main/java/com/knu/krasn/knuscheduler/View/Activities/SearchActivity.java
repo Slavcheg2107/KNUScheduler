@@ -10,6 +10,7 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -43,13 +44,14 @@ import static com.knu.krasn.knuscheduler.ApplicationClass.getNetwork;
  */
 
 public class SearchActivity extends AppCompatActivity implements MenuItem.OnActionExpandListener {
-    private RelativeLayout loadingWheel;
+    public static RelativeLayout loadingWheel;
     private RecyclerView rv;
     private SearchView sv;
     private NetworkService networkService;
     private ScheduleRecyclerAdapter recyclerAdapter;
     private EditText searchEditText;
-
+    int offset = 0;
+    int limit = 6;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,18 +104,16 @@ public class SearchActivity extends AppCompatActivity implements MenuItem.OnActi
         LayoutTransition transition = new LayoutTransition();
         transition.setDuration(200);
         searchBar.setLayoutTransition(transition);
-
-
     }
 
     @Override
     public boolean onMenuItemActionExpand(MenuItem item) {
         sv.requestFocus();
 
-        ScrollListener.on(rv).
-                distinctUntilChanged()
-                .flatMapSingle(s -> networkService.getSearchQuery(searchEditText.getText().toString()))
+        ScrollListener.on(rv)
+                .flatMapSingle(integer -> networkService.getSearchQuery(searchEditText.getText().toString(), limit, offset + limit))
                 .subscribe(new Observer<List<Schedule>>() {
+
                     @Override
                     public void onSubscribe(Disposable d) {
 
@@ -122,6 +122,7 @@ public class SearchActivity extends AppCompatActivity implements MenuItem.OnActi
                     @Override
                     public void onNext(List<Schedule> schedules) {
                         NYBus.get().post(new SearchSuccesEvent(schedules, 1));
+
                     }
 
                     @Override
@@ -133,14 +134,15 @@ public class SearchActivity extends AppCompatActivity implements MenuItem.OnActi
                     public void onComplete() {
 
                     }
-                });
+                           }
+                );
 
         RxSearchObservable.fromView(sv).debounce(300, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
                 .distinctUntilChanged()
                 .filter(yourString -> !yourString.isEmpty())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .flatMapSingle(s -> networkService.getSearchQuery(s))
+                .flatMapSingle(s -> networkService.getSearchQuery(s, limit, offset))
                 .subscribe(new Observer<List<Schedule>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
@@ -149,8 +151,9 @@ public class SearchActivity extends AppCompatActivity implements MenuItem.OnActi
 
                     @Override
                     public void onNext(List<Schedule> schedules) {
-
                         NYBus.get().post(new SearchSuccesEvent(schedules, 0));
+
+                        offset = 0;
                     }
 
                     @Override
@@ -170,13 +173,19 @@ public class SearchActivity extends AppCompatActivity implements MenuItem.OnActi
 
     @Subscribe(threadType = NYThread.MAIN)
     public void onSearchSuccesEvent(SearchSuccesEvent event) {
-        if (event.WhatToDo() == 0) {
+        List<Schedule> list = event.getSchedules();
+        if (event.whatToDo() == 0) {
+            loadingWheel.setVisibility(View.GONE);
             recyclerAdapter.updateData(event.getSchedules());
             rv.scheduleLayoutAnimation();
-        } else if (event.WhatToDo() == 1) {
-            recyclerAdapter.addData(event.getSchedules());
+        } else if (event.whatToDo() == 1) {
+            if (!list.isEmpty()) {
+                if (list.size() != 0) {
+                    offset = offset + limit;
+                    recyclerAdapter.addData(event.getSchedules());
+                }
+            }
         }
-
     }
 
     @Override

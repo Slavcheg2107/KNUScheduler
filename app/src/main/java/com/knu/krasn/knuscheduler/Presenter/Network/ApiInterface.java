@@ -32,5 +32,5 @@ public interface ApiInterface {
     Single<Schedules> getSchedule(@Field("group") String group, @HeaderMap Map<String, String> headerMap);
 
     @GET("getAdvanceSchedule")
-    Single<Schedules> getSearchingSchedule(@Query("query") String searchQuery, @HeaderMap Map<String, String> headerMap);
+    Single<Schedules> getSearchingSchedule(@Query("query") String searchQuery, @Query("limit") int limit, @Query("offset") int offset, @HeaderMap Map<String, String> headerMap);
 }

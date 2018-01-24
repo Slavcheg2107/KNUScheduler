@@ -165,13 +165,13 @@ public class NetworkService {
                 }));
     }
 
-    public Single<List<Schedule>> getSearchQuery(String searchQuery) {
-        Single result;
-        return retrofitConfig.getApiNetwork().getSearchingSchedule(searchQuery, headerMap)
+    public Single<List<Schedule>> getSearchQuery(String searchQuery, int limit, int offset) {
+
+        return retrofitConfig.getApiNetwork().getSearchingSchedule(searchQuery, limit, offset, headerMap)
                 .map(Schedules::getSchedule)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .doOnError(throwable -> getSearchQuery(searchQuery));
+                .doOnError(throwable -> getSearchQuery(searchQuery, limit, offset));
 
 
     }
