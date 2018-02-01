@@ -27,7 +27,6 @@ import com.knu.krasn.knuscheduler.Presenter.Events.GettingScheduleEvent;
 import com.knu.krasn.knuscheduler.Presenter.Events.ShowScheduleEvent;
 import com.knu.krasn.knuscheduler.Presenter.Network.NetworkService;
 import com.knu.krasn.knuscheduler.Presenter.Utils.Decor.GridSpacingItemDecoration;
-import com.knu.krasn.knuscheduler.Presenter.Utils.ServiceUtils.NetworkConnectionChecker;
 import com.mindorks.nybus.NYBus;
 import com.mindorks.nybus.annotation.Subscribe;
 
@@ -38,6 +37,7 @@ import geek.owl.com.ua.KNUSchedule.R;
 import io.realm.Realm;
 
 import static com.knu.krasn.knuscheduler.ApplicationClass.settings;
+import static com.knu.krasn.knuscheduler.Presenter.Utils.ServiceUtils.NetworkConnectionChecker.isOnline;
 
 /**
  * Created by krasn on 9/26/2017.
@@ -79,7 +79,7 @@ public class Week2Fragment extends Fragment implements BaseFragment {
         ProgressBar pb = rootView.findViewById(R.id.progressBar);
         pb.getIndeterminateDrawable().setColorFilter(Color.BLACK, PorterDuff.Mode.MULTIPLY);
         loadingWheel = rootView.findViewById(R.id.wheel2);
-        groupTitle = getActivity().getIntent().getStringExtra(getString(R.string.current_group));
+        groupTitle = settings.getString(getString(R.string.current_group), "");
         toolbarUpdater = new ToolbarUpdater(groupTitle, getActivity().findViewById(R.id.toolbar));
         recyclerView = rootView.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new GridLayoutManager(ApplicationClass.getContext(), 1));
@@ -99,6 +99,7 @@ public class Week2Fragment extends Fragment implements BaseFragment {
         super.onResume();
     }
 
+
     @Subscribe
     public void onGettingSchedulevent(GettingScheduleEvent event) {
         setRecyclerAdapter(new ShowScheduleEvent(checkCurrentDayOfWeek(), getString(R.string.week2_adapter_name)));
@@ -116,8 +117,8 @@ public class Week2Fragment extends Fragment implements BaseFragment {
             week2 = group.getWeek2();
         }
         if (week2 == null) {
-            NetworkConnectionChecker nc = new NetworkConnectionChecker(ApplicationClass.getContext());
-            if (nc.isOnline()) {
+
+            if (isOnline(ApplicationClass.getContext())) {
                 ApplicationClass.getNetwork().getSchedule(groupTitle);
             } else {
                 NYBus.get().post(new ConnectionEvent());

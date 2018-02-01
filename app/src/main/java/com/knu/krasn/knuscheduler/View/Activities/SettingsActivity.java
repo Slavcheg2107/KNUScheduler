@@ -33,7 +33,7 @@ public class SettingsActivity extends AppPreferencesActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         android.support.v7.app.ActionBar ab = getSupportActionBar();
-        ab.setTitle("Налаштування");
+        ab.setTitle(R.string.setting_title);
         ab.setDisplayHomeAsUpEnabled(true);
         ab.setBackgroundDrawable(getResources().getDrawable(R.drawable.action_bar_background));
         getFragmentManager().beginTransaction().replace(android.R.id.content, new MainPreferencesFragment()).commit();
@@ -70,19 +70,16 @@ public class SettingsActivity extends AppPreferencesActivity {
         private boolean showDialog() {
             AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
             dialog.setTitle(R.string.are_you_sure);
-            dialog.setCancelable(false);
-            dialog.setPositiveButton("Так", (dialog12, which) -> {
+            dialog.setCancelable(true);
+            dialog.setPositiveButton(R.string.yes, (dialog12, which) -> {
+
                 settings.edit().putString(getString(R.string.current_group), "").apply();
-                String s = "getGroup";
                 Intent i = new Intent(getActivity(), MainActivity.class);
                 i.putExtra(getString(R.string.key_reload), " ");
-                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(i);
                 getActivity().finish();
-
-
             });
-            dialog.setNegativeButton("Ні", (dialog1, which) -> dialog1.dismiss());
+            dialog.setNegativeButton(R.string.no, (dialog1, which) -> dialog1.dismiss());
             dialog.show();
             return true;
         }
@@ -136,10 +133,11 @@ public class SettingsActivity extends AppPreferencesActivity {
     public void onBackPressed() {
         String s = settings.getString(getString(R.string.key_current_week), getString(R.string.current_week));
         if (!s.equals(getString(R.string.choose_week_title))) {
-            super.onBackPressed();
+            startActivity(new Intent(this, ScheduleActivity.class));
+            finish();
 
         } else {
-            Toast.makeText(this, "Ви не вибрали поточний тиждень", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.did_not_choose_week, Toast.LENGTH_LONG).show();
         }
     }
 

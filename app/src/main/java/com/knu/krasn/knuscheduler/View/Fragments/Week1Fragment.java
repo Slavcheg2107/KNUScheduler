@@ -27,7 +27,6 @@ import com.knu.krasn.knuscheduler.Presenter.Events.GettingScheduleEvent;
 import com.knu.krasn.knuscheduler.Presenter.Events.ShowScheduleEvent;
 import com.knu.krasn.knuscheduler.Presenter.Network.NetworkService;
 import com.knu.krasn.knuscheduler.Presenter.Utils.Decor.GridSpacingItemDecoration;
-import com.knu.krasn.knuscheduler.Presenter.Utils.ServiceUtils.NetworkConnectionChecker;
 import com.mindorks.nybus.NYBus;
 import com.mindorks.nybus.annotation.Subscribe;
 
@@ -37,7 +36,9 @@ import java.util.Calendar;
 import geek.owl.com.ua.KNUSchedule.R;
 import io.realm.Realm;
 
+import static com.knu.krasn.knuscheduler.ApplicationClass.getRealm;
 import static com.knu.krasn.knuscheduler.ApplicationClass.settings;
+import static com.knu.krasn.knuscheduler.Presenter.Utils.ServiceUtils.NetworkConnectionChecker.isOnline;
 
 /**
  * Created by krasn on 9/26/2017.
@@ -49,12 +50,11 @@ public class Week1Fragment extends Fragment implements BaseFragment {
     ScheduleRecyclerAdapter scheduleRecyclerAdapter;
     Week1RecyclerAdapter week1RecyclerAdapter;
     NetworkService networkService = ApplicationClass.getNetwork();
-    Realm realm = ApplicationClass.getRealm();
+    Realm realm = getRealm();
     Group group;
     Week1 week1 = null;
     String groupTitle;
     SharedPreferences prefs = ApplicationClass.getPreferences();
-    SharedPreferences.Editor editor = prefs.edit();
     String s;
     RelativeLayout loadingWheel;
     public ToolbarUpdater toolbarUpdater;
@@ -81,7 +81,7 @@ public class Week1Fragment extends Fragment implements BaseFragment {
         s = prefs.getString(getString(R.string.current_group), "");
         ProgressBar pb = rootView.findViewById(R.id.progressBar);
         pb.getIndeterminateDrawable().setColorFilter(Color.BLACK, PorterDuff.Mode.MULTIPLY);
-        groupTitle = getActivity().getIntent().getStringExtra(getString(R.string.current_group));
+        groupTitle = settings.getString(getString(R.string.current_group), "");
         toolbarUpdater = new ToolbarUpdater(groupTitle, getActivity().findViewById(R.id.toolbar));
         loadingWheel = rootView.findViewById(R.id.wheel2);
         recyclerView = rootView.findViewById(R.id.recycler_view);
@@ -99,6 +99,11 @@ public class Week1Fragment extends Fragment implements BaseFragment {
         NYBus.get().register(this);
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        NYBus.get().unregister(this);
+    }
 
     @Subscribe
     public void onGettingSchedulevent(GettingScheduleEvent event) {
@@ -123,8 +128,8 @@ public class Week1Fragment extends Fragment implements BaseFragment {
             week1 = group.getWeek1();
         }
         if (week1 == null) {
-            NetworkConnectionChecker nc = new NetworkConnectionChecker(ApplicationClass.getContext());
-            if (nc.isOnline()) {
+
+            if (isOnline(ApplicationClass.getContext())) {
                 ApplicationClass.getNetwork().getSchedule(groupTitle);
             } else {
                 NYBus.get().post(new ConnectionEvent());

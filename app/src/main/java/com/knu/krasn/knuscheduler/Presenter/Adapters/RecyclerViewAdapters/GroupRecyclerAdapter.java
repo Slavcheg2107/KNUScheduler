@@ -13,7 +13,6 @@ import com.knu.krasn.knuscheduler.Model.Models.Pojos.GroupModel.Group;
 import com.knu.krasn.knuscheduler.Presenter.Events.ConnectionEvent;
 import com.knu.krasn.knuscheduler.Presenter.Events.MoveToNextEvent;
 import com.knu.krasn.knuscheduler.Presenter.Network.NetworkService;
-import com.knu.krasn.knuscheduler.Presenter.Utils.ServiceUtils.NetworkConnectionChecker;
 import com.mindorks.nybus.NYBus;
 
 import java.util.List;
@@ -23,6 +22,7 @@ import io.realm.RealmResults;
 
 import static com.knu.krasn.knuscheduler.ApplicationClass.getContext;
 import static com.knu.krasn.knuscheduler.ApplicationClass.settings;
+import static com.knu.krasn.knuscheduler.Presenter.Utils.ServiceUtils.NetworkConnectionChecker.isOnline;
 
 
 /**
@@ -88,10 +88,9 @@ public class GroupRecyclerAdapter extends RecyclerView.Adapter<GroupRecyclerAdap
                 Group group = ApplicationClass.getRealm().where(Group.class).equalTo("title", title.getText().toString()).findFirst();
                 if (group != null && group.getWeek1() != null) {
                     NYBus.get().post(new MoveToNextEvent(title.getText().toString()));
-
                 } else {
-                    NetworkConnectionChecker nc = new NetworkConnectionChecker(ApplicationClass.getContext());
-                    if (nc.isOnline()) {
+
+                    if (isOnline(ApplicationClass.getContext())) {
                         settings.edit().putString(getContext().getResources().getString(R.string.current_group), title.getText().toString()).apply();
                         NYBus.get().post(new MoveToNextEvent(title.getText().toString()));
 

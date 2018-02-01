@@ -5,11 +5,13 @@
     <string name="Day3">Середа\n %1$d пари</string>
     <string name="Day4">Четвер\n %1$d пари</string>
     <string name="Day5">П\'ятниця\n %1$d пари</string>
+    <string name="Day6">Субота\n %1$d пари</string>
     <string name="Monday">Понеділок</string>
     <string name="Tuesday">Вівторок</string>
     <string name="Wednesday">Середа</string>
     <string name="Thursday">Четвер</string>
     <string name="Friday">П\'ятниця</string>
+    <string name="Saturday">Субота</string>
     <string name="Reload">Reload</string>
     <string name="current_group">GroupLoaded</string>
     <string name="week1_adapter_name">week1</string>
@@ -38,5 +40,16 @@
     <string name="key_get_group">getGroup</string>
 
     <string name="are_you_sure">Ви впевнені?</string>
-    <string name="thats_all">\"Це всі результати\"</string>
+
+    <string name="no_connetction">Немає з\'єднання</string>
+    <string name="choose_group">Виберіть групу</string>
+    <string name="corps">корпус %1$s</string>
+    <string name="chooseWeek_dialog_title">Виберіть поточний тиждень, будь ласка</string>
+    <string name="setting_title">Налаштування</string>
+    <string name="did_not_choose_week">Ви не вибрали поточний тиждень</string>
+    <string name="yes">Так</string>
+    <string name="no">Ні</string>
+    <string name="press_again">Натисніть знову для виходу</string>
+    <string name="lesson_number_time">Пара %1$d (%2$s - %3$s)</string>
+    <string name="room_corps_number"> %1$s ауд. корпус %2$s</string>
 </resources>

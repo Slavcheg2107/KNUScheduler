@@ -15,7 +15,7 @@ public class NetworkConnectionChecker {
         this.context=applicationContext;
     }
 
-    public boolean isOnline() {
+    public static boolean isOnline(Context context) {
         ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnectedOrConnecting();

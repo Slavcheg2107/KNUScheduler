@@ -14,7 +14,6 @@ import com.knu.krasn.knuscheduler.Presenter.Events.ConnectionEvent;
 import com.knu.krasn.knuscheduler.Presenter.Events.ErrorEvent;
 import com.knu.krasn.knuscheduler.Presenter.Events.GettingGroupsEvent;
 import com.knu.krasn.knuscheduler.Presenter.Network.NetworkService;
-import com.knu.krasn.knuscheduler.Presenter.Utils.ServiceUtils.NetworkConnectionChecker;
 import com.mindorks.nybus.NYBus;
 
 import java.util.ArrayList;
@@ -23,6 +22,9 @@ import java.util.List;
 import geek.owl.com.ua.KNUSchedule.R;
 import io.realm.Realm;
 import io.realm.RealmResults;
+
+import static com.knu.krasn.knuscheduler.ApplicationClass.getRealm;
+import static com.knu.krasn.knuscheduler.Presenter.Utils.ServiceUtils.NetworkConnectionChecker.isOnline;
 
 /**
  * Created by krasn on 9/3/2017.
@@ -85,10 +87,10 @@ public class FacultyRecyclerAdapter extends RecyclerView.Adapter<FacultyRecycler
             title = itemView.findViewById(R.id.title);
             cardView = itemView.findViewById(R.id.group_card);
             cardView.setOnClickListener(view -> {
-                Realm realm = ApplicationClass.getRealm();
+                Realm realm = getRealm();
                 if (realm.where(Faculty.class).equalTo("name", title.getText().toString()).findFirst().getGroups().isEmpty()) {
-                    NetworkConnectionChecker nc = new NetworkConnectionChecker(ApplicationClass.getContext());
-                    if (nc.isOnline()) {
+//                    NetworkConnectionChecker nc = new NetworkConnectionChecker(ApplicationClass.getContext());
+                    if (isOnline(ApplicationClass.getContext())) {
                         NYBus.get().post(new ErrorEvent("Кликнулось"));
                         networkService.getGroups(faculties.get(getAdapterPosition()).getId());
                         cardView.setEnabled(false);

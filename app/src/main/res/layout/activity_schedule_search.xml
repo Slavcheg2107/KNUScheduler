@@ -8,6 +8,17 @@
 
     <include layout="@layout/toolbar_layout" />
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/toolbar"
+        android:gravity="center"
+        android:layoutAnimation="@anim/layout_animation_fall_down"
+        android:scrollbars="vertical" />
+
     <RelativeLayout
         android:id="@+id/wheel"
         android:layout_width="match_parent"
@@ -28,16 +39,5 @@
 
 
     </RelativeLayout>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/toolbar"
-        android:gravity="center"
-        android:layoutAnimation="@anim/layout_animation_fall_down"
-        android:scrollbars="vertical" />
 
 </RelativeLayout>

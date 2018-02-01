@@ -13,7 +13,6 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -54,9 +53,12 @@ import io.reactivex.disposables.Disposable;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
+import static com.knu.krasn.knuscheduler.ApplicationClass.getContext;
 import static com.knu.krasn.knuscheduler.ApplicationClass.settings;
+import static com.knu.krasn.knuscheduler.Presenter.Utils.ServiceUtils.NetworkConnectionChecker.isOnline;
 
 public class MainActivity extends AppCompatActivity implements MainActivityView, MenuItem.OnActionExpandListener {
+
     FacultyRecyclerAdapter facultyRecyclerAdapter;
     GroupRecyclerAdapter groupRecyclerAdapter;
     RecyclerView recyclerView;
@@ -74,13 +76,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
     private RealmResults<Faculty> facultyRealmResults;
     private GroupRecyclerAdapter searchGroupAdapter;
     private FacultyRecyclerAdapter searchFacultyAdapter;
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         loadingWheel = findViewById(R.id.wheel);
         loadingWheel.setVisibility(View.VISIBLE);
@@ -92,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
         pb.getIndeterminateDrawable().setColorFilter(Color.BLACK, PorterDuff.Mode.MULTIPLY);
         realm = ApplicationClass.getRealm();
         groupTitle = settings.getString(getString(R.string.current_group), "");
-        toolbar.setTitle(getString(R.string.choose_fac_title));
+        toolbar.setTitle(getString(R.string.app_name));
 
         checkCurrentWeek();
     }
@@ -110,7 +113,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
         super.onDestroy();
         realm.close();
         NYBus.get().unregister(this);
-
     }
 
     @Subscribe(threadType = NYThread.MAIN)
@@ -120,6 +122,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
         if (loadingWheel.isShown()) {
             loadingWheel.setVisibility(View.GONE);
         }
+        toolbar.setTitle(getString(R.string.choose_group));
         recyclerView.setAdapter(groupRecyclerAdapter);
         groupRecyclerAdapter.notifyDataSetChanged();
         recyclerView.scheduleLayoutAnimation();
@@ -169,12 +172,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
         if (event.getError().equals("Кликнулось")) {
             loadingWheel.setVisibility(View.VISIBLE);
         }
-        Log.e("ErrorEvent", event.getError());
     }
 
     @Subscribe
     public void onConnectionEvent(ConnectionEvent event) {
-        Toast.makeText(getApplicationContext(), "Немає з'єднання", Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), R.string.no_connetction, Toast.LENGTH_LONG).show();
         if (loadingWheel.getVisibility() == View.VISIBLE) {
             loadingWheel.setVisibility(View.GONE);
         }
@@ -185,8 +187,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
         if (!realm.where(Group.class).contains("title", event.getMessage()).findAll().isEmpty()) {
             Intent i = new Intent(this, ScheduleActivity.class);
             i.putExtra(getString(R.string.current_group), event.getMessage());
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             groupTitle = event.getMessage();
-            startActivityForResult(i, 1);
+            startActivity(i);
+            finish();
         } else {
             settings.edit().putString(getString(R.string.current_group), "").apply();
             setupView();
@@ -197,34 +201,28 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
     @Override
     protected void onResume() {
         super.onResume();
-
-        NYBus.get().register(this);
+        if (!NYBus.get().isRegistered(MainActivity.class)) {
+            NYBus.get().register(this);
+        }
         setupView();
 
 
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            this.resultCode = resultCode;
-        }
-    }
 
     @Override
     public void onBackPressed() {
         if (recyclerView.getAdapter() instanceof FacultyRecyclerAdapter) {
             if (doubleBackToExitPressedOnce) {
-                super.onBackPressed();
-                return;
+                finish();
             }
             this.doubleBackToExitPressedOnce = true;
-            Toast.makeText(this, "Натисніть знову для виходу", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.press_again), Toast.LENGTH_SHORT).show();
             new Handler().postDelayed(() -> doubleBackToExitPressedOnce = false, 2000);
         } else if (recyclerView.getAdapter() instanceof GroupRecyclerAdapter) {
             if (sv.isIconified()) {
                 recyclerView.setAdapter(facultyRecyclerAdapter);
+                toolbar.setTitle(getString(R.string.choose_fac_title));
             }
         }
     }
@@ -233,12 +231,18 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
     public void setupView() {
 
         if (getIntent().hasExtra(getString(R.string.key_reload))) {
-            realm.beginTransaction();
+            realm = ApplicationClass.getRealm();
+            if (!realm.isInTransaction())
+                realm.beginTransaction();
             realm.deleteAll();
             realm.commitTransaction();
             settings.edit().putString(getString(R.string.current_group), "").apply();
-            networkService.getFaculties();
-            getIntent().removeExtra(getString(R.string.key_reload));
+            if (isOnline(getContext())) {
+                networkService.getFaculties();
+                getIntent().removeExtra(getString(R.string.key_reload));
+            } else {
+                Toast.makeText(this, getString(R.string.no_connetction), Toast.LENGTH_SHORT).show();
+            }
             return;
         }
         groupTitle = settings.getString(getString(R.string.current_group), "");
@@ -267,12 +271,19 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
                 if (loadingWheel.getVisibility() == View.VISIBLE) {
                     loadingWheel.setVisibility(View.GONE);
                 }
+                toolbar.setTitle(getString(R.string.choose_fac_title));
             recyclerView.setAdapter(facultyRecyclerAdapter);
             facultyRecyclerAdapter.notifyDataSetChanged();
             recyclerView.scheduleLayoutAnimation();
         }
         }
         recyclerView.scheduleLayoutAnimation();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        NYBus.get().unregister(this);
     }
 
     @Subscribe(threadType = NYThread.MAIN)
@@ -308,11 +319,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
     public boolean onMenuItemActionExpand(MenuItem item) {
         RxSearchObservable.fromView(sv).debounce(300, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
                 .distinctUntilChanged()
-
                 .subscribe(new Observer<String>() {
-
                     private RecyclerView.Adapter currentAdapter;
-
                     @Override
                     public void onSubscribe(Disposable d) {
 

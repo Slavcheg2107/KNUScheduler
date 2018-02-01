@@ -46,14 +46,14 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<ScheduleRecycl
 
     @Override
     public void onBindViewHolder(ItemHolder itemHolder, int position) {
+
         itemHolder.lessonType.setText(schedules.get(position).getLessontype());
         itemHolder.lessonName.setText(schedules.get(position).getDiscipline());
-        itemHolder.room.setText(schedules.get(position).getRoom() + " " + "ауд.");
+        itemHolder.room.setText(String.format(context.getString(R.string.room_corps_number), schedules.get(position).getRoom(), schedules.get(position).getCorps()));
         itemHolder.teacher.setText(schedules.get(position).getTeachers());
-        itemHolder.lessonNumber.setText(String.valueOf(schedules.get(position).getLesson()));
-        String time = schedules.get(position).getBeginTime() + " - " + schedules.get(position).getEndTime();
-        itemHolder.time.setText(time);
-
+        itemHolder.lessonNumber.setText(String.format(context.getResources().getString(R.string.lesson_number_time)
+                , schedules.get(position).getLesson()
+                , schedules.get(position).getBeginTime(), schedules.get(position).getEndTime()));
         String subgroup = schedules.get(position).getSubgroup();
         if (subgroup != null) {
             itemHolder.subgroup.setText(schedules.get(position).getSubgroup());
@@ -90,7 +90,7 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<ScheduleRecycl
         CardView cardView;
         TextView lessonNumber;
         TextView subgroup;
-        TextView time;
+
 
         ItemHolder(View itemView, final NetworkService networkService) {
             super(itemView);
@@ -100,7 +100,6 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<ScheduleRecycl
             room = itemView.findViewById(R.id.room);
             subgroup = itemView.findViewById(R.id.subgroup);
             teacher = itemView.findViewById(R.id.teacher);
-            time = itemView.findViewById(R.id.time_of_lesson);
             cardView = itemView.findViewById(R.id.card);
             cardView.setOnClickListener(view -> NYBus.get().post(new MoveToNextEvent("start")));
 

@@ -158,9 +158,9 @@ public class SearchActivity extends AppCompatActivity implements MenuItem.OnActi
 
                     @Override
                     public void onError(Throwable e) {
-                        String s = e.getMessage();
+                        String s = searchEditText.getText().toString();
+                        networkService.getSearchQuery(s, limit, offset);
                     }
-
                     @Override
                     public void onComplete() {
 
@@ -181,7 +181,7 @@ public class SearchActivity extends AppCompatActivity implements MenuItem.OnActi
         } else if (event.whatToDo() == 1) {
             if (!list.isEmpty()) {
                 if (list.size() != 0) {
-                    offset = offset + limit;
+                    offset = offset + limit + 1;
                     recyclerAdapter.addData(event.getSchedules());
                 }
             }
@@ -190,6 +190,7 @@ public class SearchActivity extends AppCompatActivity implements MenuItem.OnActi
 
     @Override
     public boolean onMenuItemActionCollapse(MenuItem item) {
+        onBackPressed();
         return true;
     }
 }

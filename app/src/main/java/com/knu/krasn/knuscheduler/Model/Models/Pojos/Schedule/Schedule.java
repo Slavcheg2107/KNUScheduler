@@ -43,11 +43,16 @@ public class Schedule extends RealmObject {
     @SerializedName("class_end")
     @Expose
     private String endTime;
+    @SerializedName("corps")
+    @Expose
+    private String corps;
+
+
 
     public Schedule() {
     }
 
-    public Schedule(String teachers, Integer day, String room, String discipline, String group, Integer week, Integer lesson, String lessontype, String subgroup, String beginTime, String endTime) {
+    public Schedule(String teachers, Integer day, String room, String discipline, String group, Integer week, Integer lesson, String lessontype, String subgroup, String beginTime, String endTime, String corps) {
         this.teachers = teachers;
         this.day = day;
         this.room = room;
@@ -59,6 +64,15 @@ public class Schedule extends RealmObject {
         this.subgroup = subgroup;
         this.beginTime = beginTime;
         this.endTime = endTime;
+        this.corps = corps;
+    }
+
+    public String getCorps() {
+        return corps;
+    }
+
+    public void setCorps(String corps) {
+        this.corps = corps;
     }
 
     public String getBeginTime() {

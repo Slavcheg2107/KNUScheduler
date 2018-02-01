@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -14,11 +15,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.knu.krasn.knuscheduler.ApplicationClass;
 import com.knu.krasn.knuscheduler.Model.Models.Pojos.GroupModel.Group;
@@ -57,21 +58,27 @@ public class ScheduleActivity extends AppCompatActivity implements MenuItem.OnAc
     SchedulePagerAdapter adapter;
     private String currentWeek;
     private SearchView sv;
-
+    private boolean doubleBackToExitPressedOnce;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_schedule);
         AppRater.app_launched(this);
-        groupTitle = getIntent().getStringExtra(getString(R.string.current_group));
-        settings.edit().putString(getString(R.string.current_group), groupTitle).apply();
+        if (getIntent().hasExtra(getString(R.string.current_group))) {
+            groupTitle = getIntent().getStringExtra(getString(R.string.current_group));
+            settings.edit().putString(getString(R.string.current_group), groupTitle).apply();
+        } else {
+            groupTitle = settings.getString(getString(R.string.current_group), "");
+        }
+
         toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(groupTitle);
         toolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
         toolbar.setTitleTextColor(getResources().getColor(R.color.colorWhite));
-        setSupportActionBar(toolbar);
 
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         tabLayout = findViewById(R.id.tabs);
         manager = getSupportFragmentManager();
         viewPager = findViewById(R.id.view_pager);
@@ -79,8 +86,6 @@ public class ScheduleActivity extends AppCompatActivity implements MenuItem.OnAc
         setupTabLayout(tabLayout);
         showSettingsDialog();
         startNotifications();
-
-        Log.e("TAG", "onCreate");
 
     }
 
@@ -131,11 +136,12 @@ public class ScheduleActivity extends AppCompatActivity implements MenuItem.OnAc
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             AlertDialog manageWeekDialog = builder.create();
             manageWeekDialog.setCancelable(false);
-            manageWeekDialog.setTitle("Виберіть поточний тиждень, будьласка");
+            manageWeekDialog.setTitle(getString(R.string.chooseWeek_dialog_title));
             manageWeekDialog.setButton(DialogInterface.BUTTON_POSITIVE, "Ok", ((dialog, which)
                     -> {
                 manageWeekDialog.dismiss();
                 startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
+                finish();
             }));
 
             manageWeekDialog.show();
@@ -146,11 +152,16 @@ public class ScheduleActivity extends AppCompatActivity implements MenuItem.OnAc
     protected void onPause() {
 
         super.onPause();
+        if (NYBus.get().isRegistered(this)) {
+            NYBus.get().unregister(this);
+        }
     }
 
     @Override
     protected void onResume() {
-        NYBus.get().register(this);
+        if (!NYBus.get().isRegistered(this)) {
+            NYBus.get().register(this);
+        }
         currentGroup = groupTitle;
         setupTabLayout(tabLayout);
         super.onResume();
@@ -178,6 +189,7 @@ public class ScheduleActivity extends AppCompatActivity implements MenuItem.OnAc
         int id = item.getItemId();
         if (id == R.id.settings) {
             startActivity(new Intent(this, SettingsActivity.class));
+            finish();
         }
         if (id == R.id.search) {
             startActivity(new Intent(this, SearchActivity.class));
@@ -199,15 +211,22 @@ public class ScheduleActivity extends AppCompatActivity implements MenuItem.OnAc
     @Subscribe
     public void onErrorEvent(ErrorEvent event) {
         if (event.getError().equals("reload")) {
-            startActivity(new Intent(this, MainActivity.class).putExtra(getString(R.string.Reload), "reload"));
+            startActivity(new Intent(this, MainActivity.class).putExtra(getString(R.string.key_reload), "reload"));
             finish();
         }
     }
 
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        NYBus.get().unregister(this);
+
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
     @Override
@@ -220,9 +239,14 @@ public class ScheduleActivity extends AppCompatActivity implements MenuItem.OnAc
             adapter = ((Week2Fragment) fragment).onBackPressed();
         }
         if (adapter != null && (adapter instanceof Week1RecyclerAdapter || adapter instanceof Week2RecyclerAdapter)) {
-            Intent i = new Intent(this, MainActivity.class);
-            setResult(RESULT_OK, i);
-            finish();
+            if (doubleBackToExitPressedOnce) {
+                finish();
+            } else {
+                Toast.makeText(this, R.string.press_again, Toast.LENGTH_SHORT).show();
+            }
+            this.doubleBackToExitPressedOnce = true;
+
+            new Handler().postDelayed(() -> doubleBackToExitPressedOnce = false, 2000);
         }
     }
 

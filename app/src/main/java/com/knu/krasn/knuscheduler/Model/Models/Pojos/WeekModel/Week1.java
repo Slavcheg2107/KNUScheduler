@@ -46,7 +46,6 @@ public class Week1 extends RealmObject {
             if(schedule.getDay() == 1) {
                 if (!day1.getScheduleList().contains(schedule))
                     day1.addSchedule(schedule);
-
             }
             else if(schedule.getDay() == 2){
                 if (!day2.getScheduleList().contains(schedule))

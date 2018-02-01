@@ -10,23 +10,23 @@
         android:name="com.knu.krasn.knuscheduler.ApplicationClass"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+
         android:theme="@style/SplashTheme">
         <activity
+
             android:name="com.knu.krasn.knuscheduler.View.Activities.MainActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
         </activity>
         <activity
             android:name="com.knu.krasn.knuscheduler.View.Activities.ScheduleActivity"
-            android:label="@string/title_activity_main2"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
@@ -36,7 +36,8 @@
         <activity
             android:name="com.knu.krasn.knuscheduler.View.Activities.SearchActivity"
             android:theme="@style/AppTheme"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:label="@string/app_name" />
 
         <service
             android:name="com.knu.krasn.knuscheduler.Presenter.Utils.ServiceUtils.NotificationService"

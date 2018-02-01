@@ -62,6 +62,8 @@ public class Week1RecyclerAdapter extends RecyclerView.Adapter<Week1RecyclerAdap
             case 5:
                 itemHolder.dayTitle.setText(context.getString(R.string.Day5, days.get(position).getScheduleSize()));
                 break;
+            case 6:
+                itemHolder.dayTitle.setText(context.getString(R.string.Day6, days.get(position).getScheduleSize()));
         }
     }
 

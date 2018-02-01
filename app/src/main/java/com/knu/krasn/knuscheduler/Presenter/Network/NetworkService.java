@@ -41,7 +41,7 @@ import static com.knu.krasn.knuscheduler.Presenter.Utils.ServiceUtils.Notificati
  */
 
 public class NetworkService {
-    public CompositeDisposable mCompositeDisposable = new CompositeDisposable();
+    private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
     private RetrofitConfig retrofitConfig;
     private Map<String, String> headerMap = new HashMap<>();
 
@@ -119,45 +119,47 @@ public class NetworkService {
 
     public void getSchedule(final String groupTitle) {
 
-
         mCompositeDisposable.add((retrofitConfig.getApiNetwork().getSchedule(groupTitle, headerMap))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(schedules -> {
                     Realm realm = ApplicationClass.getRealm();
-                    Group group1 = realm.where(Group.class).equalTo("title", groupTitle).findFirst();
-                    if (group1 == null) {
-                        settings.edit().putString("Reload", "reload").apply();
-                        NYBus.get().post(new ErrorEvent("reload"));
-                    } else {
-                        realm.beginTransaction();
-                        List<Schedule> week1Schedule = new ArrayList<>();
-                        List<Schedule> week2Schedule = new ArrayList<>();
-                        if (schedules != null) {
-                            for (Schedule schedule : schedules.getSchedule()) {
-                                switch (schedule.getWeek()) {
-                                    case 1:
-                                        week1Schedule.add(schedule);
-                                        break;
-                                    case 2:
-                                        week2Schedule.add(schedule);
-                                        break;
+                    if (!realm.isInTransaction()) {
+                        Group group1 = realm.where(Group.class).equalTo("title", groupTitle).findFirst();
+                        if (group1 == null) {
+                            settings.edit().putString("Reload", "reload").apply();
+                            NYBus.get().post(new ErrorEvent("reload"));
+                        } else {
+                            if (!realm.isInTransaction()) {
+                                realm.beginTransaction();
+                                List<Schedule> week1Schedule = new ArrayList<>();
+                                List<Schedule> week2Schedule = new ArrayList<>();
+                                if (schedules != null) {
+                                    for (Schedule schedule : schedules.getSchedule()) {
+                                        switch (schedule.getWeek()) {
+                                            case 1:
+                                                week1Schedule.add(schedule);
+                                                break;
+                                            case 2:
+                                                week2Schedule.add(schedule);
+                                                break;
+                                        }
+                                    }
                                 }
+                                Week1 week1 = new Week1(week1Schedule);
+                                Week2 week2 = new Week2(week2Schedule);
+                                Week1 managedWeek1 = realm.copyToRealm(week1);
+                                Week2 managedWeek2 = realm.copyToRealm(week2);
+                                group1.setWeek1(managedWeek1);
+                                group1.setWeek2(managedWeek2);
+                                realm.commitTransaction();
+                                NYBus.get().post(new GettingScheduleEvent(groupTitle));
+
+                                settings.edit().putString(ApplicationClass.getContext().getString(R.string.current_group), groupTitle).apply();
+                                currentGroup = groupTitle;
                             }
                         }
-                        Week1 week1 = new Week1(week1Schedule);
-                        Week2 week2 = new Week2(week2Schedule);
-                        Week1 managedWeek1 = realm.copyToRealm(week1);
-                        Week2 managedWeek2 = realm.copyToRealm(week2);
-                        group1.setWeek1(managedWeek1);
-                        group1.setWeek2(managedWeek2);
-                        realm.commitTransaction();
-                        NYBus.get().post(new GettingScheduleEvent(groupTitle));
-
-                        settings.edit().putString(ApplicationClass.getContext().getString(R.string.current_group), groupTitle).apply();
-                        currentGroup = groupTitle;
                     }
-
                 }, throwable -> {
                     if (throwable.getMessage().equals("timeout")) {
                         getSchedule(groupTitle);
@@ -170,8 +172,7 @@ public class NetworkService {
         return retrofitConfig.getApiNetwork().getSearchingSchedule(searchQuery, limit, offset, headerMap)
                 .map(Schedules::getSchedule)
                 .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
-                .doOnError(throwable -> getSearchQuery(searchQuery, limit, offset));
+                .observeOn(Schedulers.io());
 
 
     }

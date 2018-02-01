@@ -6,6 +6,7 @@
     android:layout_height="?attr/actionBarSize"
     app:layout_scrollFlags="scroll|enterAlways"
     android:background="@color/colorPrimaryDark"
-    app:titleTextColor="@color/colorWhite">
+    app:titleTextColor="@color/colorWhite"
+    style="@style/AppTheme.Toolbar">
 
 </android.support.v7.widget.Toolbar>

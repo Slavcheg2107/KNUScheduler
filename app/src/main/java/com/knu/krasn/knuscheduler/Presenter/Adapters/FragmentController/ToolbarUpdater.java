@@ -43,6 +43,9 @@ public class ToolbarUpdater implements ToolbarUpdaterInterface {
             case 5:
                 toolbar.setTitle(context.getString(R.string.Friday));
                 break;
+            case 6:
+                toolbar.setTitle(context.getString(R.string.Saturday));
+                break;
         }
     }
 }
