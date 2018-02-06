@@ -6,7 +6,6 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
@@ -22,6 +21,7 @@ import com.knu.krasn.knuscheduler.View.Activities.ScheduleActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -39,10 +39,10 @@ import io.reactivex.disposables.Disposable;
 
 public class NotificationService extends IntentService {
     private static final int MY_NOTIFICATION_ID = 1;
-    NotificationManager notificationManager;
     public static String currentGroup;
     public static boolean isRunning = false;
     final String TAG = "NOTIFICATIONSERVICE";
+    NotificationManager notificationManager;
     private Disposable dis;
 
     public NotificationService() {
@@ -65,7 +65,6 @@ public class NotificationService extends IntentService {
 
     @Override
     public int onStartCommand(@Nullable Intent intent, int flags, int startId) {
-        Log.e(TAG, "omStartCommand");
         currentGroup = intent != null ? intent.getStringExtra(getString(R.string.current_group)) : null;
         isRunning = true;
         startService();
@@ -113,7 +112,7 @@ public class NotificationService extends IntentService {
     private Schedule getNextSchedule() {
         Schedule nextSchedule = null;
         if (PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getBoolean(getString(R.string.key_notifications), true)) {
-            SharedPreferences sp = ApplicationClass.getPreferences();
+
             if (currentGroup != null) {
                 Group group = ApplicationClass.getRealm()
                         .where(Group.class)
@@ -126,30 +125,31 @@ public class NotificationService extends IntentService {
                 int dayNumber = cal.get(Calendar.DAY_OF_WEEK);
                 List<Schedule> schedules = new ArrayList<>();
                 try {
-                    switch (currentWeek) {
-                        case "Тиждень 1":
-                            if (dayNumber >= 2 && dayNumber <= 6) {
-                                if (group != null) {
+                    List<String> weeks = Arrays.asList(getResources().getStringArray(R.array.week_selection));
+                    String week1 = weeks.get(0);
+                    String week2 = weeks.get(1);
+                    if (currentWeek.equals(week1)) {
+                        if (dayNumber >= 2 && dayNumber <= 6) {
+                            if (group != null) {
 
-                                    for (DayOfWeek dayOfWeek : group.getWeek1().getDays()) {
-                                        if (dayOfWeek.getDayNumber() == dayNumber - 1) {
-                                            schedules = dayOfWeek.getScheduleList();
-                                        }
+                                for (DayOfWeek dayOfWeek : group.getWeek1().getDays()) {
+                                    if (dayOfWeek.getDayNumber() == dayNumber - 1) {
+                                        schedules = dayOfWeek.getScheduleList();
                                     }
                                 }
                             }
-                            break;
-                        case "Тиждень 2":
-                            if (dayNumber >= 2 && dayNumber <= 6) {
-                                if (group != null) {
-                                    for (DayOfWeek dayOfWeek : group.getWeek2().getDays()) {
-                                        if (dayOfWeek.getDayNumber() == dayNumber - 1) {
-                                            schedules = dayOfWeek.getScheduleList();
-                                        }
+                        }
+                    }
+                    if (currentWeek.equals(week2)) {
+                        if (dayNumber >= 2 && dayNumber <= 6) {
+                            if (group != null) {
+                                for (DayOfWeek dayOfWeek : group.getWeek2().getDays()) {
+                                    if (dayOfWeek.getDayNumber() == dayNumber - 1) {
+                                        schedules = dayOfWeek.getScheduleList();
                                     }
                                 }
                             }
-                            break;
+                        }
                     }
                 } catch (Exception e) {
                     Log.e(TAG, e.getMessage());

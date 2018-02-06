@@ -15,9 +15,9 @@ import io.realm.RealmConfiguration;
  */
 
 public class ApplicationClass extends Application {
+    public static SharedPreferences settings;
     static SharedPreferences prefs;
     static Context context;
-    public static SharedPreferences settings;
 
     public static Realm getRealm() {
         return Realm.getDefaultInstance();

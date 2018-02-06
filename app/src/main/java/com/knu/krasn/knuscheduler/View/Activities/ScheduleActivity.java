@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -59,6 +60,17 @@ public class ScheduleActivity extends AppCompatActivity implements MenuItem.OnAc
     private String currentWeek;
     private SearchView sv;
     private boolean doubleBackToExitPressedOnce;
+
+    public static boolean isScheduleLoaded(String groupTitle) {
+        try {
+            Group group = ApplicationClass.getRealm().where(Group.class).equalTo("title", groupTitle).findFirst();
+            Week1 week1 = group.getWeek1();
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,12 +114,12 @@ public class ScheduleActivity extends AppCompatActivity implements MenuItem.OnAc
 
     }
 
-
     private void startNotifications() {
         if (isScheduleLoaded(groupTitle)) {
             Intent i = new Intent(this, NotificationService.class);
             i.putExtra(getString(R.string.current_group), groupTitle);
             startService(i);
+            Log.e("t", "t");
         }
     }
 
@@ -216,7 +228,6 @@ public class ScheduleActivity extends AppCompatActivity implements MenuItem.OnAc
         }
     }
 
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -258,16 +269,6 @@ public class ScheduleActivity extends AppCompatActivity implements MenuItem.OnAc
         tabLayout.setupWithViewPager(viewPager, true);
         viewPager.addOnPageChangeListener(adapter);
         tabLayout.addOnTabSelectedListener(adapter);
-    }
-
-    public static boolean isScheduleLoaded(String groupTitle) {
-        try {
-            Group group = ApplicationClass.getRealm().where(Group.class).equalTo("title", groupTitle).findFirst();
-            Week1 week1 = group.getWeek1();
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
     }
 
     @Override

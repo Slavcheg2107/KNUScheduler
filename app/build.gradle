@@ -7,8 +7,8 @@ android {
         applicationId "com.knu.krasn.knuscheduler"
         minSdkVersion 16
         targetSdkVersion 26
-        versionCode 5
-        versionName "1.4"
+        versionCode 11
+        versionName "4.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         configurations.all {
             resolutionStrategy.force 'com.google.code.findbugs:jsr305:3.0.2'

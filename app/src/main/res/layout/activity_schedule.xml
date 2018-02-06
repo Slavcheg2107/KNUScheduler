@@ -11,8 +11,8 @@
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar"
-        android:layout_above="@+id/tabs">
+        android:layout_above="@+id/tabs"
+        android:layout_below="@+id/toolbar">
     </android.support.v4.view.ViewPager>
 
     <android.support.design.widget.TabLayout
@@ -20,10 +20,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        app:tabGravity="fill"
         android:rotationX="180"
+        app:tabGravity="fill"
+        app:tabIndicatorColor="@color/colorPrimaryDark"
         app:tabMode="fixed"
         app:tabSelectedTextColor="@color/colorPrimaryDark"
-        app:tabTextColor="@color/colorSecondaryDark"
-        app:tabIndicatorColor="@color/colorPrimaryDark" />
+        app:tabTextColor="@color/colorSecondaryDark" />
 </RelativeLayout>

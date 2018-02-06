@@ -52,7 +52,7 @@ public class FacultyRecyclerAdapter extends RecyclerView.Adapter<FacultyRecycler
 
     @Override
     public void onBindViewHolder(ItemHolder itemHolder, int position) {
-        String id = faculty.get(position).getId();
+
         String fac = faculty.get(position).getName();
         itemHolder.title.setText(fac);
 
