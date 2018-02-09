@@ -6,8 +6,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 
-import com.knu.krasn.knuscheduler.View.Fragments.Week1Fragment;
-import com.knu.krasn.knuscheduler.View.Fragments.Week2Fragment;
+import com.knu.krasn.knuscheduler.View.Fragments.Week1WeekFragment;
+import com.knu.krasn.knuscheduler.View.Fragments.Week2WeekFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,13 +68,13 @@ public class SchedulePagerAdapter extends FragmentPagerAdapter implements ViewPa
     }
 
     private void checkFragment(int position) {
-        Week1Fragment fr1;
-        Week2Fragment fr2;
-        if (mFragmentList.get(position) instanceof Week1Fragment) {
-            fr1 = (Week1Fragment) mFragmentList.get(position);
+        Week1WeekFragment fr1;
+        Week2WeekFragment fr2;
+        if (mFragmentList.get(position) instanceof Week1WeekFragment) {
+            fr1 = (Week1WeekFragment) mFragmentList.get(position);
             toolbarUpdater.updateToolbar(fr1.getCurrentDay());
-        } else if (mFragmentList.get(position) instanceof Week2Fragment) {
-            fr2 = (Week2Fragment) mFragmentList.get(position);
+        } else if (mFragmentList.get(position) instanceof Week2WeekFragment) {
+            fr2 = (Week2WeekFragment) mFragmentList.get(position);
             toolbarUpdater.updateToolbar(fr2.getCurrentDay());
         }
     }

@@ -34,8 +34,8 @@ import com.knu.krasn.knuscheduler.Presenter.Events.GettingScheduleEvent;
 import com.knu.krasn.knuscheduler.Presenter.Events.ShowScheduleEvent;
 import com.knu.krasn.knuscheduler.Presenter.Utils.AppRater;
 import com.knu.krasn.knuscheduler.Presenter.Utils.ServiceUtils.NotificationService;
-import com.knu.krasn.knuscheduler.View.Fragments.Week1Fragment;
-import com.knu.krasn.knuscheduler.View.Fragments.Week2Fragment;
+import com.knu.krasn.knuscheduler.View.Fragments.Week1WeekFragment;
+import com.knu.krasn.knuscheduler.View.Fragments.Week2WeekFragment;
 import com.mindorks.nybus.NYBus;
 import com.mindorks.nybus.annotation.Subscribe;
 
@@ -244,10 +244,10 @@ public class ScheduleActivity extends AppCompatActivity implements MenuItem.OnAc
     public void onBackPressed() {
         RecyclerView.Adapter adapter = null;
         Fragment fragment = this.adapter.getItem(viewPager.getCurrentItem());
-        if (fragment instanceof Week1Fragment) {
-            adapter = ((Week1Fragment) fragment).onBackPressed();
-        } else if (fragment instanceof Week2Fragment) {
-            adapter = ((Week2Fragment) fragment).onBackPressed();
+        if (fragment instanceof Week1WeekFragment) {
+            adapter = ((Week1WeekFragment) fragment).onBackPressed();
+        } else if (fragment instanceof Week2WeekFragment) {
+            adapter = ((Week2WeekFragment) fragment).onBackPressed();
         }
         if (adapter != null && (adapter instanceof Week1RecyclerAdapter || adapter instanceof Week2RecyclerAdapter)) {
             if (doubleBackToExitPressedOnce) {
@@ -263,8 +263,8 @@ public class ScheduleActivity extends AppCompatActivity implements MenuItem.OnAc
 
     private void setupViewPager(ViewPager viewPager) {
         adapter = new SchedulePagerAdapter(getSupportFragmentManager(), new ToolbarUpdater(groupTitle, toolbar));
-        adapter.addFragment(Week1Fragment.newInstance(), getString(R.string.week));
-        adapter.addFragment(Week2Fragment.newInstance(), getString(R.string.week));
+        adapter.addFragment(Week1WeekFragment.newInstance(), getString(R.string.week));
+        adapter.addFragment(Week2WeekFragment.newInstance(), getString(R.string.week));
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager, true);
         viewPager.addOnPageChangeListener(adapter);

@@ -6,7 +6,7 @@
     android:paddingLeft="0dp"
     android:paddingRight="0dp"
     android:paddingTop="0dp"
-    tools:context="com.knu.krasn.knuscheduler.View.Fragments.Week2Fragment">
+    tools:context="com.knu.krasn.knuscheduler.View.Fragments.Week2WeekFragment">
 
   <RelativeLayout
       android:id="@+id/wheel2"
@@ -26,6 +26,14 @@
 
         android:visibility="visible" />
   </RelativeLayout>
+
+  <TextView
+      android:id="@+id/empty_view"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:gravity="center"
+      android:text="@string/no_data_available"
+      android:visibility="gone" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
