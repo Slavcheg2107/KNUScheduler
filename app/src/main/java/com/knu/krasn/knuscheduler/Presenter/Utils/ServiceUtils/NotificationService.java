@@ -73,7 +73,7 @@ public class NotificationService extends IntentService {
     }
 
     public void startService() {
-        dis = Observable.interval(60 * 10, TimeUnit.SECONDS)
+        dis = Observable.interval(60 * 5, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(tick -> showNotification());
 
@@ -129,7 +129,7 @@ public class NotificationService extends IntentService {
                     String week1 = weeks.get(0);
                     String week2 = weeks.get(1);
                     if (currentWeek.equals(week1)) {
-                        if (dayNumber >= 2 && dayNumber <= 6) {
+                        if (dayNumber >= 2 && dayNumber <= 7) {
                             if (group != null) {
 
                                 for (DayOfWeek dayOfWeek : group.getWeek1().getDays()) {
@@ -141,7 +141,7 @@ public class NotificationService extends IntentService {
                         }
                     }
                     if (currentWeek.equals(week2)) {
-                        if (dayNumber >= 2 && dayNumber <= 6) {
+                        if (dayNumber >= 2 && dayNumber <= 7) {
                             if (group != null) {
                                 for (DayOfWeek dayOfWeek : group.getWeek2().getDays()) {
                                     if (dayOfWeek.getDayNumber() == dayNumber - 1) {

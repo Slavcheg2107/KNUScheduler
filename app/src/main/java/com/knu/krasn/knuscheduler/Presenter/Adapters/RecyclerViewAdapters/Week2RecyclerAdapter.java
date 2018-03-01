@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.knu.krasn.knuscheduler.Model.Models.Pojos.DayOfWeek.DayOfWeek;
 import com.knu.krasn.knuscheduler.Presenter.Events.ShowScheduleEvent;
-import com.knu.krasn.knuscheduler.Presenter.Network.NetworkService;
 import com.mindorks.nybus.NYBus;
 
 import java.util.List;
@@ -26,12 +25,11 @@ public class Week2RecyclerAdapter extends RecyclerView.Adapter<Week2RecyclerAdap
     private LayoutInflater inflater = null;
     private List<DayOfWeek> days;
     private Context context;
-    private NetworkService networkService;
 
-    public Week2RecyclerAdapter(Context context, List<DayOfWeek> daysList, NetworkService networkService) {
+
+    public Week2RecyclerAdapter(Context context, List<DayOfWeek> daysList) {
         this.context = context;
         this.inflater = LayoutInflater.from(context);
-        this.networkService = networkService;
         this.days = daysList;
     }
 

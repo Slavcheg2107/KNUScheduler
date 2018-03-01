@@ -50,6 +50,7 @@ public class Schedule extends RealmObject {
 
 
     public Schedule() {
+
     }
 
     public Schedule(String teachers, Integer day, String room, String discipline, String group, Integer week, Integer lesson, String lessontype, String subgroup, String beginTime, String endTime, String corps) {

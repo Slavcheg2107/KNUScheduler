@@ -15,7 +15,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -44,7 +43,9 @@ import java.util.List;
 
 import geek.owl.com.ua.KNUSchedule.R;
 
+import static com.knu.krasn.knuscheduler.ApplicationClass.getNetwork;
 import static com.knu.krasn.knuscheduler.ApplicationClass.settings;
+import static com.knu.krasn.knuscheduler.Presenter.Utils.ServiceUtils.NetworkConnectionChecker.isOnline;
 import static com.knu.krasn.knuscheduler.Presenter.Utils.ServiceUtils.NotificationService.currentGroup;
 
 
@@ -99,6 +100,9 @@ public class ScheduleActivity extends AppCompatActivity implements MenuItem.OnAc
         showSettingsDialog();
         startNotifications();
 
+        if (isOnline(this)) {
+            getNetwork().getSchedule(groupTitle);
+        }
     }
 
     private void setUpSearchView(SearchView searchView) {
@@ -119,7 +123,6 @@ public class ScheduleActivity extends AppCompatActivity implements MenuItem.OnAc
             Intent i = new Intent(this, NotificationService.class);
             i.putExtra(getString(R.string.current_group), groupTitle);
             startService(i);
-            Log.e("t", "t");
         }
     }
 
@@ -162,7 +165,6 @@ public class ScheduleActivity extends AppCompatActivity implements MenuItem.OnAc
 
     @Override
     protected void onPause() {
-
         super.onPause();
         if (NYBus.get().isRegistered(this)) {
             NYBus.get().unregister(this);
@@ -176,7 +178,14 @@ public class ScheduleActivity extends AppCompatActivity implements MenuItem.OnAc
         }
         currentGroup = groupTitle;
         setupTabLayout(tabLayout);
+
         super.onResume();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
     }
 
     @Override
@@ -273,7 +282,6 @@ public class ScheduleActivity extends AppCompatActivity implements MenuItem.OnAc
 
     @Override
     public boolean onMenuItemActionExpand(MenuItem item) {
-
 
         return false;
     }

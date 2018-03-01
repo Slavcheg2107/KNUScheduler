@@ -12,13 +12,11 @@ import com.knu.krasn.knuscheduler.ApplicationClass;
 import com.knu.krasn.knuscheduler.Model.Models.Pojos.GroupModel.Group;
 import com.knu.krasn.knuscheduler.Presenter.Events.ConnectionEvent;
 import com.knu.krasn.knuscheduler.Presenter.Events.MoveToNextEvent;
-import com.knu.krasn.knuscheduler.Presenter.Network.NetworkService;
 import com.mindorks.nybus.NYBus;
 
 import java.util.List;
 
 import geek.owl.com.ua.KNUSchedule.R;
-import io.realm.RealmResults;
 
 import static com.knu.krasn.knuscheduler.ApplicationClass.getContext;
 import static com.knu.krasn.knuscheduler.ApplicationClass.settings;
@@ -29,23 +27,22 @@ import static com.knu.krasn.knuscheduler.Presenter.Utils.ServiceUtils.NetworkCon
  * Created by krasn on 9/3/2017.
  */
 
-public class GroupRecyclerAdapter extends RecyclerView.Adapter<GroupRecyclerAdapter.ItemHolder> {
+public class GroupRecyclerAdapter extends RecyclerView.Adapter<GroupRecyclerAdapter.ItemHolder> implements BaseRecyclerAdapter {
     private List<Group> groups;
-    private Context context;
-    private LayoutInflater inflater = null;
-    private NetworkService networkService;
 
-    public GroupRecyclerAdapter(Context context, List<Group> groups, NetworkService networkService) {
+    private LayoutInflater inflater = null;
+
+
+    public GroupRecyclerAdapter(Context context, List<Group> groups) {
         this.groups = groups;
-        this.context = context;
         this.inflater = LayoutInflater.from(context);
-        this.networkService = networkService;
+
     }
 
     @Override
     public ItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.card_item, parent, false);
-        return new ItemHolder(view, networkService);
+        return new ItemHolder(view);
     }
 
     @Override
@@ -65,12 +62,21 @@ public class GroupRecyclerAdapter extends RecyclerView.Adapter<GroupRecyclerAdap
         return (groups == null) ? 0 : groups.size();
     }
 
+    @SuppressWarnings("unchecked")
+    @Override
+    public void addData(List newData) {
+        groups.addAll(newData);
+        notifyDataSetChanged();
+    }
 
-    public void updateData(RealmResults<Group> newData) {
+    @SuppressWarnings("unchecked")
+    @Override
+    public void updateData(List newData) {
         groups = newData;
         notifyDataSetChanged();
     }
 
+    @Override
     public void clearData() {
         groups.clear();
         notifyDataSetChanged();
@@ -80,7 +86,7 @@ public class GroupRecyclerAdapter extends RecyclerView.Adapter<GroupRecyclerAdap
         TextView title;
         CardView cardView;
 
-        ItemHolder(View itemView, final NetworkService networkService) {
+        ItemHolder(View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.title);
             cardView = itemView.findViewById(R.id.group_card);

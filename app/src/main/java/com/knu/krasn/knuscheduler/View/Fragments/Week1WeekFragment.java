@@ -23,10 +23,8 @@ import com.knu.krasn.knuscheduler.Model.Models.Pojos.WeekModel.Week1;
 import com.knu.krasn.knuscheduler.Presenter.Adapters.FragmentController.ToolbarUpdater;
 import com.knu.krasn.knuscheduler.Presenter.Adapters.RecyclerViewAdapters.ScheduleRecyclerAdapter;
 import com.knu.krasn.knuscheduler.Presenter.Adapters.RecyclerViewAdapters.Week1RecyclerAdapter;
-import com.knu.krasn.knuscheduler.Presenter.Events.ConnectionEvent;
 import com.knu.krasn.knuscheduler.Presenter.Events.GettingScheduleEvent;
 import com.knu.krasn.knuscheduler.Presenter.Events.ShowScheduleEvent;
-import com.knu.krasn.knuscheduler.Presenter.Network.NetworkService;
 import com.knu.krasn.knuscheduler.Presenter.Utils.Decor.GridSpacingItemDecoration;
 import com.mindorks.nybus.NYBus;
 import com.mindorks.nybus.annotation.Subscribe;
@@ -51,7 +49,7 @@ public class Week1WeekFragment extends Fragment implements BaseWeekFragment {
     RecyclerView recyclerView;
     ScheduleRecyclerAdapter scheduleRecyclerAdapter;
     Week1RecyclerAdapter week1RecyclerAdapter;
-    NetworkService networkService = ApplicationClass.getNetwork();
+
     Realm realm = getRealm();
     Group group;
     Week1 week1 = null;
@@ -91,8 +89,13 @@ public class Week1WeekFragment extends Fragment implements BaseWeekFragment {
         recyclerView.setLayoutManager(new GridLayoutManager(getContext().getApplicationContext(), 1));
         recyclerView.addItemDecoration(new GridSpacingItemDecoration().getItemDecor(1, 10, false, getResources()));
         recyclerView.getLayoutManager().setAutoMeasureEnabled(true);
-        setupRecyclerView(new ShowScheduleEvent(checkCurrentDayOfWeek(), getString(R.string.week1_adapter_name)));
 
+        if (isOnline(ApplicationClass.getContext())) {
+            ApplicationClass.getNetwork().getSchedule(groupTitle);
+
+        } else {
+            setupRecyclerView(new ShowScheduleEvent(checkCurrentDayOfWeek(), getString(R.string.week1_adapter_name)));
+        }
         return rootView;
     }
 
@@ -100,6 +103,7 @@ public class Week1WeekFragment extends Fragment implements BaseWeekFragment {
     public void onResume() {
         super.onResume();
         NYBus.get().register(this);
+
     }
 
     @Override
@@ -145,25 +149,24 @@ public class Week1WeekFragment extends Fragment implements BaseWeekFragment {
         if (group != null) {
             week1 = group.getWeek1();
         }
-        if (week1 == null) {
 
-            if (isOnline(ApplicationClass.getContext())) {
-                ApplicationClass.getNetwork().getSchedule(groupTitle);
+        if (event != null && event.getAdapterName().equals(getString(R.string.week1_adapter_name))) {
+            if (week1 != null) {
+                week1RecyclerAdapter = new Week1RecyclerAdapter(ApplicationClass.getContext(), week1.getDays());
             } else {
-                NYBus.get().post(new ConnectionEvent());
+                return;
             }
-        } else if (event != null && event.getAdapterName().equals(getString(R.string.week1_adapter_name))) {
-            week1RecyclerAdapter = new Week1RecyclerAdapter(ApplicationClass.getContext(), week1.getDays(), networkService);
             dayNumber = event.getDayNumber();
             DayOfWeek dayOfWeek = new DayOfWeek();
             for (DayOfWeek dayOfWeek1 : week1.getDays()) {
                 if (dayOfWeek1.getDayNumber() == event.getDayNumber()) {
+
                     dayOfWeek = dayOfWeek1;
                 }
             }
             if (event.getDayNumber() != 0) {
                 scheduleRecyclerAdapter = new ScheduleRecyclerAdapter(ApplicationClass.getContext(),
-                        dayOfWeek.getScheduleList(), networkService);
+                        dayOfWeek.getScheduleList(), 0);
                 recyclerView.setAdapter(scheduleRecyclerAdapter);
 
                 if (!dayOfWeek.getScheduleList().isEmpty()) {

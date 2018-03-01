@@ -70,13 +70,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
     ProgressBar pb;
     Realm realm;
     String groupTitle;
-    private boolean doubleBackToExitPressedOnce;
     RealmResults<Group> groupRealmResults;
     SearchView sv;
+    Toolbar toolbar;
+    private boolean doubleBackToExitPressedOnce;
     private RealmResults<Faculty> facultyRealmResults;
     private GroupRecyclerAdapter searchGroupAdapter;
     private FacultyRecyclerAdapter searchFacultyAdapter;
-    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
     @Subscribe(threadType = NYThread.MAIN)
     public void onGettingGroupsEvent(GettingGroupsEvent event) {
         groups = event.getGroups();
-        groupRecyclerAdapter = new GroupRecyclerAdapter(this, groups, networkService);
+        groupRecyclerAdapter = new GroupRecyclerAdapter(this, groups);
         if (loadingWheel.isShown()) {
             loadingWheel.setVisibility(View.GONE);
         }
@@ -130,6 +130,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
         getMenuInflater().inflate(R.menu.menu_main2, menu);
         MenuItem settings = menu.findItem(R.id.settings);
         settings.setVisible(false);
@@ -229,7 +230,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
 
     @Override
     public void setupView() {
-
         if (getIntent().hasExtra(getString(R.string.key_reload))) {
             realm = ApplicationClass.getRealm();
             if (!realm.isInTransaction())
@@ -264,10 +264,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
         } else {
             faculties = realm.where(Faculty.class).findAll();
             loadingWheel.setVisibility(View.GONE);
-
-
             if (!getIntent().hasExtra(getString(R.string.key_get_group))) {
-                facultyRecyclerAdapter = new FacultyRecyclerAdapter(this, faculties, networkService);
+                facultyRecyclerAdapter = new FacultyRecyclerAdapter(this, faculties);
                 if (loadingWheel.getVisibility() == View.VISIBLE) {
                     loadingWheel.setVisibility(View.GONE);
                 }
@@ -312,7 +310,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
                 }
             }
         }
-
     }
 
     @Override
@@ -324,8 +321,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
                     @Override
                     public void onSubscribe(Disposable d) {
 
-                        searchGroupAdapter = new GroupRecyclerAdapter(getApplicationContext(), new ArrayList<Group>(), networkService);
-                        searchFacultyAdapter = new FacultyRecyclerAdapter(getApplicationContext(), new ArrayList<Faculty>(), networkService);
+                        searchGroupAdapter = new GroupRecyclerAdapter(getApplicationContext(), new ArrayList<Group>());
+                        searchFacultyAdapter = new FacultyRecyclerAdapter(getApplicationContext(), new ArrayList<Faculty>());
                     }
 
                     @Override

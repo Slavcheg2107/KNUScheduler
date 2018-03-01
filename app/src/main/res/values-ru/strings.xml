@@ -51,5 +51,5 @@
     <string name="press_again">Нажмите еще раз для выхода</string>
     <string name="lesson_number_time">Пара %1$d (%2$s - %3$s)</string>
     <string name="room_corps_number"> %1$s ауд. корпус %2$s</string>
-    <string name="no_data_available">Нет пар сегодня</string>
+    <string name="no_data_available">Нет пар</string>
 </resources>

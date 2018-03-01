@@ -21,7 +21,6 @@ import java.util.List;
 
 import geek.owl.com.ua.KNUSchedule.R;
 import io.realm.Realm;
-import io.realm.RealmResults;
 
 import static com.knu.krasn.knuscheduler.ApplicationClass.getRealm;
 import static com.knu.krasn.knuscheduler.Presenter.Utils.ServiceUtils.NetworkConnectionChecker.isOnline;
@@ -30,18 +29,17 @@ import static com.knu.krasn.knuscheduler.Presenter.Utils.ServiceUtils.NetworkCon
  * Created by krasn on 9/3/2017.
  */
 
-public class FacultyRecyclerAdapter extends RecyclerView.Adapter<FacultyRecyclerAdapter.ItemHolder> {
+public class FacultyRecyclerAdapter extends RecyclerView.Adapter<FacultyRecyclerAdapter.ItemHolder> implements BaseRecyclerAdapter {
     private List<Faculty> faculty = new ArrayList<>();
     private LayoutInflater inflater = null;
-    private Context context;
+
     private NetworkService networkService;
 
-    public FacultyRecyclerAdapter(Context context, List<Faculty> items, NetworkService networkService) {
+    public FacultyRecyclerAdapter(Context context, List<Faculty> items) {
 
         faculty = items;
-        this.context = context;
         this.inflater = LayoutInflater.from(context);
-        this.networkService = networkService;
+        this.networkService = ApplicationClass.getNetwork();
     }
 
     @Override
@@ -52,7 +50,6 @@ public class FacultyRecyclerAdapter extends RecyclerView.Adapter<FacultyRecycler
 
     @Override
     public void onBindViewHolder(ItemHolder itemHolder, int position) {
-
         String fac = faculty.get(position).getName();
         itemHolder.title.setText(fac);
 
@@ -68,11 +65,22 @@ public class FacultyRecyclerAdapter extends RecyclerView.Adapter<FacultyRecycler
         return (faculty == null) ? 0 : faculty.size();
     }
 
-    public void updateData(RealmResults<Faculty> newData) {
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public void addData(List newData) {
+        faculty.addAll(newData);
+        notifyDataSetChanged();
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public void updateData(List newData) {
         faculty = newData;
         notifyDataSetChanged();
     }
 
+    @Override
     public void clearData() {
         faculty.clear();
         notifyDataSetChanged();
@@ -89,7 +97,6 @@ public class FacultyRecyclerAdapter extends RecyclerView.Adapter<FacultyRecycler
             cardView.setOnClickListener(view -> {
                 Realm realm = getRealm();
                 if (realm.where(Faculty.class).equalTo("name", title.getText().toString()).findFirst().getGroups().isEmpty()) {
-//                    NetworkConnectionChecker nc = new NetworkConnectionChecker(ApplicationClass.getContext());
                     if (isOnline(ApplicationClass.getContext())) {
                         NYBus.get().post(new ErrorEvent("Кликнулось"));
                         networkService.getGroups(faculties.get(getAdapterPosition()).getId());

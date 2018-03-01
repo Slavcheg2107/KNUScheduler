@@ -7,6 +7,9 @@ import android.preference.PreferenceManager;
 
 import com.knu.krasn.knuscheduler.Presenter.Network.NetworkService;
 
+import java.util.HashMap;
+
+import geek.owl.com.ua.KNUSchedule.R;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
@@ -18,6 +21,7 @@ public class ApplicationClass extends Application {
     public static SharedPreferences settings;
     static SharedPreferences prefs;
     static Context context;
+    private static HashMap<Integer, String> days;
 
     public static Realm getRealm() {
         return Realm.getDefaultInstance();
@@ -35,6 +39,11 @@ public class ApplicationClass extends Application {
         return context;
     }
 
+    public static String getDay(Integer dayNumber) {
+        return days.get(dayNumber);
+    }
+
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -45,7 +54,13 @@ public class ApplicationClass extends Application {
         settings = PreferenceManager.getDefaultSharedPreferences(this);
         context = getApplicationContext();
 
+        days = new HashMap<>();
+        days.put(1, getString(R.string.Monday));
+        days.put(2, getString(R.string.Tuesday));
+        days.put(3, getString(R.string.Wednesday));
+        days.put(4, getString(R.string.Thursday));
+        days.put(5, getString(R.string.Friday));
+        days.put(6, getString(R.string.Saturday));
     }
-
 
 }

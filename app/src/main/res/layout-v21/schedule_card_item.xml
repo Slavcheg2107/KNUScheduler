@@ -5,13 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/card_margin"
+    android:background="@drawable/ripple"
     android:elevation="3dp"
+    android:foreground="?android:attr/selectableItemBackground"
     app:cardBackgroundColor="@color/colorWhite"
     app:cardCornerRadius="5dp"
-    app:contentPadding="5dp"
-    android:background="@drawable/ripple"
 
-    android:foreground="?android:attr/selectableItemBackground"
+    app:contentPadding="5dp"
 
     >
 
@@ -48,6 +48,7 @@
             android:layout_marginEnd="4dp"
             android:layout_toEndOf="@+id/lesson_number"
             android:text="subgroup"
+            android:textAlignment="viewEnd"
             android:textColor="@color/colorPrimaryDark"
             app:layout_constraintBaseline_toBaselineOf="@+id/lesson_number"
             app:layout_constraintEnd_toEndOf="parent"
@@ -58,11 +59,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:layout_marginStart="4dp"
             android:layout_marginTop="4dp"
             android:layout_weight="1"
             android:text="room"
-            android:textAlignment="center"
+            android:textAlignment="viewStart"
             android:textColor="@color/colorPrimaryDark"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/lesson_type" />
@@ -70,20 +70,20 @@
         <TextView
             android:id="@+id/teacher"
             android:layout_width="wrap_content"
-
-            android:layout_height="17dp"
+            android:layout_height="wrap_content"
             android:layout_margin="5dp"
-
             android:layout_marginRight="16dp"
             android:layout_weight="1"
-            android:text="teacher"
-            android:textAlignment="center"
+            android:maxLines="2"
+            android:text="teachers"
+            android:textAlignment="viewEnd"
             android:textColor="@color/colorPrimaryDark"
-            app:layout_constraintBaseline_toBaselineOf="@+id/room"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintHorizontal_bias="0.988"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/room" />
+            app:layout_constraintStart_toEndOf="@+id/room"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/lesson_type"
@@ -112,6 +112,22 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/room" />
+
+        <TextView
+            android:id="@+id/searchData"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="TextView"
+            android:textAlignment="viewStart"
+            android:textColor="@color/colorPrimaryDark"
+            app:layout_constraintBottom_toTopOf="@+id/room"
+            app:layout_constraintEnd_toStartOf="@+id/lesson_number"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
 
     </android.support.constraint.ConstraintLayout>
 

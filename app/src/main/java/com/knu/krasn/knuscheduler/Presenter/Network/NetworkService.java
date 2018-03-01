@@ -16,6 +16,8 @@ import com.knu.krasn.knuscheduler.Presenter.Events.ErrorEvent;
 import com.knu.krasn.knuscheduler.Presenter.Events.GetFacultiesEvent;
 import com.knu.krasn.knuscheduler.Presenter.Events.GettingGroupsEvent;
 import com.knu.krasn.knuscheduler.Presenter.Events.GettingScheduleEvent;
+import com.knu.krasn.knuscheduler.View.Activities.SearchActivity;
+import com.knu.krasn.knuscheduler.View.SearchViewActivity;
 import com.mindorks.nybus.NYBus;
 
 import java.util.ArrayList;
@@ -71,9 +73,6 @@ public class NetworkService {
                             Faculty faculty1 = realm.createObject(Faculty.class);
                             faculty1.setId(faculty.getId());
                             faculty1.setName(faculty.getName());
-//                    String title = faculty.getName();
-//                    realm.copyToRealm(faculty);
-
                         }
                         realm.commitTransaction();
                         NYBus.get().post(new GetFacultiesEvent());
@@ -132,6 +131,7 @@ public class NetworkService {
                         } else {
                             if (!realm.isInTransaction()) {
                                 realm.beginTransaction();
+
                                 List<Schedule> week1Schedule = new ArrayList<>();
                                 List<Schedule> week2Schedule = new ArrayList<>();
                                 if (schedules != null) {
@@ -168,12 +168,12 @@ public class NetworkService {
     }
 
     public Single<List<Schedule>> getSearchQuery(String searchQuery, int limit, int offset) {
-
+        SearchViewActivity searchViewActivity = new SearchActivity();
+        searchViewActivity.showLoader();
         return retrofitConfig.getApiNetwork().getSearchingSchedule(searchQuery, limit, offset, headerMap)
                 .map(Schedules::getSchedule)
                 .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io());
-
+                .observeOn(AndroidSchedulers.mainThread());
 
     }
 }

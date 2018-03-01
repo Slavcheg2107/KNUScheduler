@@ -6,5 +6,4 @@ package com.knu.krasn.knuscheduler.View;
 
 public interface MainActivityView {
     void setupView();
-
 }
