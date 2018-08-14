@@ -8,7 +8,7 @@
             android:key="@string/key_notifications"
             android:summaryOff="@string/notifications_disabled"
             android:summaryOn="@string/notifications_enabled"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/lightDark"
             android:title="@string/notifications_title"
 
             />
