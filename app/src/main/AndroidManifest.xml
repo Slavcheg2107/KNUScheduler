@@ -3,45 +3,31 @@
     package="geek.owl.com.ua.KNUSchedule">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
 
     <application
-        android:name="com.knu.krasn.knuscheduler.ApplicationClass"
+        android:name="com.knu.krasn.knuscheduler.AppClass"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
 
-        android:theme="@style/SplashTheme">
-        <activity
+        android:theme="@style/AppTheme">
 
-            android:name="com.knu.krasn.knuscheduler.View.Activities.MainActivity"
+        <activity
+            android:name="com.knu.krasn.knuscheduler.View.Activity.SplashActivity"
             android:screenOrientation="portrait"
-            android:label="@string/app_name">
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.VIEW" />
             </intent-filter>
-
         </activity>
         <activity
-            android:name="com.knu.krasn.knuscheduler.View.Activities.ScheduleActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name="com.knu.krasn.knuscheduler.View.Activities.SettingsActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.withActionBar" />
-        <activity
-            android:name="com.knu.krasn.knuscheduler.View.Activities.SearchActivity"
-            android:theme="@style/AppTheme"
-            android:screenOrientation="portrait"
-            android:label="@string/app_name" />
-
-        <service
-            android:name="com.knu.krasn.knuscheduler.Presenter.Utils.ServiceUtils.NotificationService"
-            android:exported="false" />
+            android:name="com.knu.krasn.knuscheduler.View.Activity.MainActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
