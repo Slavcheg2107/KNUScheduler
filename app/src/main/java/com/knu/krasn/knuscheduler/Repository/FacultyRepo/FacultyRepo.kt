@@ -6,6 +6,7 @@ import com.knu.krasn.knuscheduler.AppClass
 import com.knu.krasn.knuscheduler.Repository.FacultyPojo
 import com.knu.krasn.knuscheduler.Util.Action
 import com.knu.krasn.knuscheduler.Util.ApiService
+import kotlinx.coroutines.experimental.launch
 
 
 import retrofit2.HttpException
@@ -26,7 +27,7 @@ class FacultyRepo(val action: MutableLiveData<Action>) {
             val response = job.await()
             try {
                 if (response.isSuccessful) {
-                    response.body().let {
+                    response.body()?.let {
                         database.insertFaculties(it.data)
                     }
                 }

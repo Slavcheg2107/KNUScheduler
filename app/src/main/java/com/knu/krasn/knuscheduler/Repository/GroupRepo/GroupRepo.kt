@@ -6,6 +6,7 @@ import com.knu.krasn.knuscheduler.AppClass
 import com.knu.krasn.knuscheduler.Repository.GroupPojo
 import com.knu.krasn.knuscheduler.Util.Action
 import com.knu.krasn.knuscheduler.Util.ApiService
+import kotlinx.coroutines.experimental.launch
 
 import retrofit2.HttpException
 import java.lang.Exception
@@ -30,7 +31,7 @@ class GroupRepo(val action: MutableLiveData<Action>) {
 
             try {
                 if (response.isSuccessful) {
-                    response.body().let {
+                    response.body()?.let {
                         database.insertGroups(it.groups)
                     }
                 }

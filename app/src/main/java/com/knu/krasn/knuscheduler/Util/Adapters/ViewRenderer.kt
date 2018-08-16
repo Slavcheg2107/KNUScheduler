@@ -1,6 +1,5 @@
 package com.knu.krasn.knuscheduler.Util.Adapters
 
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +7,7 @@ import android.widget.TextView
 import com.knu.krasn.knuscheduler.Repository.FacultyPojo
 import com.knu.krasn.knuscheduler.Repository.GroupPojo
 import com.knu.krasn.knuscheduler.Repository.ItemType
+import geek.owl.com.ua.KNUSchedule.R
 
 class ViewRenderer {
     fun createViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
