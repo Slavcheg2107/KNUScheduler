@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+
+        <!-- Customize your theme here. -->
+        <item name="android:colorControlActivated">@color/colorPrimaryDark</item>
+        <!--<item name="colorPrimary">@color/colorPrimary</item>-->
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <!--<item name="colorAccent">@color/colorAccent</item>-->
+        <item name="android:textColorSecondary">@color/colorWhite</item>
+        <item name="android:text">@color/colorSecondaryDark</item>
+        <item name="android:title">@color/colorSecondaryDark</item>
+        <item name="autoCompleteTextViewStyle">@style/cursorColor</item>
+    </style>
+
+    <style name="AppTheme.Toolbar" parent="android:Theme.Holo.Light.DarkActionBar">
+
+    </style>
+    <style name="AppTheme.withActionBar" parent="Theme.AppCompat.DayNight.DarkActionBar">
+        <item name="colorControlActivated">@color/colorPrimaryDark</item>
+        <item name="colorControlNormal">@color/colorSecondaryDark</item>
+    </style>
+
+    <style name="cursorColor" parent="Widget.AppCompat.AutoCompleteTextView">
+        <item name="android:textCursorDrawable">@drawable/cursor</item>
+    </style>
+
+    <style name="SplashTheme" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/splash</item>
+
+    </style>
+
+</resources>

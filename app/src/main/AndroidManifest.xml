@@ -4,11 +4,11 @@
     package="geek.owl.com.ua.KNUSchedule">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
 
     <application
-        android:name="com.knu.krasn.knuscheduler.ApplicationClass"
+        android:name="com.knu.krasn.knuscheduler.AppClass"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -16,10 +16,21 @@
         tools:ignore="GoogleAppIndexingWarning"
         android:fullBackupContent="true">
 
+        android:theme="@style/AppTheme">
 
-        <service
-            android:name="com.knu.krasn.knuscheduler.Presenter.Utils.ServiceUtils.NotificationService"
-            android:exported="false" />
+        <activity
+            android:name="com.knu.krasn.knuscheduler.View.Activity.SplashActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/SplashTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.VIEW" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.knu.krasn.knuscheduler.View.Activity.MainActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
