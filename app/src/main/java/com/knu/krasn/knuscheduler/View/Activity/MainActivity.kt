@@ -7,6 +7,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHost
 import androidx.navigation.Navigation
 import androidx.navigation.Navigation.findNavController
+import geek.owl.com.ua.KNUSchedule.R
 
 class MainActivity : AppCompatActivity(), NavHost {
 

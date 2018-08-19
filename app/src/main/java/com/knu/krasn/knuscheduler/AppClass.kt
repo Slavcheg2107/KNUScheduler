@@ -7,7 +7,7 @@ import com.knu.krasn.knuscheduler.Util.Database
 class AppClass : Application() {
     override fun onCreate() {
         super.onCreate()
-        database = Room.databaseBuilder(this, Database::class.java, "KNUDb").build()
+        database = Room.databaseBuilder(this, Database::class.java, "KNUDb").fallbackToDestructiveMigration().build()
 
     }
 

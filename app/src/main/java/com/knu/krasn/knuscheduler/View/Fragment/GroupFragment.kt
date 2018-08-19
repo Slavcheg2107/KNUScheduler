@@ -17,6 +17,7 @@ import com.knu.krasn.knuscheduler.Util.Adapters.OnItemClick
 import com.knu.krasn.knuscheduler.Util.Adapters.SimpleAdapter
 import com.knu.krasn.knuscheduler.Util.KNUDiffUtil
 import com.knu.krasn.knuscheduler.ViewModel.GroupViewModel.GroupViewModel
+import geek.owl.com.ua.KNUSchedule.R
 import kotlinx.android.synthetic.main.group_fragment.view.*
 
 class GroupFragment : Fragment(), OnItemClick {

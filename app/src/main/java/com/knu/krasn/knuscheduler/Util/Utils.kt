@@ -1,5 +1,6 @@
 package com.knu.krasn.knuscheduler.Util
 
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.experimental.CoroutineCallAdapterFactory
 import com.knu.krasn.knuscheduler.Util.Network.WebApi
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
