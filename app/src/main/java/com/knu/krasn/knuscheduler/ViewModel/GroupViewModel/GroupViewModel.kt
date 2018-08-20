@@ -12,5 +12,8 @@ class GroupViewModel : ViewModel() {
     private val groupRepo: GroupRepo = GroupRepo(actionLiveData)
 
     fun getGroupLiveData(id: Long): LiveData<List<GroupPojo>> = groupRepo.getGroupLiveData(id)
+    fun search(p0: String?) {
+        groupRepo.search(p0)
+    }
 
 }

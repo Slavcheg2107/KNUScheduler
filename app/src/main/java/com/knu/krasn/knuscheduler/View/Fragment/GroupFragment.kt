@@ -2,10 +2,14 @@ package com.knu.krasn.knuscheduler.View.Fragment
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.SearchView
+import android.text.TextWatcher
+import android.transition.TransitionManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,17 +24,51 @@ import com.knu.krasn.knuscheduler.ViewModel.GroupViewModel.GroupViewModel
 import geek.owl.com.ua.KNUSchedule.R
 import kotlinx.android.synthetic.main.group_fragment.view.*
 
-class GroupFragment : Fragment(), OnItemClick {
+class GroupFragment : BaseFragment(), OnItemClick {
     private lateinit var viewModel: GroupViewModel
     private lateinit var groupAdapter: SimpleAdapter
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.group_fragment, container, false)
         initRecyclerView(view)
+        initSearchView(view)
         view.toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_material)
         view.toolbar.setNavigationOnClickListener { activity?.onBackPressed() }
         viewModel = ViewModelProviders.of(this).get(GroupViewModel::class.java)
         subscribeForData()
         return view
+    }
+
+    private fun initSearchView(view: View?) {
+        view?.search_view?.apply {
+            this.setOnClickListener {
+                expandSearchView(it)
+            }
+            this.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+                override fun onQueryTextSubmit(p0: String?): Boolean {
+                    viewModel.search(p0)
+
+                    return true
+                }
+
+                override fun onQueryTextChange(p0: String?): Boolean {
+
+                    viewModel.search(p0)
+                    return true
+                }
+
+            })
+        }
+
+    }
+
+    private fun expandSearchView(it: View?) {
+        it as SearchView
+        it.isIconified = false
+        it.setQuery("", false)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            TransitionManager.beginDelayedTransition(it)
+        }
     }
 
     private fun subscribeForData() {

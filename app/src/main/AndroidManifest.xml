@@ -16,8 +16,6 @@
         tools:ignore="GoogleAppIndexingWarning"
         android:fullBackupContent="true">
 
-        android:theme="@style/AppTheme">
-
         <activity
             android:name="com.knu.krasn.knuscheduler.View.Activity.SplashActivity"
             android:screenOrientation="portrait"
@@ -30,7 +28,8 @@
         </activity>
         <activity
             android:name="com.knu.krasn.knuscheduler.View.Activity.MainActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"/>
     </application>
 
 </manifest>

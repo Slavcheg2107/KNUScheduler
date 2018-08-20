@@ -11,7 +11,6 @@
         <item name="android:textColorSecondary">@color/colorWhite</item>
         <item name="android:text">@color/colorSecondaryDark</item>
         <item name="android:title">@color/colorSecondaryDark</item>
-        <item name="autoCompleteTextViewStyle">@style/cursorColor</item>
     </style>
 
     <!--<style name="AppTheme.withActionBar" parent="Theme.AppCompat.DayNight.DarkActionBar">-->
@@ -29,13 +28,10 @@
     </style>
 
     <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">
-        <!-- Gets rid of the search icon -->
-        <item name="searchIcon">@drawable/ic_search</item>
-        <!-- Gets rid of the "underline" in the text -->
-        <item name="queryBackground">@color/colorPrimaryDark</item>
-        <!-- Gets rid of the search icon when the SearchView is expanded -->
-        <item name="searchHintIcon">@color/colorPrimaryDark</item>
-        <!-- The hint text that appears when the user has not typed anything -->
+        <item name="searchIcon">@drawable/ic_search_black_24dp</item>
+        <item name="closeIcon">@drawable/ic_close_black_24dp</item>
+        <item name="android:textColorHint">@color/colorPrimaryDark</item>
+        <item name="android:background">@drawable/search_background</item>
         <item name="queryHint">@string/search_group_hint</item>
     </style>
 
