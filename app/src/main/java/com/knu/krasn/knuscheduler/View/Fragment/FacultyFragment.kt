@@ -21,6 +21,7 @@ import com.knu.krasn.knuscheduler.Util.Adapters.SimpleAdapter
 import com.knu.krasn.knuscheduler.Util.KNUDiffUtil
 import com.knu.krasn.knuscheduler.View.Activity.MainActivity
 import com.knu.krasn.knuscheduler.ViewModel.FacultyViewModel.FacultyViewModel
+import geek.owl.com.ua.KNUSchedule.R
 
 class FacultyFragment : Fragment(), OnItemClick {
     private lateinit var recyclerView: RecyclerView

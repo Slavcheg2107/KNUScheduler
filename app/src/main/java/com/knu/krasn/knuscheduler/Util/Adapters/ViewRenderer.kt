@@ -1,5 +1,6 @@
 package com.knu.krasn.knuscheduler.Util.Adapters
 
+import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -45,8 +46,10 @@ class ViewRenderer {
             title?.text = item.name
             itemView.setOnClickListener { itemClickListener.onClick(item) }
         }
-
     }
+
+
+
 }
 
 

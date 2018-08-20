@@ -8,8 +8,12 @@ import com.knu.krasn.knuscheduler.Util.Adapters.SimpleAdapter
 
 
 @Entity
-data class GroupPojo(@PrimaryKey var name: String, var id: Long) : SimpleAdapter.ItemModel {
+data class GroupPojo(var name: String) : SimpleAdapter.ItemModel {
+    @PrimaryKey(autoGenerate = true)
+    var id : Long = 0
+
     var faculty: String = ""
+
     override fun getType(): Int {
         return ItemType.GROUP.ordinal
     }

@@ -31,8 +31,15 @@ class GroupRepo(val action: MutableLiveData<Action>) {
 
             try {
                 if (response.isSuccessful) {
-                    response.body()?.let {
-                        database.insertGroups(it.groups)
+                    response.body()?.let { it ->
+                        val groups = ArrayList<GroupPojo>()
+                        it.groups.forEach { group ->
+                            val group1 = GroupPojo(group).also {
+                            it.faculty = facultyId
+                        }
+                            groups.add(group1)
+                        }
+                        database.insertGroups(groups)
                     }
                 }
             } catch (e: Exception) {

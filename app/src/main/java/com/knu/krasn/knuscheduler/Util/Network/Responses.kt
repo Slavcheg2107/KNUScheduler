@@ -15,7 +15,7 @@ class FacultyResponse {
 class GroupsResponse {
     @SerializedName("groups")
     @Expose
-    var groups: List<GroupPojo> = emptyList()
+    var groups: List<String> = emptyList()
 }
 
 class ScheduleResponse {
