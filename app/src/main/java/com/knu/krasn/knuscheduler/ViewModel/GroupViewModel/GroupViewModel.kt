@@ -13,7 +13,7 @@ class GroupViewModel : ViewModel() {
 
     fun getGroupLiveData(id: Long): LiveData<List<GroupPojo>> = groupRepo.getGroupLiveData(id)
     fun search(p0: String?) {
-        groupRepo.search(p0)
+//        groupRepo.search(p0)
     }
 
 }

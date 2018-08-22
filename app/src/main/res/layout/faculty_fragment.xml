@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:subtitle="@string/choose_fac_title"
         app:title="@string/app_name"
-        app:titleTextColor="@color/colorWhite"></android.support.v7.widget.Toolbar>
+        app:titleTextColor="@color/colorWhite"/>
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/refresh_layout"

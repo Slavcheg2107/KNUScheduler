@@ -44,7 +44,7 @@ class FacultyFragment : Fragment(), OnItemClick {
     }
 
     private fun subscribeForData() {
-        viewModel.faculties.observe(this, Observer {
+        viewModel.faculties.observe(this, Observer { it ->
             cancelDelayedLoad()
             it?.let { setData(it) }
         })

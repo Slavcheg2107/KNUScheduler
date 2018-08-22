@@ -11,9 +11,7 @@ import com.knu.krasn.knuscheduler.Util.Adapters.SimpleAdapter
 data class GroupPojo(var name: String) : SimpleAdapter.ItemModel {
     @PrimaryKey(autoGenerate = true)
     var id : Long = 0
-
-    var faculty: String = ""
-
+    var facultyId : String = ""
     override fun getType(): Int {
         return ItemType.GROUP.ordinal
     }

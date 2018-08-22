@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">КНУРасписание</string>
+    <string name="app_name">КНУ Расписание</string>
     <string name="Day1">Понедельник\n %1$d пары</string>
     <string name="Day2">Вторник\n%1$d пары</string>
     <string name="Day3">Среда\n %1$d пары</string>
@@ -53,5 +53,5 @@
     <string name="room_corps_number"> %1$s ауд. корпус %2$s</string>
     <string name="no_data_available">Нет пар</string>
     <string name="faculty_title">Выберите факультет</string>
-    <string name="cant_connect">Что-то пошло не так(</string>
+    <string name="cant_connect">Не получилось загрузить данные</string>
 </resources>

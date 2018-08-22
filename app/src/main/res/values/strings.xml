@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">КНУРозклад</string>
+    <string name="app_name">КНУ Розклад</string>
     <string name="Day1">Понеділок\n %1$d пари</string>
     <string name="Day2">Вівторок\n%1$d пари</string>
     <string name="Day3">Середа\n %1$d пари</string>

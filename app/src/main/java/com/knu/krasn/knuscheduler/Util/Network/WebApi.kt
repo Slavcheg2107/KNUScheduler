@@ -23,9 +23,7 @@ interface WebApi {
     fun getAdvanceSchedule(@Query("query") query: String, @Query("limit") take: Int, @Query("offset") offset: Int): Deferred<Response<ScheduleResponse>>
 
     @GET("")
-    fun findGroup(p0: String?): Deferred<GroupsResponse> {
-
-    }
+    fun findGroup(p0: String?): Deferred<GroupsResponse>
 
 }
 

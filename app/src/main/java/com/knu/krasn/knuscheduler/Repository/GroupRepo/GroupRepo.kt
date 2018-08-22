@@ -34,9 +34,8 @@ class GroupRepo(val action: MutableLiveData<Action>) {
                     response.body()?.let { it ->
                         val groups = ArrayList<GroupPojo>()
                         it.groups.forEach { group ->
-                            val group1 = GroupPojo(group).also {
-                                it.faculty = facultyId
-                            }
+                            val group1 = GroupPojo(group)
+                            group1.facultyId = facultyId
                             groups.add(group1)
                         }
                         database.insertGroups(groups)
@@ -54,11 +53,11 @@ class GroupRepo(val action: MutableLiveData<Action>) {
 
     }
 
-    fun search(p0: String?) {
-        launch {
-            val job = apiService.findGroup(p0)
-            val response = job.await()
-
-        }
-    }
+//    fun search(p0: String?) {
+//        launch {
+//            val job = apiService.findGroup(p0)
+//            val response = job.await()
+//
+//        }
+//    }
 }

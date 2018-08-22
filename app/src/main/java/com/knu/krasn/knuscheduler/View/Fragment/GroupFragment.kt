@@ -4,11 +4,9 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Build
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.SearchView
-import android.text.TextWatcher
 import android.transition.TransitionManager
 import android.view.LayoutInflater
 import android.view.View
@@ -43,16 +41,26 @@ class GroupFragment : BaseFragment(), OnItemClick {
             this.setOnClickListener {
                 expandSearchView(it)
             }
-            this.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
-                override fun onQueryTextSubmit(p0: String?): Boolean {
-                    viewModel.search(p0)
+            this.setOnCloseListener {
+                groupAdapter.isFiltering = false
+                false
+            }
 
+            this.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(p0: String?): Boolean {
+                    p0?.let { it ->
+                        groupAdapter.filterGroups(it)
+                    }
+                    //                    viewModel.search(p0)\
                     return true
                 }
 
                 override fun onQueryTextChange(p0: String?): Boolean {
 
-                    viewModel.search(p0)
+                    p0?.let { it ->
+                        groupAdapter.filterGroups(it)
+                    }
+//                    viewModel.search(p0)
                     return true
                 }
 
@@ -72,7 +80,6 @@ class GroupFragment : BaseFragment(), OnItemClick {
     }
 
     private fun subscribeForData() {
-        var i = arguments?.get("faculty_id") as Long
         viewModel.getGroupLiveData(arguments?.get("faculty_id") as Long).observe(this, Observer { list ->
             list?.let { setData(it) }
         })

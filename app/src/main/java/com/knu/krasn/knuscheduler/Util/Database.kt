@@ -9,7 +9,7 @@ import com.knu.krasn.knuscheduler.Repository.GroupRepo.GroupDao
 import com.knu.krasn.knuscheduler.Repository.SchedulePojo
 import com.knu.krasn.knuscheduler.Repository.ScheduleRepo.ScheduleDao
 
-@Database(entities = [(FacultyPojo::class), (GroupPojo::class), (SchedulePojo::class)], version = 2, exportSchema = false)
+@Database(entities = [(FacultyPojo::class), (GroupPojo::class), (SchedulePojo::class)], version = 4, exportSchema = false)
 abstract class Database : RoomDatabase() {
     abstract fun getFacultyDao(): FacultyDao
     abstract fun getScheduleDao(): ScheduleDao

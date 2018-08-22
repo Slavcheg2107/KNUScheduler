@@ -1,18 +1,22 @@
 package com.knu.krasn.knuscheduler.Util.Adapters
 
+import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
 import com.knu.krasn.knuscheduler.Repository.FacultyPojo
 import com.knu.krasn.knuscheduler.Repository.GroupPojo
+import com.knu.krasn.knuscheduler.Repository.Item
 import com.knu.krasn.knuscheduler.Repository.ItemType
+import com.knu.krasn.knuscheduler.Util.KNUDiffUtil
 
 
-class SimpleAdapter(var data: MutableList<ItemModel>, private val itemClickListener: OnItemClick) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class SimpleAdapter(var data: MutableList<ItemModel>, private val itemClickListener: OnItemClick) :  RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+    var isFiltering : Boolean = false
+    private lateinit var filteredData : MutableList<ItemModel>
     interface ItemModel {
         fun getType(): Int
     }
-
 
     private val renderer: ViewRenderer = ViewRenderer()
 
@@ -21,8 +25,28 @@ class SimpleAdapter(var data: MutableList<ItemModel>, private val itemClickListe
 
     }
 
+    fun filterGroups(s: String) {
+        data as MutableList<GroupPojo>
+        if(s!="") {
+            isFiltering =true
+            filteredData = data.filter {
+                it as GroupPojo
+                it.name.toLowerCase().contains(s.toLowerCase()) || it.name.toLowerCase() == s.toLowerCase()
+            }.toMutableList()
+            val groupDiffUtil = KNUDiffUtil(data, filteredData)
+            val result = DiffUtil.calculateDiff(groupDiffUtil, true)
+            result.dispatchUpdatesTo(this)
+        }
+        else{
+            isFiltering = false
+            val groupDiffUtil = KNUDiffUtil(filteredData, data)
+            val result = DiffUtil.calculateDiff(groupDiffUtil, true)
+            result.dispatchUpdatesTo(this)
+        }
+
+    }
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val item = data[position]
+        val item : ItemModel = if(isFiltering) filteredData[position] else data[position]
         holder.itemView.setOnClickListener { itemClickListener.onClick(item) }
         when (holder.itemViewType) {
             ItemType.FACULTY.ordinal -> {
@@ -39,12 +63,18 @@ class SimpleAdapter(var data: MutableList<ItemModel>, private val itemClickListe
     }
 
     override fun getItemCount(): Int {
-        return data.size
+        return if(!isFiltering){
+            data.size
+        }else filteredData.size
     }
 
     override fun getItemViewType(position: Int): Int {
 
-        return data[position].getType()
+        return if(!isFiltering){
+            data[position].getType()
+        }else filteredData[position].getType()
     }
+
+
 
 }
