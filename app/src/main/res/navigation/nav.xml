@@ -25,5 +25,16 @@
             android:name="faculty_id"
             android:defaultValue="0"
             app:argType="long" />
+        <action
+            android:id="@+id/action_groupFragment_to_weekFragment"
+            app:destination="@id/weekFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/weekFragment"
+        android:name="com.knu.krasn.knuscheduler.View.Fragment.WeekFragment"
+        android:label="WeekFragment" >
+        <argument
+            android:name="group_name"
+            app:argType="string" />
     </fragment>
 </navigation>

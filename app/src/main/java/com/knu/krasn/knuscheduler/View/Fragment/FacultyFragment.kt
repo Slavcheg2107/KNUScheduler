@@ -82,8 +82,8 @@ class FacultyFragment : Fragment(), OnItemClick {
 
         refreshLayout?.setOnRefreshListener {
             refreshLayout?.isRefreshing = false
-            viewModel.updateFaculties()
             startDelayedLoad()
+            viewModel.updateFaculties()
         }
         val lm = GridLayoutManager(context, 2)
         recyclerView.layoutManager = lm

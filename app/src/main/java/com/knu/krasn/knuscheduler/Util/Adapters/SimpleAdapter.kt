@@ -13,7 +13,7 @@ import com.knu.krasn.knuscheduler.Util.KNUDiffUtil
 class SimpleAdapter(var data: MutableList<ItemModel>, private val itemClickListener: OnItemClick) :  RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var isFiltering : Boolean = false
-    private lateinit var filteredData : MutableList<ItemModel>
+    private var filteredData : MutableList<ItemModel> = ArrayList()
     interface ItemModel {
         fun getType(): Int
     }
@@ -39,9 +39,8 @@ class SimpleAdapter(var data: MutableList<ItemModel>, private val itemClickListe
         }
         else{
             isFiltering = false
-            val groupDiffUtil = KNUDiffUtil(filteredData, data)
-            val result = DiffUtil.calculateDiff(groupDiffUtil, true)
-            result.dispatchUpdatesTo(this)
+            this.notifyDataSetChanged()
+
         }
 
     }

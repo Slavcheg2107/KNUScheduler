@@ -16,4 +16,8 @@ class GroupViewModel : ViewModel() {
 //        groupRepo.search(p0)
     }
 
+    fun refresh() {
+        groupRepo.refresh()
+    }
+
 }

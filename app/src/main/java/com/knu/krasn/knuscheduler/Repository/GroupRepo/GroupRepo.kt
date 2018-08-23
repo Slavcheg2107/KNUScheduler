@@ -13,6 +13,7 @@ import java.lang.Exception
 import java.net.SocketTimeoutException
 
 class GroupRepo(val action: MutableLiveData<Action>) {
+    var currentFacultyId: Long = 0
     private val apiService by lazy {
         ApiService.createApi()
     }
@@ -20,13 +21,14 @@ class GroupRepo(val action: MutableLiveData<Action>) {
 
 
     fun getGroupLiveData(facultyId: Long): LiveData<List<GroupPojo>> {
-        updateGroups(facultyId.toString())
-        return database.getGroups(facultyId.toString())
+        currentFacultyId = facultyId
+        updateGroups();
+        return database.getGroups(currentFacultyId.toString())
     }
 
-    private fun updateGroups(facultyId: String) {
+    private fun updateGroups() {
         launch {
-            val request = apiService.getGroups(facultyId)
+            val request = apiService.getGroups(currentFacultyId.toString())
             val response = request.await()
 
             try {
@@ -35,7 +37,7 @@ class GroupRepo(val action: MutableLiveData<Action>) {
                         val groups = ArrayList<GroupPojo>()
                         it.groups.forEach { group ->
                             val group1 = GroupPojo(group)
-                            group1.facultyId = facultyId
+                            group1.facultyId = currentFacultyId.toString()
                             groups.add(group1)
                         }
                         database.insertGroups(groups)
@@ -51,6 +53,10 @@ class GroupRepo(val action: MutableLiveData<Action>) {
             }
         }
 
+    }
+
+    fun refresh() {
+        updateGroups()
     }
 
 //    fun search(p0: String?) {
