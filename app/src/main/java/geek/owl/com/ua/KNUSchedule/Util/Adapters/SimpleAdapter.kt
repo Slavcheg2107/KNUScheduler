@@ -3,7 +3,8 @@ package geek.owl.com.ua.KNUSchedule.Util.Adapters
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
-import com.owl.krasn.KNUSchedule.Util.KNUDiffUtil
+import geek.owl.com.ua.KNUSchedule.Repository.*
+import geek.owl.com.ua.KNUSchedule.Util.KNUDiffUtil
 
 
 class SimpleAdapter(var data: MutableList<ItemModel>, private val itemClickListener: OnItemClick) :  RecyclerView.Adapter<RecyclerView.ViewHolder>() {

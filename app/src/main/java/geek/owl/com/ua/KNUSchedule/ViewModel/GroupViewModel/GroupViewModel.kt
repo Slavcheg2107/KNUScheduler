@@ -3,8 +3,8 @@ package geek.owl.com.ua.KNUSchedule.ViewModel.GroupViewModel
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import com.owl.krasn.KNUSchedule.Repository.GroupPojo
-import com.owl.krasn.KNUSchedule.Repository.GroupRepo.GroupRepo
+import geek.owl.com.ua.KNUSchedule.Repository.GroupPojo
+import geek.owl.com.ua.KNUSchedule.Repository.GroupRepo.GroupRepo
 
 class GroupViewModel : ViewModel() {
     val actionLiveData = MutableLiveData<String>()

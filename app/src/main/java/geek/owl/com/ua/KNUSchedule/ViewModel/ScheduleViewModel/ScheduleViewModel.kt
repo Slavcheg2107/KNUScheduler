@@ -2,8 +2,9 @@ package geek.owl.com.ua.KNUSchedule.ViewModel.ScheduleViewModel
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import com.owl.krasn.KNUSchedule.Repository.SchedulePojo
-import com.owl.krasn.KNUSchedule.Repository.ScheduleRepo.ScheduleRepo
+import geek.owl.com.ua.KNUSchedule.Repository.DayPojo
+import geek.owl.com.ua.KNUSchedule.Repository.SchedulePojo
+import geek.owl.com.ua.KNUSchedule.Repository.ScheduleRepo.ScheduleRepo
 
 class ScheduleViewModel : ViewModel() {
 
@@ -12,7 +13,7 @@ class ScheduleViewModel : ViewModel() {
 
     fun getSchedule(group: String, day: Int, week: Int): MutableLiveData<List<SchedulePojo>>
             = scheduleRepo.getScheduleLiveData(group, day, week)
-    fun getSchedule(group: String, week: Int): MutableLiveData<List<SchedulePojo>>
+    fun getSchedule(group: String, week: Int): MutableLiveData<List<DayPojo>>
             = scheduleRepo.getScheduleLiveData(group, week)
 
 }

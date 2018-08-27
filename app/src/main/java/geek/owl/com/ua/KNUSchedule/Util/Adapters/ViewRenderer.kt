@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import geek.owl.com.ua.KNUSchedule.R
+import geek.owl.com.ua.KNUSchedule.Repository.*
 
 class ViewRenderer {
     fun createViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {

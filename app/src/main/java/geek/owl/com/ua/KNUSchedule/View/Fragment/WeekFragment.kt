@@ -12,13 +12,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils.loadLayoutAnimation
-import com.owl.krasn.KNUSchedule.Repository.SchedulePojo
-import com.owl.krasn.KNUSchedule.Util.Adapters.OnItemClick
-import com.owl.krasn.KNUSchedule.Util.Adapters.SimpleAdapter
-import com.owl.krasn.KNUSchedule.Util.AppSettings
-import com.owl.krasn.KNUSchedule.Util.StaticVariables.Companion.WEEK_NUMBER
-import com.owl.krasn.KNUSchedule.ViewModel.ScheduleViewModel.ScheduleViewModel
+
 import geek.owl.com.ua.KNUSchedule.R
+import geek.owl.com.ua.KNUSchedule.Repository.DayPojo
+import geek.owl.com.ua.KNUSchedule.Repository.SchedulePojo
+import geek.owl.com.ua.KNUSchedule.Util.Adapters.OnItemClick
+import geek.owl.com.ua.KNUSchedule.Util.Adapters.SimpleAdapter
+import geek.owl.com.ua.KNUSchedule.Util.AppSettings
+import geek.owl.com.ua.KNUSchedule.Util.StaticVariables.Companion.WEEK_NUMBER
+import geek.owl.com.ua.KNUSchedule.ViewModel.ScheduleViewModel.ScheduleViewModel
 import kotlinx.android.synthetic.main.week_fragment.*
 
 class WeekFragment : Fragment(), OnItemClick {
@@ -82,7 +84,7 @@ class WeekFragment : Fragment(), OnItemClick {
     }
 
 
-    private fun setData(it: List<SchedulePojo>?) {
+    private fun setData(it: List<DayPojo>?) {
         weekAdapter.data = it as MutableList<SimpleAdapter.ItemModel>
         weekAdapter.notifyDataSetChanged()
     }

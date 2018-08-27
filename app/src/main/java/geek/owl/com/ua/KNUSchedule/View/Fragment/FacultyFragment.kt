@@ -14,15 +14,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.Toast
-import com.owl.krasn.KNUSchedule.Repository.FacultyPojo
-import com.owl.krasn.KNUSchedule.Util.Adapters.OnItemClick
-import com.owl.krasn.KNUSchedule.Util.Adapters.SimpleAdapter
-import com.owl.krasn.KNUSchedule.Util.KNUDiffUtil
-import com.owl.krasn.KNUSchedule.Util.StaticVariables.Companion.ERROR
-import com.owl.krasn.KNUSchedule.Util.StaticVariables.Companion.TIMEOUT
-import com.owl.krasn.KNUSchedule.View.Activity.MainActivity
-import com.owl.krasn.KNUSchedule.ViewModel.FacultyViewModel.FacultyViewModel
+
 import geek.owl.com.ua.KNUSchedule.R
+import geek.owl.com.ua.KNUSchedule.Repository.FacultyPojo
+import geek.owl.com.ua.KNUSchedule.Util.Adapters.OnItemClick
+import geek.owl.com.ua.KNUSchedule.Util.Adapters.SimpleAdapter
+import geek.owl.com.ua.KNUSchedule.Util.KNUDiffUtil
+import geek.owl.com.ua.KNUSchedule.Util.StaticVariables.Companion.ERROR
+import geek.owl.com.ua.KNUSchedule.Util.StaticVariables.Companion.TIMEOUT
+import geek.owl.com.ua.KNUSchedule.View.Activity.MainActivity
+import geek.owl.com.ua.KNUSchedule.ViewModel.FacultyViewModel.FacultyViewModel
 
 class FacultyFragment : Fragment(), OnItemClick {
     private lateinit var recyclerView: RecyclerView

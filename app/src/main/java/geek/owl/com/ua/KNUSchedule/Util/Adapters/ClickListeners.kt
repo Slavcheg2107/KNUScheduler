@@ -1,6 +1,6 @@
 package geek.owl.com.ua.KNUSchedule.Util.Adapters
 
-import com.owl.krasn.KNUSchedule.Repository.SchedulePojo
+import geek.owl.com.ua.KNUSchedule.Repository.SchedulePojo
 
 
 interface OnItemClick {

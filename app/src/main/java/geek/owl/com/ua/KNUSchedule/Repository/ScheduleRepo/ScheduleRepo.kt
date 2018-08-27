@@ -4,6 +4,7 @@ import android.arch.lifecycle.MutableLiveData
 import geek.owl.com.ua.KNUSchedule.Repository.DayPojo
 import geek.owl.com.ua.KNUSchedule.Repository.SchedulePojo
 import geek.owl.com.ua.KNUSchedule.Util.ApiService
+import geek.owl.com.ua.KNUSchedule.Util.ErrorHandler
 
 import kotlinx.coroutines.experimental.launch
 
@@ -20,31 +21,15 @@ class ScheduleRepo(val action: MutableLiveData<String>) {
     }
 
     fun getScheduleLiveData(group: String, week: Int): MutableLiveData<List<DayPojo>> {
-        val data =  database.getSchedule(group, week) as MutableLiveData<List<SchedulePojo>>
-        val data1 = MutableLiveData<List<DayPojo>>()
-        data.value?.let { it ->
-            var items = ArrayList<DayPojo>()
-            var days = HashSet<Int>()
+        val job = launch {
+            val data1 = MutableLiveData<List<DayPojo>>()
+            val data =  database.getSchedule(group, week) as MutableLiveData<List<SchedulePojo>>
+            data.value?.let { list ->
+                list.forEach { item->
 
-            it.forEach {
-                if(it.week == week) {
-                    days.add(it.day)
                 }
             }
-             days.forEach { day ->
-                 data.value?.let { schedule ->
-                     it.forEach {
-                         if(it.day == day){
-
-                         }
-                     }
-                 }
-                 items.add(DayPojo(it).also {
-                     it.scheduleList
-                 })
-             }
         }
-        return
     }
 
     fun searchSchedule(query: String, take: Int, offset: Int) {
@@ -53,8 +38,8 @@ class ScheduleRepo(val action: MutableLiveData<String>) {
             val response = job.await()
 
             try {
-                response.body()?.let {
-                    searchableData.postValue(it.schedules)
+                response.body().let {
+                    searchableData.postValue(it?.schedules)
                 }
             } catch (e: Exception) {
                 action.postValue(ErrorHandler.getMessage(e))

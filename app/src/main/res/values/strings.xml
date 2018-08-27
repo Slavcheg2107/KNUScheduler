@@ -54,5 +54,5 @@
     <string name="room_corps_number"> %1$s ауд. корпус %2$s</string>
     <string name="no_data_available">Немає пар</string>
     <string name="faculty_title">Виберіть факультет</string>
-    <string name="cant_connect">Щось пішло не так(</string>
+    <string name="cant_connect">Невдалося підключитись до сервера</string>
 </resources>

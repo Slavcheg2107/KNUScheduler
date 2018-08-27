@@ -1,10 +1,11 @@
 package geek.owl.com.ua.KNUSchedule.Util
 
 import android.support.v7.util.DiffUtil
-import com.owl.krasn.KNUSchedule.Repository.FacultyPojo
-import com.owl.krasn.KNUSchedule.Repository.GroupPojo
-import com.owl.krasn.KNUSchedule.Repository.ItemType
-import com.owl.krasn.KNUSchedule.Util.Adapters.SimpleAdapter
+import geek.owl.com.ua.KNUSchedule.Repository.FacultyPojo
+import geek.owl.com.ua.KNUSchedule.Repository.GroupPojo
+import geek.owl.com.ua.KNUSchedule.Repository.ItemType
+import geek.owl.com.ua.KNUSchedule.Util.Adapters.SimpleAdapter
+
 
 class KNUDiffUtil(val oldList: List<SimpleAdapter.ItemModel>, val newList: List<SimpleAdapter.ItemModel>) : DiffUtil.Callback() {
 

@@ -15,15 +15,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.Toast
-import com.owl.krasn.KNUSchedule.Repository.GroupPojo
-import com.owl.krasn.KNUSchedule.Util.Adapters.OnItemClick
-import com.owl.krasn.KNUSchedule.Util.Adapters.SimpleAdapter
-import com.owl.krasn.KNUSchedule.Util.KNUDiffUtil
-import com.owl.krasn.KNUSchedule.Util.StaticVariables.Companion.TIMEOUT
-import com.owl.krasn.KNUSchedule.Util.StaticVariables.Companion.UNKNOWN_HOST
-import com.owl.krasn.KNUSchedule.View.Activity.MainActivity
-import com.owl.krasn.KNUSchedule.ViewModel.GroupViewModel.GroupViewModel
+
 import geek.owl.com.ua.KNUSchedule.R
+import geek.owl.com.ua.KNUSchedule.Repository.GroupPojo
+import geek.owl.com.ua.KNUSchedule.Util.Adapters.OnItemClick
+import geek.owl.com.ua.KNUSchedule.Util.Adapters.SimpleAdapter
+import geek.owl.com.ua.KNUSchedule.Util.KNUDiffUtil
+import geek.owl.com.ua.KNUSchedule.Util.StaticVariables.Companion.TIMEOUT
+import geek.owl.com.ua.KNUSchedule.Util.StaticVariables.Companion.UNKNOWN_HOST
+import geek.owl.com.ua.KNUSchedule.View.Activity.MainActivity
+import geek.owl.com.ua.KNUSchedule.ViewModel.GroupViewModel.GroupViewModel
 import kotlinx.android.synthetic.main.group_fragment.view.*
 
 class GroupFragment : BaseFragment(), OnItemClick {

@@ -1,7 +1,7 @@
 package geek.owl.com.ua.KNUSchedule.Util
 
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.experimental.CoroutineCallAdapterFactory
-import com.owl.krasn.KNUSchedule.Util.Network.WebApi
+import geek.owl.com.ua.KNUSchedule.Util.Network.WebApi
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
