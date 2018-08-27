@@ -22,7 +22,11 @@ class Group(var id: Long, var title: String) : Item {
 class ScheduleResponse(var scheduleList: List<Schedule>){
 }
 @Entity
-class Schedule{
+class Schedule : Item{
+    override fun getItemViewType(): ViewType {
+        return ViewType.SCHEDULE
+    }
+
     @SerializedName("teachers")
     @Expose
     private val teachers: String? = null

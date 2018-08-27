@@ -5,7 +5,6 @@ import android.arch.lifecycle.ViewModelProviders
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
-import android.os.Looper
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.GridLayoutManager
@@ -21,10 +20,11 @@ import com.knu.krasn.knuscheduler.Util.Action
 import com.knu.krasn.knuscheduler.Util.Adapters.OnItemClick
 import com.knu.krasn.knuscheduler.Util.Adapters.SimpleAdapter
 import com.knu.krasn.knuscheduler.Util.KNUDiffUtil
+import com.knu.krasn.knuscheduler.Util.StaticVariables.Companion.TIMEOUT
+import com.knu.krasn.knuscheduler.Util.StaticVariables.Companion.UNKNOWN_HOST
 import com.knu.krasn.knuscheduler.View.Activity.MainActivity
 import com.knu.krasn.knuscheduler.ViewModel.GroupViewModel.GroupViewModel
 import geek.owl.com.ua.KNUSchedule.R
-import kotlinx.android.synthetic.main.group_fragment.*
 import kotlinx.android.synthetic.main.group_fragment.view.*
 
 class GroupFragment : BaseFragment(), OnItemClick {
@@ -88,6 +88,7 @@ private fun initSearchView(view: View?) {
 
 private fun startDelayedLoad() {
     handler.postDelayed(runnable, 500)
+
 }
 
 private fun cancelDelayedLoad() {
@@ -111,8 +112,8 @@ private fun subscribeForData() {
     })
     viewModel.actionLiveData.observe(this, Observer {
         when (it) {
-            Action.ERROR -> showMessage(getString(R.string.no_connetction))
-            Action.TIMEOUT -> showMessage(getString(R.string.cant_connect))
+            UNKNOWN_HOST -> showMessage(getString(R.string.no_connetction))
+            TIMEOUT -> showMessage(getString(R.string.cant_connect))
         }
         cancelDelayedLoad()
     })

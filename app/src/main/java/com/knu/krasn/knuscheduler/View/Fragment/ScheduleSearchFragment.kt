@@ -9,7 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import geek.owl.com.ua.KNUSchedule.R
 
-class ScheduleSearchFragemtn : Fragment() {
+class ScheduleSearchFragment : Fragment() {
 
     var recyclerView: RecyclerView? = null
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

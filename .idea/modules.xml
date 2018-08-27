@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/KNUScheduler.iml" filepath="$PROJECT_DIR$/KNUScheduler.iml" />
+      <module fileurl="file://$PROJECT_DIR$/KNUSchedule.iml" filepath="$PROJECT_DIR$/KNUSchedule.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

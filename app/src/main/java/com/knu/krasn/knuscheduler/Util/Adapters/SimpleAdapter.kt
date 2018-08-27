@@ -3,10 +3,7 @@ package com.knu.krasn.knuscheduler.Util.Adapters
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
-import com.knu.krasn.knuscheduler.Repository.FacultyPojo
-import com.knu.krasn.knuscheduler.Repository.GroupPojo
-import com.knu.krasn.knuscheduler.Repository.Item
-import com.knu.krasn.knuscheduler.Repository.ItemType
+import com.knu.krasn.knuscheduler.Repository.*
 import com.knu.krasn.knuscheduler.Util.KNUDiffUtil
 
 
@@ -56,6 +53,16 @@ class SimpleAdapter(var data: MutableList<ItemModel>, private val itemClickListe
             ItemType.GROUP.ordinal -> {
                 item as GroupPojo
                 holder as ViewRenderer.GroupViewHolder
+                holder.bind(item, itemClickListener)
+            }
+            ItemType.WEEK.ordinal -> {
+                item as WeekPojo
+                holder as ViewRenderer.WeekViewHolder
+                holder.bind(item, itemClickListener)
+            }
+            ItemType.SCHEDULE.ordinal->{
+                item as SchedulePojo
+                holder as ViewRenderer.ScheduleViewHolder
                 holder.bind(item, itemClickListener)
             }
         }

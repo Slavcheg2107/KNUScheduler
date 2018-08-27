@@ -5,9 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.knu.krasn.knuscheduler.Repository.FacultyPojo
-import com.knu.krasn.knuscheduler.Repository.GroupPojo
-import com.knu.krasn.knuscheduler.Repository.ItemType
+import com.knu.krasn.knuscheduler.Repository.*
 import geek.owl.com.ua.KNUSchedule.R
 
 class ViewRenderer {
@@ -48,7 +46,22 @@ class ViewRenderer {
         }
     }
 
+    inner class WeekViewHolder(view:View):RecyclerView.ViewHolder(view){
 
+
+//        val title: TextView? = view.findViewById()
+
+        fun bind(item: WeekPojo, itemClickListener: OnItemClick) {
+
+        }
+    }
+    inner class ScheduleViewHolder(view:View) : RecyclerView.ViewHolder(view){
+
+
+        fun bind(item : SchedulePojo, itemClickListener: OnItemClick){
+
+        }
+    }
 
 }
 

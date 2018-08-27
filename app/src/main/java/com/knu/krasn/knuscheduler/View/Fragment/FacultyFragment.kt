@@ -19,6 +19,8 @@ import com.knu.krasn.knuscheduler.Util.Action
 import com.knu.krasn.knuscheduler.Util.Adapters.OnItemClick
 import com.knu.krasn.knuscheduler.Util.Adapters.SimpleAdapter
 import com.knu.krasn.knuscheduler.Util.KNUDiffUtil
+import com.knu.krasn.knuscheduler.Util.StaticVariables.Companion.ERROR
+import com.knu.krasn.knuscheduler.Util.StaticVariables.Companion.TIMEOUT
 import com.knu.krasn.knuscheduler.View.Activity.MainActivity
 import com.knu.krasn.knuscheduler.ViewModel.FacultyViewModel.FacultyViewModel
 import geek.owl.com.ua.KNUSchedule.R
@@ -38,7 +40,11 @@ class FacultyFragment : Fragment(), OnItemClick {
 //        toolbar.setNavigationOnClickListener { activity?.onBackPressed() }
         initRecyclerView(view)
         viewModel = ViewModelProviders.of(this).get(FacultyViewModel::class.java)
-
+        refreshLayout?.setOnRefreshListener {
+            refreshLayout?.isRefreshing = false
+            startDelayedLoad()
+            viewModel.updateFaculties()
+        }
         subscribeForData()
         return view
     }
@@ -50,8 +56,8 @@ class FacultyFragment : Fragment(), OnItemClick {
         })
         viewModel.actionLiveData.observe(this, Observer {
             when (it) {
-                Action.ERROR -> showMessage(getString(R.string.no_connetction))
-                Action.TIMEOUT -> showMessage(getString(R.string.cant_connect))
+                ERROR -> showMessage(getString(R.string.no_connetction))
+                TIMEOUT -> showMessage(getString(R.string.cant_connect))
             }
             cancelDelayedLoad()
         })
@@ -80,11 +86,6 @@ class FacultyFragment : Fragment(), OnItemClick {
         facAdapter = SimpleAdapter(emptyList<SimpleAdapter.ItemModel>().toMutableList(), this)
         recyclerView = view.findViewById(R.id.recycler_view)
 
-        refreshLayout?.setOnRefreshListener {
-            refreshLayout?.isRefreshing = false
-            startDelayedLoad()
-            viewModel.updateFaculties()
-        }
         val lm = GridLayoutManager(context, 2)
         recyclerView.layoutManager = lm
         recyclerView.layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation_fall_down)

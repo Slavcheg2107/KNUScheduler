@@ -6,7 +6,7 @@ import com.knu.krasn.knuscheduler.Repository.FacultyRepo.FacultyRepo
 import com.knu.krasn.knuscheduler.Util.Action
 
 class FacultyViewModel : ViewModel() {
-    var actionLiveData: MutableLiveData<Action> = MutableLiveData()
+    var actionLiveData: MutableLiveData<String> = MutableLiveData()
     private val facultyRepo = FacultyRepo(action = actionLiveData)
     var faculties = facultyRepo.getFaculties()
 

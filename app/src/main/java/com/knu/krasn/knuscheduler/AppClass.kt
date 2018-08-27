@@ -8,10 +8,11 @@ class AppClass : Application() {
     override fun onCreate() {
         super.onCreate()
         database = Room.databaseBuilder(this, Database::class.java, "KNUDb").fallbackToDestructiveMigration().build()
-
+        INSTANCE = this
     }
 
     companion object {
         lateinit var database: Database
+        lateinit var INSTANCE : AppClass
     }
 }

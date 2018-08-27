@@ -8,7 +8,7 @@ import com.knu.krasn.knuscheduler.Repository.GroupRepo.GroupRepo
 import com.knu.krasn.knuscheduler.Util.Action
 
 class GroupViewModel : ViewModel() {
-    val actionLiveData = MutableLiveData<Action>()
+    val actionLiveData = MutableLiveData<String>()
     private val groupRepo: GroupRepo = GroupRepo(actionLiveData)
 
     fun getGroupLiveData(id: Long): LiveData<List<GroupPojo>> = groupRepo.getGroupLiveData(id)

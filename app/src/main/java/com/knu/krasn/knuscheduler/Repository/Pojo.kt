@@ -70,6 +70,21 @@ data class SchedulePojo(@PrimaryKey var entityID: Int) : SimpleAdapter.ItemModel
 
 }
 
+data class DayPojo(val number : Int) : SimpleAdapter.ItemModel{
+    override fun getType(): Int {
+        return ItemType.DAY.ordinal
+    }
+
+    var scheduleList : List<SchedulePojo> = emptyList()
+
+}
+data class WeekPojo(val list:List<SchedulePojo>, val weekNumber: Int): SimpleAdapter.ItemModel{
+    override fun getType(): Int {
+        return ItemType.WEEK.ordinal
+    }
+
+}
+
 enum class ItemType {
     FACULTY, GROUP, SCHEDULE, WEEK, DAY
 }
