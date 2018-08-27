@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     package="geek.owl.com.ua.KNUSchedule">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -13,7 +12,6 @@
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        tools:ignore="GoogleAppIndexingWarning"
         android:fullBackupContent="true">
 
         <activity

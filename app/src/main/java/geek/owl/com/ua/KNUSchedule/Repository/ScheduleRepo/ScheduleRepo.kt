@@ -1,10 +1,10 @@
 package geek.owl.com.ua.KNUSchedule.Repository.ScheduleRepo
 
 import android.arch.lifecycle.MutableLiveData
-import com.owl.krasn.KNUSchedule.Repository.DayPojo
-import com.owl.krasn.KNUSchedule.Util.ErrorHandler
-import com.owl.krasn.KNUSchedule.Repository.SchedulePojo
-import com.owl.krasn.KNUSchedule.Util.ApiService
+import geek.owl.com.ua.KNUSchedule.Repository.DayPojo
+import geek.owl.com.ua.KNUSchedule.Repository.SchedulePojo
+import geek.owl.com.ua.KNUSchedule.Util.ApiService
+
 import kotlinx.coroutines.experimental.launch
 
 class ScheduleRepo(val action: MutableLiveData<String>) {
