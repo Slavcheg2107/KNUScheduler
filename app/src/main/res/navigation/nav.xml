@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/facultyFragment"
-        android:name="com.owl.krasn.KNUSchedule.View.Fragment.FacultyFragment"
+        android:name="geek.owl.com.ua.KNUSchedule.View.Fragment.FacultyFragment"
         android:label="FacultyFragment">
         <action
             android:id="@+id/action_facultyFragment_to_groupFragment"
@@ -18,7 +18,7 @@
     </fragment>
     <fragment
         android:id="@+id/groupFragment"
-        android:name="com.owl.krasn.KNUSchedule.View.Fragment.GroupFragment"
+        android:name="geek.owl.com.ua.KNUSchedule.View.Fragment.GroupFragment"
         android:label="GroupFragment">
 
         <argument
@@ -31,7 +31,7 @@
     </fragment>
     <fragment
         android:id="@+id/weekFragment"
-        android:name="com.owl.krasn.KNUSchedule.View.Fragment.WeekFragment"
+        android:name="geek.owl.com.ua.KNUSchedule.View.Fragment.WeekFragment"
         android:label="WeekFragment" >
         <argument
             android:name="group_name"

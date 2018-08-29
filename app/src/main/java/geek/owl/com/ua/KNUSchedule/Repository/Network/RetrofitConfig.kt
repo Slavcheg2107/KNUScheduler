@@ -33,7 +33,7 @@ internal class RetrofitConfig {
     val apiNetwork = retrofit.create(ApiInterface::class.java)
 
     companion object {
-        const val BASE_URL = "https://immense-refuge-24759.herokuapp.com/api/"
+        const val BASE_URL = "https://otherstaff.xyz/api/"
     }
 
     class LoginInterceptor : Interceptor {
@@ -41,7 +41,7 @@ internal class RetrofitConfig {
             val request: Request = chain.request()
             request.let {
                 it.newBuilder()?.apply {
-                    addHeader("Authorization", "Token 6369aebbfac97f6c2ae09f0b6cdde90d4cfa0718").addHeader("Username", "android")
+                    addHeader("Authorization", "Token 8fd6e8ac1137f7b5c0d9604a923cb04792994343").addHeader("Username", "android")
                 }
             }
             return chain.proceed(request)

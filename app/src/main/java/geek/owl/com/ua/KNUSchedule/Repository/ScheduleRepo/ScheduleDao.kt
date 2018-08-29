@@ -5,7 +5,7 @@ import android.arch.persistence.room.Dao
 import android.arch.persistence.room.Insert
 import android.arch.persistence.room.OnConflictStrategy
 import android.arch.persistence.room.Query
-import com.owl.krasn.KNUSchedule.Repository.SchedulePojo
+import geek.owl.com.ua.KNUSchedule.Repository.SchedulePojo
 
 @Dao
 interface ScheduleDao {

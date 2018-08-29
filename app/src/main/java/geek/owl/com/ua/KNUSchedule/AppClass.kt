@@ -2,7 +2,7 @@ package geek.owl.com.ua.KNUSchedule
 
 import android.app.Application
 import android.arch.persistence.room.Room
-import com.owl.krasn.KNUSchedule.Util.Database
+import geek.owl.com.ua.KNUSchedule.Util.Database
 
 class AppClass : Application() {
     override fun onCreate() {

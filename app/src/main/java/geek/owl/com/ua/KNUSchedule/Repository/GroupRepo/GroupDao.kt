@@ -2,7 +2,7 @@ package geek.owl.com.ua.KNUSchedule.Repository.GroupRepo
 
 import android.arch.lifecycle.LiveData
 import android.arch.persistence.room.*
-import com.owl.krasn.KNUSchedule.Repository.GroupPojo
+import geek.owl.com.ua.KNUSchedule.Repository.GroupPojo
 
 @Dao
 interface GroupDao {

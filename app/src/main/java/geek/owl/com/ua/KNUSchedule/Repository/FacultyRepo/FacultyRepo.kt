@@ -2,9 +2,10 @@ package geek.owl.com.ua.KNUSchedule.Repository.FacultyRepo
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
-import com.owl.krasn.KNUSchedule.Util.ErrorHandler
-import com.owl.krasn.KNUSchedule.Repository.FacultyPojo
-import com.owl.krasn.KNUSchedule.Util.ApiService
+import geek.owl.com.ua.KNUSchedule.Repository.FacultyPojo
+import geek.owl.com.ua.KNUSchedule.Util.ApiService
+import geek.owl.com.ua.KNUSchedule.Util.ErrorHandler
+
 import kotlinx.coroutines.experimental.launch
 
 
