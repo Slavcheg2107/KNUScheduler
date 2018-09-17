@@ -8,6 +8,7 @@ import android.os.Handler
 import android.support.v4.app.Fragment
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.GridLayoutManager
+import android.util.SparseArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,13 +27,14 @@ import kotlinx.android.synthetic.main.week_fragment.*
 class WeekFragment : Fragment(), OnItemClick {
 
 
-    lateinit var  viewModel: ScheduleViewModel
+    lateinit var viewModel: ScheduleViewModel
     private var swipeRefreshLayout: SwipeRefreshLayout? = null
-    val handler : Handler = Handler()
+    val handler: Handler = Handler()
     private val runnable = Runnable { swipeRefreshLayout?.isRefreshing = true }
-    lateinit var weekAdapter : SimpleAdapter
+    lateinit var weekAdapter: SimpleAdapter
     private val group: String
         get() {
+
             return arguments?.getString("group_name") as String
         }
 
@@ -41,7 +43,7 @@ class WeekFragment : Fragment(), OnItemClick {
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout)
         val groupName: String = group
         viewModel = ViewModelProviders.of(this).get(ScheduleViewModel::class.java)
-        toolbar.subtitle = groupName
+        toolbar?.subtitle = groupName
         swipeRefreshLayout?.setOnRefreshListener {
             swipeRefreshLayout?.isRefreshing = false
             startDelayedLoad()
@@ -52,31 +54,32 @@ class WeekFragment : Fragment(), OnItemClick {
         return view
     }
 
-    private fun startDelayedLoad(){
+    private fun startDelayedLoad() {
         handler.postDelayed(runnable, 500)
     }
 
-    private fun cancelDelayedLoad(){
+    private fun cancelDelayedLoad() {
         handler.removeCallbacksAndMessages(null)
     }
+
     private fun initRecyclerView() {
         weekAdapter = SimpleAdapter(emptyArray<SimpleAdapter.ItemModel>().toMutableList(), this)
         val layoutManager = GridLayoutManager(context, 3)
-        recycler_view.adapter = weekAdapter
-        recycler_view.layoutManager = layoutManager
-        recycler_view.layoutAnimation = loadLayoutAnimation(context, R.anim.layout_animation_fall_down)
+        recycler_view?.adapter = weekAdapter
+        recycler_view?.layoutManager = layoutManager
+        recycler_view?.layoutAnimation = loadLayoutAnimation(context, R.anim.layout_animation_fall_down)
 
     }
 
-    private fun subscribeForData(){
-        viewModel.getSchedule(group, AppSettings().getInt(WEEK_NUMBER, 0))
-                .observe(this, Observer {it->
-                    run {
+    private fun subscribeForData() {
+        viewModel.getSchedule(group, AppSettings().getInt(WEEK_NUMBER, 1))
+                .observe(this, Observer { it ->
+                    it?.let {
                         cancelDelayedLoad()
                         setData(it)
                     }
-        })
-        viewModel.action.observe(this, Observer {it->
+                })
+        viewModel.action.observe(this, Observer { it ->
             run {
                 cancelDelayedLoad()
             }
@@ -84,9 +87,11 @@ class WeekFragment : Fragment(), OnItemClick {
     }
 
 
-    private fun setData(it: List<DayPojo>?) {
-        weekAdapter.data = it as MutableList<SimpleAdapter.ItemModel>
-        weekAdapter.notifyDataSetChanged()
+    private fun setData(it: List<DayPojo> = emptyList()) {
+        it.let {
+            weekAdapter.data = it as MutableList<SimpleAdapter.ItemModel>
+            weekAdapter.notifyDataSetChanged()
+        }
     }
 
     override fun onClick(item: SimpleAdapter.ItemModel) {

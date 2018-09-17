@@ -3,13 +3,11 @@ package geek.owl.com.ua.KNUSchedule.Repository.FacultyRepo
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import geek.owl.com.ua.KNUSchedule.Repository.FacultyPojo
-import geek.owl.com.ua.KNUSchedule.Util.ApiService
-import geek.owl.com.ua.KNUSchedule.Util.ErrorHandler
+import geek.owl.com.ua.KNUSchedule.Util.Network.ApiService
+import geek.owl.com.ua.KNUSchedule.Util.Network.ErrorHandler
 
 import kotlinx.coroutines.experimental.launch
-
-
-import java.lang.Exception
+import kotlin.Exception
 
 class FacultyRepo(val action: MutableLiveData<String>) {
     private val apiService by lazy {

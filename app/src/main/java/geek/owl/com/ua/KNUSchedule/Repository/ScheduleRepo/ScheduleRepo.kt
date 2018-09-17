@@ -1,17 +1,20 @@
 package geek.owl.com.ua.KNUSchedule.Repository.ScheduleRepo
 
+import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
-import android.util.SparseArray
 import geek.owl.com.ua.KNUSchedule.Repository.DayPojo
 import geek.owl.com.ua.KNUSchedule.Repository.SchedulePojo
-import geek.owl.com.ua.KNUSchedule.Util.ApiService
-import geek.owl.com.ua.KNUSchedule.Util.ErrorHandler
+import geek.owl.com.ua.KNUSchedule.Util.Network.ApiService
+import geek.owl.com.ua.KNUSchedule.Util.Network.ErrorHandler
+import kotlinx.coroutines.experimental.CoroutineStart
+import kotlinx.coroutines.experimental.Dispatchers
+import kotlinx.coroutines.experimental.GlobalScope
 
 import kotlinx.coroutines.experimental.launch
 
 class ScheduleRepo(val action: MutableLiveData<String>) {
-    val dayListLiveData = MutableLiveData<List<DayPojo>>()
-
+    private val dayListLiveData = MutableLiveData<List<DayPojo>>()
+    lateinit var data: LiveData<List<SchedulePojo>>
     private val searchableData: MutableLiveData<List<SchedulePojo>> = MutableLiveData()
     private val apiService by lazy {
         ApiService.createApi()
@@ -22,26 +25,29 @@ class ScheduleRepo(val action: MutableLiveData<String>) {
         return database.getSchedule(group, day, week) as MutableLiveData<List<SchedulePojo>>
     }
 
-    fun getScheduleLiveData(group: String, week: Int): MutableLiveData<List<DayPojo>> {
-        val job = launch {
-            val dayList = ArrayList<DayPojo>()
-            val data =  database.getSchedule(group, week) as MutableLiveData<List<SchedulePojo>>
-            data.value?.let { list ->
-                val dayMap = SparseArray<ArrayList<SchedulePojo>>()
-                list.forEach { item->
-                    if(dayMap.get(item.day)!=null){
-                        dayMap.get(item.day).add(item)
-                    }else dayMap.put(item.day, ArrayList())
+    fun getScheduleLiveData(group: String, week: Int): LiveData<List<SchedulePojo>> {
+        updateSchedule(group)
+        return database.getSchedule(group, week)
+    }
+
+    fun updateSchedule(group: String) {
+        val job = apiService.getSchedule(group)
+        GlobalScope.launch(Dispatchers.Default, CoroutineStart.DEFAULT, null, {
+            val response = job.await()
+            try {
+                if (response.isSuccessful) {
+                    response.body()?.schedules?.let {
+                        it.forEach {
+                            if (it.subgroup == null) it.subgroup = ""
+                        }
+                        database.insertSchedules(it)
+                    }
                 }
-                for( i in 0 until dayMap.size())
-                    dayList.add(DayPojo(dayMap.keyAt(i)).also {
-                        it.scheduleList = dayMap.valueAt(i)
-                    })
+            } catch (e: Exception) {
+                action.postValue(ErrorHandler.getMessage(e))
             }
-            dayListLiveData.value = dayList
-        }
-        
-        return dayListLiveData
+        })
+
     }
 
     fun searchSchedule(query: String, take: Int, offset: Int) {

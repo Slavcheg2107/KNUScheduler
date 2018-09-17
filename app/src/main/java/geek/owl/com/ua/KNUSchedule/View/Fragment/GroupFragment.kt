@@ -145,7 +145,7 @@ override fun onClick(item: SimpleAdapter.ItemModel) {
     val activity = activity as MainActivity
 
     activity.controller.navigate(R.id.action_groupFragment_to_weekFragment, Bundle().apply {
-        this.putString("group", item.name)
+        this.putString("group_name", item.name)
     })
 }
 }

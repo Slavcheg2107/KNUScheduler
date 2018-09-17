@@ -1,4 +1,4 @@
-package geek.owl.com.ua.KNUSchedule.Util.Network
+package geek.owl.com.ua.KNUSchedule.Repository
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName

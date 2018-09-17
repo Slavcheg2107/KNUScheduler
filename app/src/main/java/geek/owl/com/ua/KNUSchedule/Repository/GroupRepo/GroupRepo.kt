@@ -4,8 +4,8 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 
 import geek.owl.com.ua.KNUSchedule.Repository.GroupPojo
-import geek.owl.com.ua.KNUSchedule.Util.ApiService
-import geek.owl.com.ua.KNUSchedule.Util.ErrorHandler
+import geek.owl.com.ua.KNUSchedule.Util.Network.ApiService
+import geek.owl.com.ua.KNUSchedule.Util.Network.ErrorHandler
 import kotlinx.coroutines.experimental.launch
 
 import java.lang.Exception
@@ -20,7 +20,7 @@ class GroupRepo(val action: MutableLiveData<String>) {
 
     fun getGroupLiveData(facultyId: Long): LiveData<List<GroupPojo>> {
         currentFacultyId = facultyId
-        updateGroups();
+        updateGroups()
         return database.getGroups(currentFacultyId.toString())
     }
 
