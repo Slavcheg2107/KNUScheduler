@@ -9,8 +9,9 @@ import geek.owl.com.ua.KNUSchedule.Util.Adapters.SimpleAdapter
 
 @Entity
 data class GroupPojo(var name: String) : SimpleAdapter.ItemModel {
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     var id : Long = 0
+
     var facultyId : String = ""
     override fun getType(): Int {
         return ItemType.GROUP.ordinal
@@ -18,7 +19,7 @@ data class GroupPojo(var name: String) : SimpleAdapter.ItemModel {
 }
 
 @Entity
-data class FacultyPojo(@PrimaryKey var name: String, var id: Long) : SimpleAdapter.ItemModel {
+data class FacultyPojo( var name: String,@PrimaryKey var id: Long) : SimpleAdapter.ItemModel {
     override fun getType(): Int {
         return ItemType.FACULTY.ordinal
     }

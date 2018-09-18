@@ -6,6 +6,9 @@ import android.arch.lifecycle.MutableLiveData
 import geek.owl.com.ua.KNUSchedule.Repository.GroupPojo
 import geek.owl.com.ua.KNUSchedule.Util.Network.ApiService
 import geek.owl.com.ua.KNUSchedule.Util.Network.ErrorHandler
+import kotlinx.coroutines.experimental.CoroutineStart
+import kotlinx.coroutines.experimental.Dispatchers
+import kotlinx.coroutines.experimental.GlobalScope
 import kotlinx.coroutines.experimental.launch
 
 import java.lang.Exception
@@ -25,27 +28,24 @@ class GroupRepo(val action: MutableLiveData<String>) {
     }
 
     private fun updateGroups() {
-        launch {
+        GlobalScope.launch(Dispatchers.Default, CoroutineStart.DEFAULT, null, {
             val request = apiService.getGroups(currentFacultyId.toString())
             val response = request.await()
 
             try {
                 if (response.isSuccessful) {
                     response.body()?.let { it ->
-                        val groups = ArrayList<GroupPojo>()
                         it.groups.forEach { group ->
-                            val group1 = GroupPojo(group)
-                            group1.facultyId = currentFacultyId.toString()
-                            groups.add(group1)
+                            group.facultyId = currentFacultyId.toString()
                         }
-                        database.insertGroups(groups)
+                        database.insertGroups(it.groups)
                     }
                 }
             } catch (e: Exception) {
                 action.postValue(ErrorHandler.getMessage(e))
 
             }
-        }
+        })
 
     }
 

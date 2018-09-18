@@ -39,7 +39,7 @@ internal class LoginInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request().newBuilder()
                 .addHeader("Username", "android")
-                .addHeader("Authorization", "Token 6369aebbfac97f6c2ae09f0b6cdde90d4cfa0718")
+                .addHeader("Authorization", "Token 8fd6e8ac1137f7b5c0d9604a923cb04792994343")
                 .build()
 
         return chain.proceed(request)
