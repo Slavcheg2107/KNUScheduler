@@ -27,7 +27,7 @@ data class FacultyPojo( var name: String,@PrimaryKey var id: Long) : SimpleAdapt
 }
 
 @Entity
-data class SchedulePojo(@PrimaryKey var entityID: Int) : SimpleAdapter.ItemModel {
+data class SchedulePojo(@PrimaryKey var id: Long) : SimpleAdapter.ItemModel {
     override fun getType(): Int {
         return ItemType.SCHEDULE.ordinal
     }
@@ -58,7 +58,7 @@ data class SchedulePojo(@PrimaryKey var entityID: Int) : SimpleAdapter.ItemModel
     var lessontype: String = ""
     @SerializedName("subgroup")
     @Expose
-    var subgroup: String = ""
+    var subgroup: String? = null
     @SerializedName("class_begin")
     @Expose
     var beginTime: String = ""

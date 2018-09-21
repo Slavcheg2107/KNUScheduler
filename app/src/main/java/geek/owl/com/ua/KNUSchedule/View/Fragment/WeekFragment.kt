@@ -88,10 +88,8 @@ class WeekFragment : Fragment(), OnItemClick {
 
 
     private fun setData(it: List<DayPojo> = emptyList()) {
-        it.let {
             weekAdapter.data = it as MutableList<SimpleAdapter.ItemModel>
             weekAdapter.notifyDataSetChanged()
-        }
     }
 
     override fun onClick(item: SimpleAdapter.ItemModel) {

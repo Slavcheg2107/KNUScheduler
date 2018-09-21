@@ -36,23 +36,22 @@ class ScheduleRepo(val action: MutableLiveData<String>) {
             val response = job.await()
             try {
                 if (response.isSuccessful) {
-                    response.body()?.schedules?.let {
-                        it.forEach {
+                    response.body()?.schedules?.let { list ->
+                        list.forEach {
                             if (it.subgroup == null) it.subgroup = ""
                         }
-                        database.insertSchedules(it)
+                        database.insertSchedules(list)
                     }
                 }
             } catch (e: Exception) {
                 action.postValue(ErrorHandler.getMessage(e))
             }
         })
-
     }
 
     fun searchSchedule(query: String, take: Int, offset: Int) {
         val job = apiService.getAdvanceSchedule(query, take, offset)
-        launch {
+        GlobalScope.launch(Dispatchers.Default, CoroutineStart.DEFAULT, null, {
             val response = job.await()
 
             try {
@@ -62,6 +61,6 @@ class ScheduleRepo(val action: MutableLiveData<String>) {
             } catch (e: Exception) {
                 action.postValue(ErrorHandler.getMessage(e))
             }
-        }
+        })
     }
 }

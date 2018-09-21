@@ -20,5 +20,4 @@ interface FacultyDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertFaculties(faculties: List<FacultyPojo>)
 
-
 }
