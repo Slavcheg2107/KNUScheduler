@@ -20,6 +20,14 @@ class ViewRenderer {
                 view = LayoutInflater.from(parent.context).inflate(R.layout.group_item, parent, false)
                 GroupViewHolder(view)
             }
+            ItemType.WEEK.ordinal->{
+                view = LayoutInflater.from(parent.context).inflate(R.layout.week_item, parent, false)
+                WeekViewHolder(view)
+            }
+            ItemType.DAY.ordinal ->{
+                view = LayoutInflater.from(parent.context).inflate(R.layout.day_item, parent, false)
+                DayViewHolder(view)
+            }
             else -> {
 
                 FacultyViewHolder(view)
@@ -49,17 +57,22 @@ class ViewRenderer {
     inner class WeekViewHolder(view:View):RecyclerView.ViewHolder(view){
 
 
-//        val title: TextView? = view.findViewById()
+        val title: TextView? = view.findViewById(R.id.title)
 
-        fun bind(item: WeekPojo, itemClickListener: OnItemClick) {
+        fun bind(title: String, itemClickListener: OnItemClick) {
+            this.title?.text = title
+        }
+    }
+
+    inner class DayViewHolder(view:View):RecyclerView.ViewHolder(view){
+
+        fun bind(item:DayPojo, itemClickListener: OnItemClick){
 
         }
     }
     inner class ScheduleViewHolder(view:View) : RecyclerView.ViewHolder(view){
 
-
         fun bind(item : SchedulePojo, itemClickListener: OnItemClick){
-
         }
     }
 

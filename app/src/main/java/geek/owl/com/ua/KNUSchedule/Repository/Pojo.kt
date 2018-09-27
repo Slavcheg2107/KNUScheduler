@@ -77,13 +77,15 @@ data class DayPojo(val number : Int) : SimpleAdapter.ItemModel{
     }
 
     var scheduleList : List<SchedulePojo> = emptyList()
+    var weekNumber: Int = 0
 
 }
 data class WeekPojo(val list:List<SchedulePojo>, val weekNumber: Int): SimpleAdapter.ItemModel{
+    var title = ""
+
     override fun getType(): Int {
         return ItemType.WEEK.ordinal
     }
-
 }
 
 enum class ItemType {

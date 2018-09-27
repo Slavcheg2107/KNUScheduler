@@ -3,12 +3,16 @@ package geek.owl.com.ua.KNUSchedule.Util.Adapters
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
+import geek.owl.com.ua.KNUSchedule.AppClass
+import geek.owl.com.ua.KNUSchedule.R
 import geek.owl.com.ua.KNUSchedule.Repository.*
 import geek.owl.com.ua.KNUSchedule.Util.KNUDiffUtil
 
 
-class SimpleAdapter(var data: MutableList<ItemModel>, private val itemClickListener: OnItemClick) :  RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class SimpleAdapter(var data: MutableList<ItemModel>, val itemClickListener: OnItemClick) :  RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+
+    var itemOffset = 0
     var isFiltering : Boolean = false
     private var filteredData : MutableList<ItemModel> = ArrayList()
     interface ItemModel {
@@ -43,7 +47,6 @@ class SimpleAdapter(var data: MutableList<ItemModel>, private val itemClickListe
     }
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item : ItemModel = if(isFiltering) filteredData[position] else data[position]
-        holder.itemView.setOnClickListener { itemClickListener.onClick(item) }
         when (holder.itemViewType) {
             ItemType.FACULTY.ordinal -> {
                 item as FacultyPojo
@@ -55,11 +58,14 @@ class SimpleAdapter(var data: MutableList<ItemModel>, private val itemClickListe
                 holder as ViewRenderer.GroupViewHolder
                 holder.bind(item, itemClickListener)
             }
-            ItemType.WEEK.ordinal -> {
-                item as WeekPojo
+
+            ItemType.WEEK.ordinal->{
+                item as DayPojo
                 holder as ViewRenderer.WeekViewHolder
-                holder.bind(item, itemClickListener)
+                holder.itemView.context
+                holder.bind("${AppClass.INSTANCE.getString(R.string.week)} ${item.weekNumber}", itemClickListener)
             }
+
             ItemType.SCHEDULE.ordinal->{
                 item as SchedulePojo
                 holder as ViewRenderer.ScheduleViewHolder
@@ -67,6 +73,8 @@ class SimpleAdapter(var data: MutableList<ItemModel>, private val itemClickListe
             }
         }
     }
+
+
 
     override fun getItemCount(): Int {
         return if(!isFiltering){
@@ -77,7 +85,20 @@ class SimpleAdapter(var data: MutableList<ItemModel>, private val itemClickListe
     override fun getItemViewType(position: Int): Int {
 
         return if(!isFiltering){
-            data[position].getType()
+            val type = data[position].getType()
+            if(type == ItemType.DAY.ordinal){
+                data.let { list ->
+                    list as MutableList<DayPojo>
+                    list.sortByDescending { dayPojo ->  dayPojo.weekNumber }
+                    return when {
+                        position == 0 -> ItemType.WEEK.ordinal
+                        list[position].weekNumber != list[position+1].weekNumber -> ItemType.DAY.ordinal
+                        else -> ItemType.WEEK.ordinal
+                    }
+                }
+            }else{
+              type
+            }
         }else filteredData[position].getType()
     }
 

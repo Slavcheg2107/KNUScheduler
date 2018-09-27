@@ -30,16 +30,14 @@ class ScheduleRepo(val action: MutableLiveData<String>) {
         return database.getSchedule(group, week)
     }
 
-    fun updateSchedule(group: String) {
+    private fun updateSchedule(group: String) {
         val job = apiService.getSchedule(group)
         GlobalScope.launch(Dispatchers.Default, CoroutineStart.DEFAULT, null, {
             val response = job.await()
             try {
                 if (response.isSuccessful) {
                     response.body()?.schedules?.let { list ->
-                        list.forEach {
-                            if (it.subgroup == null) it.subgroup = ""
-                        }
+                        list.forEach { if (it.subgroup==null)it.subgroup = "" }
                         database.insertSchedules(list)
                     }
                 }
