@@ -9,8 +9,6 @@ import android.support.v4.app.Fragment
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.GridLayoutManager.SpanSizeLookup
-import android.support.v7.widget.RecyclerView
-import android.util.SparseArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,11 +17,12 @@ import android.view.animation.AnimationUtils.loadLayoutAnimation
 import geek.owl.com.ua.KNUSchedule.R
 import geek.owl.com.ua.KNUSchedule.Repository.DayPojo
 import geek.owl.com.ua.KNUSchedule.Repository.ItemType
-import geek.owl.com.ua.KNUSchedule.Repository.SchedulePojo
+import geek.owl.com.ua.KNUSchedule.Repository.WeekPojo
 import geek.owl.com.ua.KNUSchedule.Util.Adapters.OnItemClick
 import geek.owl.com.ua.KNUSchedule.Util.Adapters.SimpleAdapter
 import geek.owl.com.ua.KNUSchedule.Util.AppSettings
 import geek.owl.com.ua.KNUSchedule.Util.StaticVariables.Companion.WEEK_NUMBER
+import geek.owl.com.ua.KNUSchedule.Util.WeekView
 import geek.owl.com.ua.KNUSchedule.ViewModel.ScheduleViewModel.ScheduleViewModel
 import kotlinx.android.synthetic.main.week_fragment.*
 
@@ -31,12 +30,11 @@ class WeekFragment : Fragment(), OnItemClick {
 
 
     lateinit var viewModel: ScheduleViewModel
-    private var recyclerView: RecyclerView? = null
-
+    lateinit var week1 : WeekView
+    lateinit var week2 : WeekView
     private var swipeRefreshLayout: SwipeRefreshLayout? = null
     val handler: Handler = Handler()
     private val runnable = Runnable { swipeRefreshLayout?.isRefreshing = true }
-    lateinit var weekAdapter: SimpleAdapter
 
     private val group: String
         get() {
@@ -48,7 +46,7 @@ class WeekFragment : Fragment(), OnItemClick {
         swipeRefreshLayout = view.findViewById(R.id.refresh_layout)
 
         val groupName: String = group
-        initRecyclerView(view)
+        initWeekView(view)
 
         viewModel = ViewModelProviders.of(this).get(ScheduleViewModel::class.java)
         toolbar?.subtitle = groupName
@@ -70,19 +68,10 @@ class WeekFragment : Fragment(), OnItemClick {
     }
 
 
-    private fun initRecyclerView(view:View) {
-        weekAdapter = SimpleAdapter(emptyArray<SimpleAdapter.ItemModel>().toMutableList(), this)
-        val layoutManager = GridLayoutManager(context, 3)
-        layoutManager.spanSizeLookup = object : SpanSizeLookup(){
-            override fun getSpanSize(position: Int): Int {
-                return if(weekAdapter.getItemViewType(position) == ItemType.WEEK.ordinal){ 3 }else 1
-            }
-        }
-//        recyclerView = view.findViewById(R.id.week_recycler)
+    private fun initWeekView(view:View) {
+        week1 = view.findViewById(R.id.week1)
+        week2 = view.findViewById(R.id.week2)
 
-        recyclerView?.adapter = weekAdapter
-        recyclerView?.layoutManager = layoutManager
-        recyclerView?.layoutAnimation = loadLayoutAnimation(context, R.anim.layout_animation_fall_down)
     }
 
     private fun subscribeForData() {
@@ -101,9 +90,8 @@ class WeekFragment : Fragment(), OnItemClick {
     }
 
 
-    private fun setData(it: List<DayPojo> = emptyList()) {
-            weekAdapter.data = it.toMutableList()
-            weekAdapter.notifyDataSetChanged()
+    private fun setData(it: List<WeekPojo>) {
+        week1
     }
 
     override fun onClick(item: SimpleAdapter.ItemModel) {

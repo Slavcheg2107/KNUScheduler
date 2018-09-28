@@ -19,12 +19,12 @@ class StaticVariables{
 
 }
  enum class WeekDays(@StringRes int: Int) {
-     MONDAY(R.string.Day1),
-     TUESDAY(R.string.Day2),
-     WEDNESDAY(R.string.Day3),
-     THURSDAY(R.string.Day4),
-     FRIDAY(R.string.Day5),
-     SATURDAY(R.string.Day6);
+     MONDAY(R.string.Monday),
+     TUESDAY(R.string.Tuesday),
+     WEDNESDAY(R.string.Wednesday),
+     THURSDAY(R.string.Thursday),
+     FRIDAY(R.string.Friday),
+     SATURDAY(R.string.Saturday);
 
     @StringRes
     private var text : Int = int

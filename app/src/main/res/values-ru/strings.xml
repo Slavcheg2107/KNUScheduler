@@ -14,6 +14,7 @@
     <string name="Friday">Пятница</string>
     <string name="Saturday">Субота</string>
     <string name="Reload">Reload</string>
+    <string name="lesson_count">%1$d пары</string>
     <string name="current_group">GroupLoaded</string>
     <string name="week1_adapter_name">week1</string>
     <string name="week2_adapter_name">week2</string>

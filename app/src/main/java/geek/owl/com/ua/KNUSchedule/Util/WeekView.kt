@@ -13,7 +13,8 @@ class WeekView(context: Context?, attributeSet: AttributeSet?) : GridLayout(cont
 
     var dayList = emptyList<DayView>()
     init {
-        inflate(context, R.layout.week_item, parent as ViewGroup)
+        orientation = HORIZONTAL
+        inflate(context, R.layout.week_item, null)
     }
 
     fun hideDay(day : WeekDays){

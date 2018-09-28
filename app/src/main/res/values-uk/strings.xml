@@ -17,6 +17,7 @@
     <string name="current_group">GroupLoaded</string>
     <string name="week1_adapter_name">week1</string>
     <string name="week2_adapter_name">week2</string>
+    <string name="lesson_count">%1$d пари</string>
     <string-array name="week_selection">
         <item>Тиждень 1</item>
         <item>Тиждень 2</item>

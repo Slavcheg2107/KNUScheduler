@@ -2,6 +2,6 @@
 <resources>
     <declare-styleable name="DayView">
         <attr name="title" format="string"/>
-        <attr name="lesson_number" format="string"/>
+        <attr name="lesson_count" format="string"/>
     </declare-styleable>
 </resources>
