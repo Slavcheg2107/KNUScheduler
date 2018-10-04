@@ -9,7 +9,7 @@ import geek.owl.com.ua.KNUSchedule.Repository.*
 import geek.owl.com.ua.KNUSchedule.Util.KNUDiffUtil
 
 
-class SimpleAdapter(var data: MutableList<ItemModel>, val itemClickListener: OnItemClick) :  RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class SimpleAdapter(var data: MutableList<ItemModel>, private val itemClickListener: OnItemClick) :  RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 
     var itemOffset = 0
@@ -32,7 +32,7 @@ class SimpleAdapter(var data: MutableList<ItemModel>, val itemClickListener: OnI
             isFiltering =true
             filteredData = data.filter {
                 it as GroupPojo
-                it.name.toLowerCase().contains(s.toLowerCase()) || it.name.toLowerCase() == s.toLowerCase()
+                it.name.contains(s, ignoreCase = true) || it.name.equals(s, ignoreCase = true)
             }.toMutableList()
             val groupDiffUtil = KNUDiffUtil(data, filteredData)
             val result = DiffUtil.calculateDiff(groupDiffUtil, true)

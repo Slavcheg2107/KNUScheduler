@@ -5,13 +5,11 @@ import android.arch.lifecycle.MutableLiveData
 import geek.owl.com.ua.KNUSchedule.Repository.FacultyPojo
 import geek.owl.com.ua.KNUSchedule.Util.Network.ApiService
 import geek.owl.com.ua.KNUSchedule.Util.Network.ErrorHandler
-import kotlinx.coroutines.experimental.CoroutineStart
-import kotlinx.coroutines.experimental.Dispatchers
-import kotlinx.coroutines.experimental.GlobalScope
+import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
-import kotlinx.coroutines.experimental.launch
-import retrofit2.Call
-import kotlin.Exception
 
 class FacultyRepo(val action: MutableLiveData<String>) {
     private val apiService by lazy {
@@ -22,16 +20,15 @@ class FacultyRepo(val action: MutableLiveData<String>) {
     fun updateFaculties() {
 
         val job = apiService.getFaculties()
-        GlobalScope.launch(Dispatchers.Default, CoroutineStart.DEFAULT, null, {
+        GlobalScope.launch {
             val response = job.await()
 
-                if (response.isSuccessful) {
-                    response.body()?.let {
-                        database.insertFaculties(it.data)
-                    }
+            if (response.isSuccessful) {
+                response.body()?.let {
+                    database.insertFaculties(it.data)
                 }
-
-        })
+            }
+        }
 
     }
 

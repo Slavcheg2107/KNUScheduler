@@ -20,8 +20,8 @@ class ScheduleViewModel : ViewModel() {
 
     fun getSchedule(group: String, week: Int): LiveData<List<WeekPojo>> = Transformations.switchMap(scheduleRepo.getScheduleLiveData(group, week)) { it ->
         val dayList = ArrayList<DayPojo>()
-        var week1 = WeekPojo(emptyList(), 1)
-        var week2 = WeekPojo(emptyList(), 2)
+        var week1 = WeekPojo(ArrayList(), 1)
+        var week2 = WeekPojo(ArrayList(), 2)
 
         it.let { list ->
             val dayMap = SparseArray<ArrayList<SchedulePojo>>()
@@ -37,8 +37,13 @@ class ScheduleViewModel : ViewModel() {
                         it.weekNumber = dayMap.valueAt(i)[0].week
                     })
             }
-// add days to week
-            
+            dayList.forEach{
+                when(it.weekNumber){
+                    1-> week1.list.add(it)
+                    2-> week2.list.add(it)
+                }
+            }
+
             val weekList = ArrayList<WeekPojo>().also {
                 it.add(week1)
                 it.add(week2)

@@ -6,11 +6,9 @@ import geek.owl.com.ua.KNUSchedule.Repository.DayPojo
 import geek.owl.com.ua.KNUSchedule.Repository.SchedulePojo
 import geek.owl.com.ua.KNUSchedule.Util.Network.ApiService
 import geek.owl.com.ua.KNUSchedule.Util.Network.ErrorHandler
-import kotlinx.coroutines.experimental.CoroutineStart
-import kotlinx.coroutines.experimental.Dispatchers
-import kotlinx.coroutines.experimental.GlobalScope
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
-import kotlinx.coroutines.experimental.launch
 
 class ScheduleRepo(val action: MutableLiveData<String>) {
     private val dayListLiveData = MutableLiveData<List<DayPojo>>()
@@ -32,24 +30,24 @@ class ScheduleRepo(val action: MutableLiveData<String>) {
 
     private fun updateSchedule(group: String) {
         val job = apiService.getSchedule(group)
-        GlobalScope.launch(Dispatchers.Default, CoroutineStart.DEFAULT, null, {
+        GlobalScope.launch {
             val response = job.await()
             try {
                 if (response.isSuccessful) {
                     response.body()?.schedules?.let { list ->
-                        list.forEach { if (it.subgroup==null)it.subgroup = "" }
+                        list.forEach { if (it.subgroup == null) it.subgroup = "" }
                         database.insertSchedules(list)
                     }
                 }
             } catch (e: Exception) {
                 action.postValue(ErrorHandler.getMessage(e))
             }
-        })
+        }
     }
 
     fun searchSchedule(query: String, take: Int, offset: Int) {
         val job = apiService.getAdvanceSchedule(query, take, offset)
-        GlobalScope.launch(Dispatchers.Default, CoroutineStart.DEFAULT, null, {
+        GlobalScope.launch {
             val response = job.await()
 
             try {
@@ -59,6 +57,6 @@ class ScheduleRepo(val action: MutableLiveData<String>) {
             } catch (e: Exception) {
                 action.postValue(ErrorHandler.getMessage(e))
             }
-        })
+        }
     }
 }
