@@ -10,18 +10,18 @@ import geek.owl.com.ua.KNUSchedule.Repository.SchedulePojo
 @Dao
 interface ScheduleDao {
 
-    @Query("SELECT * FROM schedulepojo WHERE `group` = :group AND day =:day AND week=:week")
-    fun getSchedule(group: String, day: Int, week: Int): LiveData<List<SchedulePojo>>
+  @Query("SELECT * FROM schedulepojo WHERE `group` = :group AND day =:day AND week=:week")
+  fun getSchedule(group: String, day: Int, week: Int): LiveData<List<SchedulePojo>>
 
-    @Query("DELETE FROM schedulepojo WHERE `group`=:group AND day =:day AND week=:week")
-    fun deleteSchedules(group: String, day: Int, week: Int)
+  @Query("DELETE FROM schedulepojo WHERE `group`=:group AND day =:day AND week=:week")
+  fun deleteSchedules(group: String, day: Int, week: Int)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertSchedules(schedules: List<SchedulePojo>)
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  fun insertSchedules(schedules: List<SchedulePojo>)
 
-    @Query("SELECT * FROM schedulepojo WHERE `group` = :group AND week = :week")
-    fun getSchedule(group: String, week: Int): LiveData<List<SchedulePojo>>
+  @Query("SELECT * FROM schedulepojo WHERE `group` = :group AND week = :week")
+  fun getSchedule(group: String, week: Int): LiveData<List<SchedulePojo>>
 
-    @Query("DELETE FROM schedulepojo WHERE `group`=:group AND week=:week")
-    fun deleteSchedules(group: String, week: Int)
+  @Query("DELETE FROM schedulepojo WHERE `group`=:group AND week=:week")
+  fun deleteSchedules(group: String, week: Int)
 }

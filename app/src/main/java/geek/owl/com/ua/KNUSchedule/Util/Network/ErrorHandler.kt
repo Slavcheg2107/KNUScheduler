@@ -9,16 +9,16 @@ import retrofit2.HttpException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
-class ErrorHandler(){
+class ErrorHandler {
 
-    companion object {
-        fun getMessage(e : Exception) : String{
-            return when (e){
-                is HttpException -> ERROR
-                is UnknownHostException -> UNKNOWN_HOST
-                is SocketTimeoutException -> TIMEOUT
-                else -> UNKNOWN
-            }
-            }
-        }
+  companion object {
+    fun getMessage(e: Exception): String {
+      return when (e) {
+        is HttpException -> ERROR
+        is UnknownHostException -> UNKNOWN_HOST
+        is SocketTimeoutException -> TIMEOUT
+        else -> UNKNOWN
+      }
     }
+  }
+}

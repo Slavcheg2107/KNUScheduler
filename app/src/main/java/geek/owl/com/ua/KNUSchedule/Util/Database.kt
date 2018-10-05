@@ -12,7 +12,7 @@ import geek.owl.com.ua.KNUSchedule.Repository.ScheduleRepo.ScheduleDao
 
 @Database(entities = [(FacultyPojo::class), (GroupPojo::class), (SchedulePojo::class)], version = 8, exportSchema = false)
 abstract class Database : RoomDatabase() {
-    abstract fun getFacultyDao(): FacultyDao
-    abstract fun getScheduleDao(): ScheduleDao
-    abstract fun getGroupDao(): GroupDao
+  abstract fun getFacultyDao(): FacultyDao
+  abstract fun getScheduleDao(): ScheduleDao
+  abstract fun getGroupDao(): GroupDao
 }

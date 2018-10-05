@@ -11,13 +11,13 @@ import geek.owl.com.ua.KNUSchedule.Repository.FacultyPojo
 interface FacultyDao {
 
 
-    @Query("SELECT * FROM facultypojo")
-    fun getAllFaculties(): LiveData<List<FacultyPojo>>
+  @Query("SELECT * FROM facultypojo")
+  fun getAllFaculties(): LiveData<List<FacultyPojo>>
 
-    @Query("DELETE FROM facultypojo")
-    fun deleteFaculties()
+  @Query("DELETE FROM facultypojo")
+  fun deleteFaculties()
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertFaculties(faculties: List<FacultyPojo>)
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  fun insertFaculties(faculties: List<FacultyPojo>)
 
 }

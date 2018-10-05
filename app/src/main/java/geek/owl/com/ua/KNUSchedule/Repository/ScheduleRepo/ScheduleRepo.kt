@@ -11,52 +11,52 @@ import kotlinx.coroutines.launch
 
 
 class ScheduleRepo(val action: MutableLiveData<String>) {
-    private val dayListLiveData = MutableLiveData<List<DayPojo>>()
-    lateinit var data: LiveData<List<SchedulePojo>>
-    private val searchableData: MutableLiveData<List<SchedulePojo>> = MutableLiveData()
-    private val apiService by lazy {
-        ApiService.createApi()
-    }
-    var database = geek.owl.com.ua.KNUSchedule.AppClass.database.getScheduleDao()
+  private val dayListLiveData = MutableLiveData<List<DayPojo>>()
+  lateinit var data: LiveData<List<SchedulePojo>>
+  private val searchableData: MutableLiveData<List<SchedulePojo>> = MutableLiveData()
+  private val apiService by lazy {
+    ApiService.createApi()
+  }
+  var database = geek.owl.com.ua.KNUSchedule.AppClass.database.getScheduleDao()
 
-    fun getScheduleLiveData(group: String, day: Int, week: Int): MutableLiveData<List<SchedulePojo>> {
-        return database.getSchedule(group, day, week) as MutableLiveData<List<SchedulePojo>>
-    }
+  fun getScheduleLiveData(group: String, day: Int, week: Int): MutableLiveData<List<SchedulePojo>> {
+    return database.getSchedule(group, day, week) as MutableLiveData<List<SchedulePojo>>
+  }
 
-    fun getScheduleLiveData(group: String, week: Int): LiveData<List<SchedulePojo>> {
-        updateSchedule(group)
-        return database.getSchedule(group, week)
-    }
+  fun getScheduleLiveData(group: String, week: Int): LiveData<List<SchedulePojo>> {
+    updateSchedule(group)
+    return database.getSchedule(group, week)
+  }
 
-    private fun updateSchedule(group: String) {
-        val job = apiService.getSchedule(group)
-        GlobalScope.launch {
-            val response = job.await()
-            try {
-                if (response.isSuccessful) {
-                    response.body()?.schedules?.let { list ->
-                        list.forEach { if (it.subgroup == null) it.subgroup = "" }
-                        database.insertSchedules(list)
-                    }
-                }
-            } catch (e: Exception) {
-                action.postValue(ErrorHandler.getMessage(e))
-            }
+  private fun updateSchedule(group: String) {
+    val job = apiService.getSchedule(group)
+    GlobalScope.launch {
+      val response = job.await()
+      try {
+        if (response.isSuccessful) {
+          response.body()?.schedules?.let { list ->
+            list.forEach { if (it.subgroup == null) it.subgroup = "" }
+            database.insertSchedules(list)
+          }
         }
+      } catch (e: Exception) {
+        action.postValue(ErrorHandler.getMessage(e))
+      }
     }
+  }
 
-    fun searchSchedule(query: String, take: Int, offset: Int) {
-        val job = apiService.getAdvanceSchedule(query, take, offset)
-        GlobalScope.launch {
-            val response = job.await()
+  fun searchSchedule(query: String, take: Int, offset: Int) {
+    val job = apiService.getAdvanceSchedule(query, take, offset)
+    GlobalScope.launch {
+      val response = job.await()
 
-            try {
-                response.body().let {
-                    searchableData.postValue(it?.schedules)
-                }
-            } catch (e: Exception) {
-                action.postValue(ErrorHandler.getMessage(e))
-            }
+      try {
+        response.body().let {
+          searchableData.postValue(it?.schedules)
         }
+      } catch (e: Exception) {
+        action.postValue(ErrorHandler.getMessage(e))
+      }
     }
+  }
 }

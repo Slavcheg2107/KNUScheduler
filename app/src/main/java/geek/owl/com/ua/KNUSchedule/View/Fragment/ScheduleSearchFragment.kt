@@ -11,17 +11,17 @@ import geek.owl.com.ua.KNUSchedule.R
 
 class ScheduleSearchFragment : Fragment() {
 
-    var recyclerView: RecyclerView? = null
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.list_fragment, container, false)
-        initRecyclerView()
+  var recyclerView: RecyclerView? = null
+  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    val view = inflater.inflate(R.layout.list_fragment, container, false)
+    initRecyclerView()
 
-        return view
-    }
+    return view
+  }
 
-    private fun initRecyclerView() {
-        recyclerView = view!!.findViewById(R.id.recycler_view)
-        val lm = GridLayoutManager(context, 2)
-        lm.isItemPrefetchEnabled
-    }
+  private fun initRecyclerView() {
+    recyclerView = view!!.findViewById(R.id.recycler_view)
+    val lm = GridLayoutManager(context, 2)
+    lm.isItemPrefetchEnabled
+  }
 }

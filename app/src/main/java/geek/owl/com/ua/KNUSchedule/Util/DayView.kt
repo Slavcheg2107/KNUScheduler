@@ -7,27 +7,29 @@ import android.view.ViewGroup
 import android.widget.TextView
 import geek.owl.com.ua.KNUSchedule.R
 
-class DayView (context: Context?, attributeSet: AttributeSet?): View(context, attributeSet){
+class DayView(context: Context?, attributeSet: AttributeSet?) : View(context, attributeSet) {
 
-    var title:TextView
-    var lessonCount : TextView
-    init {
-        inflate(context, R.layout.day_item, parent as ViewGroup)
-        title = findViewById(R.id.title)
-        lessonCount = findViewById(R.id.num_of_lessons)
-        val attributes = context?.obtainStyledAttributes(attributeSet, R.styleable.DayView)
-        title.text = attributes?.getString(R.styleable.DayView_title)
-        lessonCount.text = attributes?.getString(R.styleable.DayView_lesson_count)
+  var title: TextView
+  var lessonCount: TextView
 
-        attributes?.recycle()
+  init {
+    inflate(context, R.layout.day_item, parent as ViewGroup)
+    title = findViewById(R.id.title)
+    lessonCount = findViewById(R.id.num_of_lessons)
+    val attributes = context?.obtainStyledAttributes(attributeSet, R.styleable.DayView)
+    title.text = attributes?.getString(R.styleable.DayView_title)
+    lessonCount.text = attributes?.getString(R.styleable.DayView_lesson_count)
 
-    }
-    fun setTitle(title: String) {
-        this.title.text = title
-    }
+    attributes?.recycle()
 
-    fun setLessonsNumber(lessonNum: String) {
-        this.lessonCount.text = lessonNum
-    }
+  }
+
+  fun setTitle(title: String) {
+    this.title.text = title
+  }
+
+  fun setLessonsNumber(lessonNum: String) {
+    this.lessonCount.text = lessonNum
+  }
 
 }

@@ -1,40 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+  <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
 
-        <!-- Customize your theme here. -->
-        <item name="android:colorControlActivated">@color/colorPrimaryDark</item>
-        <item name="colorPrimary">@color/colorPrimaryDark</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorPrimaryDark</item>
-        <item name="android:textColorSecondary">@color/colorWhite</item>
-        <item name="android:text">@color/colorSecondaryDark</item>
-        <item name="android:title">@color/colorSecondaryDark</item>
-    </style>
+    <!-- Customize your theme here. -->
+    <item name="android:colorControlActivated">@color/colorPrimaryDark</item>
+    <item name="colorPrimary">@color/colorPrimaryDark</item>
+    <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+    <item name="colorAccent">@color/colorPrimaryDark</item>
+    <item name="android:textColorSecondary">@color/colorWhite</item>
+    <item name="android:text">@color/colorSecondaryDark</item>
+    <item name="android:title">@color/colorSecondaryDark</item>
+  </style>
 
-    <!--<style name="AppTheme.withActionBar" parent="Theme.AppCompat.DayNight.DarkActionBar">-->
-    <!--<item name="colorControlActivated">@color/colorPrimaryDark</item>-->
-    <!--<item name="colorControlNormal">@color/colorSecondaryDark</item>-->
-    <!--</style>-->
+  <!--<style name="AppTheme.withActionBar" parent="Theme.AppCompat.DayNight.DarkActionBar">-->
+  <!--<item name="colorControlActivated">@color/colorPrimaryDark</item>-->
+  <!--<item name="colorControlNormal">@color/colorSecondaryDark</item>-->
+  <!--</style>-->
 
-    <!--<style name="cursorColor" parent="Widget.AppCompat.AutoCompleteTextView">-->
-    <!--<item name="android:textCursorDrawable">@drawable/cursor</item>-->
-    <!--</style>-->
+  <!--<style name="cursorColor" parent="Widget.AppCompat.AutoCompleteTextView">-->
+  <!--<item name="android:textCursorDrawable">@drawable/cursor</item>-->
+  <!--</style>-->
 
-    <style name="SplashTheme" parent="AppTheme">
-        <item name="android:windowBackground">@drawable/splash</item>
+  <style name="SplashTheme" parent="AppTheme">
+    <item name="android:windowBackground">@drawable/splash</item>
 
-    </style>
+  </style>
 
-    <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">
-        <item name="searchIcon">@drawable/ic_search_black_24dp</item>
-        <item name="closeIcon">@drawable/ic_close_black_24dp</item>
-        <item name="android:textColorHint">@color/colorPrimaryDark</item>
-        <item name="android:background">@drawable/search_background</item>
-        <item name="queryHint">@string/search_group_hint</item>
-    </style>
+  <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">
+    <item name="searchIcon">@drawable/ic_search_black_24dp</item>
+    <item name="closeIcon">@drawable/ic_close_black_24dp</item>
+    <item name="android:textColorHint">@color/colorPrimaryDark</item>
+    <item name="android:background">@drawable/search_background</item>
+    <item name="queryHint">@string/search_group_hint</item>
+  </style>
 
-    <string name="search_group_hint">Пошук групи</string>
+  <string name="search_group_hint">Пошук групи</string>
 
 </resources>
