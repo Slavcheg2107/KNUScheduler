@@ -1,33 +1,33 @@
 package geek.owl.com.ua.KNUSchedule.View.Fragment
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.os.Handler
-import android.support.v4.app.Fragment
-import android.support.v4.widget.SwipeRefreshLayout
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import geek.owl.com.ua.KNUSchedule.R
 import geek.owl.com.ua.KNUSchedule.Repository.WeekPojo
 import geek.owl.com.ua.KNUSchedule.Util.Adapters.OnItemClick
 import geek.owl.com.ua.KNUSchedule.Util.Adapters.SimpleAdapter
 import geek.owl.com.ua.KNUSchedule.Util.AppSettings
+import geek.owl.com.ua.KNUSchedule.Util.DayView
 import geek.owl.com.ua.KNUSchedule.Util.StaticVariables.Companion.WEEK_NUMBER
-import geek.owl.com.ua.KNUSchedule.Util.WeekView
+import geek.owl.com.ua.KNUSchedule.Util.WeekDays
+import geek.owl.com.ua.KNUSchedule.Util.getDayTitle
 import geek.owl.com.ua.KNUSchedule.ViewModel.ScheduleViewModel.ScheduleViewModel
 import kotlinx.android.synthetic.main.week_fragment.*
 
-class WeekFragment : Fragment(), OnItemClick {
+class WeekFragment : androidx.fragment.app.Fragment(), OnItemClick {
 
 
   lateinit var viewModel: ScheduleViewModel
-  lateinit var week1: WeekView
-  lateinit var week2: WeekView
-  private var swipeRefreshLayout: SwipeRefreshLayout? = null
   val handler: Handler = Handler()
-  private val runnable = Runnable { swipeRefreshLayout?.isRefreshing = true }
+//  private val runnable = Runnable { refresh_layout?.isRefreshing = true }
+  val week1Adapter:SimpleAdapter = SimpleAdapter(emptyList<WeekPojo>().toMutableList(),this)
+  val week2Adapter:SimpleAdapter = SimpleAdapter(emptyList<WeekPojo>().toMutableList(),this)
 
   private val group: String
     get() {
@@ -36,45 +36,51 @@ class WeekFragment : Fragment(), OnItemClick {
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
     val view = inflater.inflate(R.layout.week_fragment, container, false)
-    swipeRefreshLayout = view.findViewById(R.id.refresh_layout)
 
     val groupName: String = group
-    initWeekView(view)
+
 
     viewModel = ViewModelProviders.of(this).get(ScheduleViewModel::class.java)
     toolbar?.subtitle = groupName
-    swipeRefreshLayout?.setOnRefreshListener {
-      swipeRefreshLayout?.isRefreshing = false
-      startDelayedLoad()
-      viewModel.getSchedule(group, AppSettings().getInt(WEEK_NUMBER, 0))
-    }
+
     subscribeForData()
     return view
   }
 
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+    initWeekView()
+    viewModel.getSchedule(group)
+//   refresh_layout.setOnRefreshListener {
+//     refresh_layout.isRefreshing = false
+//      startDelayedLoad()
+//      viewModel.getScheduleWithWeek(group, AppSettings().getInt(WEEK_NUMBER, 1))
+//    }
+  }
+
   private fun startDelayedLoad() {
-    handler.postDelayed(runnable, 500)
+//    handler.postDelayed(runnable, 500)
   }
 
   private fun cancelDelayedLoad() {
-    handler.removeCallbacksAndMessages(null)
+//    handler.removeCallbacksAndMessages(null)
   }
 
 
-  private fun initWeekView(view: View) {
-    week1 = view.findViewById(R.id.week1)
-    week2 = view.findViewById(R.id.week2)
-
+  private fun initWeekView() {
+    week1.columnCount = 4
+    week1.rowCount = 2
+    week2.columnCount = 4
+    week2.rowCount = 2
   }
 
   private fun subscribeForData() {
-    viewModel.getSchedule(group, AppSettings().getInt(WEEK_NUMBER, 1))
-        .observe(this, Observer { it ->
-          it?.let {
-            cancelDelayedLoad()
-            setData(it)
-          }
-        })
+    viewModel.weekLiveData.observe(this, Observer { it ->
+      it?.let {
+        cancelDelayedLoad()
+        setData(it)
+      }
+    })
     viewModel.action.observe(this, Observer { it ->
       run {
         cancelDelayedLoad()
@@ -83,8 +89,41 @@ class WeekFragment : Fragment(), OnItemClick {
   }
 
 
-  private fun setData(it: List<WeekPojo>) {
-    week1
+  private fun setData(weeks: List<WeekPojo>) {
+    weeks.forEach { week->
+      when (week.weekNumber) {
+        1 -> {
+          week.list.forEach { day->
+            run {
+              week1.addView(this.context?.let { it1 ->
+                DayView(it1).also {
+                  it.title.text = (getDayTitle(day.number))
+                  it.lessonCount.text = if (day.scheduleList.size == 1)
+                    "1 пара"
+                  else
+                    "${day.scheduleList.size} ${context?.resources?.getString(R.string.lesson)}"
+                }
+              })
+            }
+          }
+        }
+        2 -> {
+          week.list.forEach { day->
+            run {
+              week2.addView(this.context?.let { it1 ->
+                DayView(it1).also {
+                  it.title.text = (getDayTitle(day.number))
+                  it.lessonCount.text = if (day.scheduleList.size == 1)
+                    "1 пара"
+                  else
+                    "${day.scheduleList.size} ${context?.resources?.getString(R.string.lesson)}"
+                }
+              })
+            }
+          }
+        }
+      }
+    }
   }
 
   override fun onClick(item: SimpleAdapter.ItemModel) {

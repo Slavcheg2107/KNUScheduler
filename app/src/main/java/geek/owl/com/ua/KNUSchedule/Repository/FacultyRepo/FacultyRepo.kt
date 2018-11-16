@@ -1,7 +1,7 @@
 package geek.owl.com.ua.KNUSchedule.Repository.FacultyRepo
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import geek.owl.com.ua.KNUSchedule.Repository.FacultyPojo
 import geek.owl.com.ua.KNUSchedule.Util.Network.ApiService
 import kotlinx.coroutines.GlobalScope

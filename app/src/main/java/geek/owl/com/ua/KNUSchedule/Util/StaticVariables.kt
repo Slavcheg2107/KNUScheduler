@@ -1,6 +1,7 @@
 package geek.owl.com.ua.KNUSchedule.Util
 
 import androidx.annotation.StringRes
+import geek.owl.com.ua.KNUSchedule.AppClass
 import geek.owl.com.ua.KNUSchedule.R
 
 class StaticVariables {
@@ -32,4 +33,34 @@ enum class WeekDays(@StringRes int: Int) {
 
   @StringRes
   fun getText() = text
+
+
+
+  }
+fun getDayTitle(number: Int): String {
+
+  val resources = AppClass.INSTANCE.resources
+  return when (number) {
+    1 -> {
+      resources.getString(R.string.Monday)
+    }
+    2 -> {
+      resources.getString(R.string.Tuesday)
+    }
+    3 -> {
+      resources.getString(R.string.Wednesday)
+    }
+    4 -> {
+      resources.getString(R.string.Thursday)
+    }
+    5 -> {
+      resources.getString(R.string.Friday)
+    }
+    6 -> {
+      resources.getString(R.string.Saturday)
+    }
+    else -> {
+      ""
+    }
+  }
 }

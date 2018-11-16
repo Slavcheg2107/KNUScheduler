@@ -4,22 +4,38 @@ import android.content.Context
 import android.util.AttributeSet
 import android.widget.GridLayout
 import geek.owl.com.ua.KNUSchedule.R
+import geek.owl.com.ua.KNUSchedule.Repository.DayPojo
 
-class WeekView(context: Context?, attributeSet: AttributeSet?) : GridLayout(context, attributeSet) {
+class WeekView(context: Context?) : GridLayout(context) {
 
-  var dayList = emptyList<DayView>()
+  var dayViewList: MutableList<DayView> = emptyList<DayView>().toMutableList()
+  var dayList: MutableList<DayPojo> = emptyList<DayPojo>().toMutableList()
+
 
   init {
-    orientation = HORIZONTAL
-    inflate(context, R.layout.week_item, null)
-  }
-
-  fun hideDay(day: WeekDays) {
 
   }
 
-  fun showDay(day: WeekDays) {
+
+  fun addDays(days: List<DayPojo>) {
+    days.forEach { day ->
+      addView(DayView(context).also {
+//        it.title.text = getDayTitle(day.number)
+        it.lessonCount.text = if (day.scheduleList.size == 1)
+          "1 пара"
+        else
+          "${day.scheduleList.size} ${context.resources.getString(R.string.lesson)}"
+        dayViewList.add(it)
+      })
+    }
+    dayList = days.toMutableList()
+  }
+
 
   }
 
-}
+  private fun addDay(dayPojo: DayPojo) {
+    val attributeSet: AttributeSet
+//    addView()
+  }
+

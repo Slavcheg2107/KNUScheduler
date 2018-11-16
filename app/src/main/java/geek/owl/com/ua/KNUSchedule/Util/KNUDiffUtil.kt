@@ -1,6 +1,6 @@
 package geek.owl.com.ua.KNUSchedule.Util
 
-import android.support.v7.util.DiffUtil
+import androidx.recyclerview.widget.DiffUtil
 import geek.owl.com.ua.KNUSchedule.Repository.FacultyPojo
 import geek.owl.com.ua.KNUSchedule.Repository.GroupPojo
 import geek.owl.com.ua.KNUSchedule.Repository.ItemType

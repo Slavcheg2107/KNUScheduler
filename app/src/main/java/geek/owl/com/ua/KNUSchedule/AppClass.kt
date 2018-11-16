@@ -1,7 +1,7 @@
 package geek.owl.com.ua.KNUSchedule
 
 import android.app.Application
-import android.arch.persistence.room.Room
+import androidx.room.Room
 import geek.owl.com.ua.KNUSchedule.Util.Database
 
 class AppClass : Application() {

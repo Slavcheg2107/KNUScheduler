@@ -1,7 +1,7 @@
 package geek.owl.com.ua.KNUSchedule.Repository.GroupRepo
 
-import android.arch.lifecycle.LiveData
-import android.arch.persistence.room.*
+import androidx.lifecycle.LiveData
+import androidx.room.*
 import geek.owl.com.ua.KNUSchedule.Repository.GroupPojo
 
 @Dao

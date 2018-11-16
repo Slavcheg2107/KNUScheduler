@@ -1,7 +1,7 @@
 package geek.owl.com.ua.KNUSchedule.Util.Adapters
 
-import android.support.v7.util.DiffUtil
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.RecyclerView
 import android.view.ViewGroup
 import geek.owl.com.ua.KNUSchedule.AppClass
 import geek.owl.com.ua.KNUSchedule.R
@@ -9,7 +9,7 @@ import geek.owl.com.ua.KNUSchedule.Repository.*
 import geek.owl.com.ua.KNUSchedule.Util.KNUDiffUtil
 
 
-class SimpleAdapter(var data: MutableList<ItemModel>, private val itemClickListener: OnItemClick) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class SimpleAdapter(var data: MutableList<ItemModel>, private val itemClickListener: OnItemClick) : androidx.recyclerview.widget.RecyclerView.Adapter<androidx.recyclerview.widget.RecyclerView.ViewHolder>() {
 
 
   var itemOffset = 0
@@ -22,7 +22,7 @@ class SimpleAdapter(var data: MutableList<ItemModel>, private val itemClickListe
 
   private val renderer: ViewRenderer = ViewRenderer()
 
-  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): androidx.recyclerview.widget.RecyclerView.ViewHolder {
     return renderer.createViewHolder(parent, viewType)
 
   }
@@ -46,7 +46,7 @@ class SimpleAdapter(var data: MutableList<ItemModel>, private val itemClickListe
 
   }
 
-  override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+  override fun onBindViewHolder(holder: androidx.recyclerview.widget.RecyclerView.ViewHolder, position: Int) {
     val item: ItemModel = if (isFiltering) filteredData[position] else data[position]
     when (holder.itemViewType) {
       ItemType.FACULTY.ordinal -> {

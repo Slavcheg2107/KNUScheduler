@@ -1,7 +1,7 @@
 package geek.owl.com.ua.KNUSchedule.Util
 
-import android.arch.persistence.room.Database
-import android.arch.persistence.room.RoomDatabase
+import androidx.room.Database
+import androidx.room.RoomDatabase
 
 import geek.owl.com.ua.KNUSchedule.Repository.FacultyPojo
 import geek.owl.com.ua.KNUSchedule.Repository.FacultyRepo.FacultyDao

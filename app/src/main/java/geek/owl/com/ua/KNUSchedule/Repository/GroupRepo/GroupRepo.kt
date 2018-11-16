@@ -1,8 +1,8 @@
 package geek.owl.com.ua.KNUSchedule.Repository.GroupRepo
 
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import geek.owl.com.ua.KNUSchedule.Repository.GroupPojo
 import geek.owl.com.ua.KNUSchedule.Util.Network.ApiService
 import geek.owl.com.ua.KNUSchedule.Util.Network.ErrorHandler

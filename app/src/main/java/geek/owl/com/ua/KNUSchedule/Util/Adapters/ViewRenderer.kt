@@ -1,6 +1,6 @@
 package geek.owl.com.ua.KNUSchedule.Util.Adapters
 
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +9,7 @@ import geek.owl.com.ua.KNUSchedule.R
 import geek.owl.com.ua.KNUSchedule.Repository.*
 
 class ViewRenderer {
-  fun createViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+  fun createViewHolder(parent: ViewGroup, viewType: Int): androidx.recyclerview.widget.RecyclerView.ViewHolder {
     var view: View = LayoutInflater.from(parent.context).inflate(R.layout.faculty_item, parent, false)
     return when (viewType) {
       ItemType.FACULTY.ordinal -> {
@@ -36,7 +36,7 @@ class ViewRenderer {
 
   }
 
-  inner class FacultyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+  inner class FacultyViewHolder(view: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(view) {
 
     val title: TextView? = view.findViewById(R.id.title)
 
@@ -46,7 +46,7 @@ class ViewRenderer {
     }
   }
 
-  inner class GroupViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+  inner class GroupViewHolder(itemView: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
     val title: TextView? = itemView.findViewById(R.id.title)
     fun bind(item: GroupPojo, itemClickListener: OnItemClick) {
       title?.text = item.name
@@ -54,8 +54,7 @@ class ViewRenderer {
     }
   }
 
-  inner class WeekViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-
+  inner class WeekViewHolder(view: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(view) {
 
     val title: TextView? = view.findViewById(R.id.title)
 
@@ -64,14 +63,14 @@ class ViewRenderer {
     }
   }
 
-  inner class DayViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+  inner class DayViewHolder(view: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(view) {
 
     fun bind(item: DayPojo, itemClickListener: OnItemClick) {
 
     }
   }
 
-  inner class ScheduleViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+  inner class ScheduleViewHolder(view: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(view) {
 
     fun bind(item: SchedulePojo, itemClickListener: OnItemClick) {
     }
