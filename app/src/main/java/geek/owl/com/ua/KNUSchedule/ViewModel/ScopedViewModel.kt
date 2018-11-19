@@ -8,11 +8,12 @@ import kotlinx.coroutines.android.Main
 import kotlin.coroutines.CoroutineContext
 
 open class ScopedViewModel : ViewModel(), CoroutineScope {
-  override val coroutineContext: CoroutineContext
-    get() = scope
+
   private val job = Job()
 
-  protected val scope: CoroutineContext = job + Dispatchers.Main
+  private val scope: CoroutineContext = job + Dispatchers.Main
+  override val coroutineContext: CoroutineContext
+    get() = scope
   override fun onCleared() {
     super.onCleared()
     job.cancel()

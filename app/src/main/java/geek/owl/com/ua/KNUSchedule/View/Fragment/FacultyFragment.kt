@@ -36,8 +36,7 @@ class FacultyFragment : androidx.fragment.app.Fragment(), OnItemClick {
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
     val view = inflater.inflate(R.layout.faculty_fragment, container, false)
     refreshLayout = view.findViewById(R.id.refresh_layout)
-//        toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_material)
-//        toolbar.setNavigationOnClickListener { activity?.onBackPressed() }
+
     initRecyclerView(view)
     viewModel = ViewModelProviders.of(this).get(FacultyViewModel::class.java)
     refreshLayout?.setOnRefreshListener {

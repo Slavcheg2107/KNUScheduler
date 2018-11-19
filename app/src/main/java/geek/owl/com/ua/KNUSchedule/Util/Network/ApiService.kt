@@ -35,7 +35,6 @@ class ApiService {
 }
 
 internal class LoginInterceptor : Interceptor {
-  @Throws(IOException::class)
   override fun intercept(chain: Interceptor.Chain): Response {
     val request = chain.request().newBuilder()
         .addHeader("Username", "android")

@@ -7,8 +7,8 @@ import geek.owl.com.ua.KNUSchedule.Util.Database
 class AppClass : Application() {
   override fun onCreate() {
     super.onCreate()
-    geek.owl.com.ua.KNUSchedule.AppClass.Companion.database = Room.databaseBuilder(this, Database::class.java, "KNUDb").fallbackToDestructiveMigration().build()
-    geek.owl.com.ua.KNUSchedule.AppClass.Companion.INSTANCE = this
+    geek.owl.com.ua.KNUSchedule.AppClass.database = Room.databaseBuilder(this, Database::class.java, "KNUDb").fallbackToDestructiveMigration().build()
+    geek.owl.com.ua.KNUSchedule.AppClass.INSTANCE = this
   }
 
   companion object {

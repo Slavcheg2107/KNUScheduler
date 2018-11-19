@@ -23,7 +23,7 @@ class DayView : CardView {
   var lessonCount: TextView
   init {
     inflate(context, R.layout.day_item, this as ViewGroup)
-    title = findViewById(R.id.title)
+    title = findViewById(R.id.day_of_week)
     lessonCount = findViewById(R.id.num_of_lessons)
     val attributes = context.obtainStyledAttributes( R.styleable.DayView)
     title.text = attributes?.getString(R.styleable.DayView_title)

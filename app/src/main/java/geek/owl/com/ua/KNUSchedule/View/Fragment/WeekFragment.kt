@@ -7,15 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import geek.owl.com.ua.KNUSchedule.R
 import geek.owl.com.ua.KNUSchedule.Repository.WeekPojo
 import geek.owl.com.ua.KNUSchedule.Util.Adapters.OnItemClick
 import geek.owl.com.ua.KNUSchedule.Util.Adapters.SimpleAdapter
-import geek.owl.com.ua.KNUSchedule.Util.AppSettings
 import geek.owl.com.ua.KNUSchedule.Util.DayView
-import geek.owl.com.ua.KNUSchedule.Util.StaticVariables.Companion.WEEK_NUMBER
-import geek.owl.com.ua.KNUSchedule.Util.WeekDays
 import geek.owl.com.ua.KNUSchedule.Util.getDayTitle
 import geek.owl.com.ua.KNUSchedule.ViewModel.ScheduleViewModel.ScheduleViewModel
 import kotlinx.android.synthetic.main.week_fragment.*
@@ -36,21 +32,18 @@ class WeekFragment : androidx.fragment.app.Fragment(), OnItemClick {
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
     val view = inflater.inflate(R.layout.week_fragment, container, false)
-
-    val groupName: String = group
-
-
-    viewModel = ViewModelProviders.of(this).get(ScheduleViewModel::class.java)
-    toolbar?.subtitle = groupName
-
-    subscribeForData()
     return view
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     initWeekView()
-    viewModel.getSchedule(group)
+
+    viewModel = ViewModelProviders.of(this).get(ScheduleViewModel::class.java)
+    toolbar?.subtitle = group
+
+    subscribeForData()
+    viewModel.scheduleRepo.group.value = group
 //   refresh_layout.setOnRefreshListener {
 //     refresh_layout.isRefreshing = false
 //      startDelayedLoad()
@@ -75,7 +68,7 @@ class WeekFragment : androidx.fragment.app.Fragment(), OnItemClick {
   }
 
   private fun subscribeForData() {
-    viewModel.weekLiveData.observe(this, Observer { it ->
+    viewModel.scheduleRepo.dayListLiveData.observe(this, Observer { it ->
       it?.let {
         cancelDelayedLoad()
         setData(it)
