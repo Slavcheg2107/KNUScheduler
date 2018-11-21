@@ -22,8 +22,8 @@
     android:label="GroupFragment">
 
     <argument
-      android:name="faculty_id"
-      android:defaultValue="0"
+      android:name="facultyId"
+      android:defaultValue="0L"
       app:argType="long" />
     <action
       android:id="@+id/action_groupFragment_to_weekFragment"
@@ -34,7 +34,33 @@
     android:name="geek.owl.com.ua.KNUSchedule.View.Fragment.WeekFragment"
     android:label="WeekFragment">
     <argument
-      android:name="group_name"
+      android:name="groupName"
       app:argType="string" />
+    <action
+      android:id="@+id/action_weekFragment_to_dayFragment"
+      app:destination="@id/dayFragment" />
+    <argument
+      android:name="facultyId"
+      app:argType="long" />
+  </fragment>
+  <fragment
+    android:id="@+id/dayFragment"
+    android:name="geek.owl.com.ua.KNUSchedule.View.Fragment.DayFragment"
+    android:label="DayFragment" >
+    <argument
+      android:name="facultyId"
+      app:argType="long"
+      android:defaultValue="-1L" />
+    <argument
+      android:name="groupName"
+      app:argType="string" />
+    <argument
+      android:name="weekNumber"
+      app:argType="integer"
+      android:defaultValue="-1" />
+    <argument
+      android:name="dayNubmer"
+      app:argType="integer"
+      android:defaultValue="-1" />
   </fragment>
 </navigation>

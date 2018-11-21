@@ -1,33 +1,29 @@
 package geek.owl.com.ua.KNUSchedule.View.Fragment
 
 import android.os.Bundle
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import geek.owl.com.ua.KNUSchedule.R
+import geek.owl.com.ua.KNUSchedule.Repository.DayPojo
 import geek.owl.com.ua.KNUSchedule.Repository.WeekPojo
-import geek.owl.com.ua.KNUSchedule.Util.Adapters.OnItemClick
-import geek.owl.com.ua.KNUSchedule.Util.Adapters.SimpleAdapter
+import geek.owl.com.ua.KNUSchedule.Util.Adapters.OnDayClick
 import geek.owl.com.ua.KNUSchedule.Util.DayView
 import geek.owl.com.ua.KNUSchedule.Util.getDayTitle
 import geek.owl.com.ua.KNUSchedule.ViewModel.ScheduleViewModel.ScheduleViewModel
 import kotlinx.android.synthetic.main.week_fragment.*
 
-class WeekFragment : androidx.fragment.app.Fragment(), OnItemClick {
+class WeekFragment : androidx.fragment.app.Fragment(), OnDayClick {
 
 
   lateinit var viewModel: ScheduleViewModel
-  val handler: Handler = Handler()
-//  private val runnable = Runnable { refresh_layout?.isRefreshing = true }
-  val week1Adapter:SimpleAdapter = SimpleAdapter(emptyList<WeekPojo>().toMutableList(),this)
-  val week2Adapter:SimpleAdapter = SimpleAdapter(emptyList<WeekPojo>().toMutableList(),this)
 
   private val group: String
     get() {
-      return arguments?.getString("group_name") as String
+      return arguments?.getString("groupName") as String
     }
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -44,19 +40,7 @@ class WeekFragment : androidx.fragment.app.Fragment(), OnItemClick {
 
     subscribeForData()
     viewModel.scheduleRepo.group.value = group
-//   refresh_layout.setOnRefreshListener {
-//     refresh_layout.isRefreshing = false
-//      startDelayedLoad()
-//      viewModel.getScheduleWithWeek(group, AppSettings().getInt(WEEK_NUMBER, 1))
-//    }
-  }
 
-  private fun startDelayedLoad() {
-//    handler.postDelayed(runnable, 500)
-  }
-
-  private fun cancelDelayedLoad() {
-//    handler.removeCallbacksAndMessages(null)
   }
 
 
@@ -70,26 +54,27 @@ class WeekFragment : androidx.fragment.app.Fragment(), OnItemClick {
   private fun subscribeForData() {
     viewModel.scheduleRepo.dayListLiveData.observe(this, Observer { it ->
       it?.let {
-        cancelDelayedLoad()
         setData(it)
       }
     })
     viewModel.action.observe(this, Observer { it ->
       run {
-        cancelDelayedLoad()
       }
     })
   }
 
 
   private fun setData(weeks: List<WeekPojo>) {
-    weeks.forEach { week->
+    week1.removeAllViews()
+    week2.removeAllViews()
+    weeks.forEach { week ->
+
       when (week.weekNumber) {
         1 -> {
-          week.list.forEach { day->
+          week.list.forEach { day ->
             run {
               week1.addView(this.context?.let { it1 ->
-                DayView(it1).also {
+                DayView(it1, day, this@WeekFragment).also {
                   it.title.text = (getDayTitle(day.number))
                   it.lessonCount.text = if (day.scheduleList.size == 1)
                     "1 пара"
@@ -101,10 +86,10 @@ class WeekFragment : androidx.fragment.app.Fragment(), OnItemClick {
           }
         }
         2 -> {
-          week.list.forEach { day->
+          week.list.forEach { day ->
             run {
               week2.addView(this.context?.let { it1 ->
-                DayView(it1).also {
+                DayView(it1, day, this@WeekFragment).also {
                   it.title.text = (getDayTitle(day.number))
                   it.lessonCount.text = if (day.scheduleList.size == 1)
                     "1 пара"
@@ -119,7 +104,13 @@ class WeekFragment : androidx.fragment.app.Fragment(), OnItemClick {
     }
   }
 
-  override fun onClick(item: SimpleAdapter.ItemModel) {
+  override fun onDayClick(day: DayPojo) {
 
+    findNavController().navigate(R.id.action_weekFragment_to_dayFragment, Bundle().apply {
+      this.putString("groupName", group)
+      arguments?.getLong("facultyId")?.or(-1L)?.let { this.putLong("facultyId", it) }
+      this.putLong("weekNumber", day.weekNumber.toLong())
+      this.putInt("DayNumber", day.number)
+    })
   }
 }

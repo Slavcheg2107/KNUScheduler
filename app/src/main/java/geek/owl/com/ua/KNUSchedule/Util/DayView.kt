@@ -2,22 +2,25 @@ package geek.owl.com.ua.KNUSchedule.Util
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import geek.owl.com.ua.KNUSchedule.R
+import geek.owl.com.ua.KNUSchedule.Repository.DayPojo
+import geek.owl.com.ua.KNUSchedule.Util.Adapters.OnDayClick
+import geek.owl.com.ua.KNUSchedule.Util.Adapters.OnItemClick
 
 class DayView : CardView {
-  fun setTitle(number: Int) {
-    when (number){
-      WeekDays.MONDAY.ordinal->{ title.text = WeekDays.MONDAY.name}
-    }
-  }
-
+private lateinit var onItemClick : OnDayClick
   constructor(context: Context, attributeSet: AttributeSet?) : super(context, attributeSet)
-  constructor(context: Context) : super(context)
-  constructor(context: Context, attributeSet: AttributeSet?, defStyle: Int) : super(context, attributeSet, defStyle)
+
+  private lateinit var day: DayPojo
+
+  constructor(context: Context, day:DayPojo, onDayClick: OnDayClick) : super(context){
+    this.day = day
+    this.onItemClick = onDayClick
+  }
+  constructor(context: Context, attributeSet: AttributeSet, defStyle: Int) : super(context, attributeSet, defStyle)
 
   var title: TextView
   var lessonCount: TextView
@@ -31,4 +34,8 @@ class DayView : CardView {
     attributes?.recycle()
   }
 
+  override fun callOnClick(): Boolean {
+    onItemClick.onDayClick(day)
+    return super.callOnClick()
+  }
 }

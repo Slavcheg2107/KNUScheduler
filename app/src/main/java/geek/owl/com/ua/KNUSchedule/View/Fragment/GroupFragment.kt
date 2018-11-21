@@ -1,21 +1,19 @@
 package geek.owl.com.ua.KNUSchedule.View.Fragment
 
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.appcompat.widget.SearchView
 import android.transition.TransitionManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.Toast
-
+import androidx.appcompat.widget.SearchView
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DiffUtil
 import geek.owl.com.ua.KNUSchedule.R
 import geek.owl.com.ua.KNUSchedule.Repository.GroupPojo
 import geek.owl.com.ua.KNUSchedule.Util.Adapters.OnItemClick
@@ -23,7 +21,6 @@ import geek.owl.com.ua.KNUSchedule.Util.Adapters.SimpleAdapter
 import geek.owl.com.ua.KNUSchedule.Util.KNUDiffUtil
 import geek.owl.com.ua.KNUSchedule.Util.StaticVariables.Companion.TIMEOUT
 import geek.owl.com.ua.KNUSchedule.Util.StaticVariables.Companion.UNKNOWN_HOST
-import geek.owl.com.ua.KNUSchedule.View.Activity.MainActivity
 import geek.owl.com.ua.KNUSchedule.ViewModel.GroupViewModel.GroupViewModel
 import kotlinx.android.synthetic.main.group_fragment.view.*
 
@@ -68,7 +65,6 @@ class GroupFragment : BaseFragment(), OnItemClick {
           p0?.let { it ->
             groupAdapter.filterGroups(it)
           }
-          //                    viewModel.search(p0)\
           return true
         }
 
@@ -77,7 +73,6 @@ class GroupFragment : BaseFragment(), OnItemClick {
           p0?.let { it ->
             groupAdapter.filterGroups(it)
           }
-//                    viewModel.search(p0)
           return true
         }
 
@@ -106,7 +101,7 @@ class GroupFragment : BaseFragment(), OnItemClick {
   }
 
   private fun subscribeForData() {
-    viewModel.getGroupLiveData(arguments?.get("faculty_id") as Long).observe(this, Observer { list ->
+    viewModel.getGroupLiveData(arguments?.get("facultyId") as Long).observe(this, Observer { list ->
       list?.let { setData(it) }
       cancelDelayedLoad()
     })
@@ -142,10 +137,10 @@ class GroupFragment : BaseFragment(), OnItemClick {
 
   override fun onClick(item: SimpleAdapter.ItemModel) {
     item as GroupPojo
-    val activity = activity as MainActivity
 
-    activity.controller.navigate(R.id.action_groupFragment_to_weekFragment, Bundle().apply {
-      this.putString("group_name", item.name)
+    findNavController().navigate(R.id.action_groupFragment_to_weekFragment, Bundle().apply {
+      this.putString("groupName", item.name)
+      this.putLong("facultyId", item.facultyId.toLong())
     })
   }
 }

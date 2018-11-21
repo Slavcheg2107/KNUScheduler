@@ -7,8 +7,8 @@
       <corners android:radius="10dp" />
 
       <stroke
-        android:width="4dp"
-        android:color="@color/day_selector2" />
+        android:width="2dp"
+        android:color="@color/colorPrimaryDark" />
       <size
         android:width="80dp"
         android:height="50dp" />
