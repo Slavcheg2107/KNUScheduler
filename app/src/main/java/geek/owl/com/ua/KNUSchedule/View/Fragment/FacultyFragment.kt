@@ -14,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 
 import geek.owl.com.ua.KNUSchedule.R
 import geek.owl.com.ua.KNUSchedule.Repository.FacultyPojo
@@ -84,8 +85,7 @@ class FacultyFragment : androidx.fragment.app.Fragment(), OnItemClick {
 
   override fun onClick(item: SimpleAdapter.ItemModel) {
     item as FacultyPojo
-    val mainActivity = activity as MainActivity
-    val b = Bundle().also { it.putLong("faculty_id", item.id) }
-    mainActivity.controller.navigate(R.id.action_facultyFragment_to_groupFragment, b)
+    val b = Bundle().also { it.putLong("facultyId", item.id) }
+   findNavController().navigate(R.id.action_facultyFragment_to_groupFragment, b)
   }
 }

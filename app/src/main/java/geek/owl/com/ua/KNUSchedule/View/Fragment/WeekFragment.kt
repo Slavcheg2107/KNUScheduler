@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.GridLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
@@ -45,10 +46,7 @@ class WeekFragment : androidx.fragment.app.Fragment(), OnDayClick {
 
 
   private fun initWeekView() {
-    week1.columnCount = 4
-    week1.rowCount = 2
-    week2.columnCount = 4
-    week2.rowCount = 2
+
   }
 
   private fun subscribeForData() {
