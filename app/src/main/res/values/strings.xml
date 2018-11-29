@@ -1,60 +1,18 @@
 <resources>
   <string name="app_name">КНУ Розклад</string>
-  <string name="Day1">Понеділок\n %1$d пари</string>
-  <string name="Day2">Вівторок\n%1$d пари</string>
-  <string name="Day3">Середа\n %1$d пари</string>
-  <string name="Day4">Четвер\n %1$d пари</string>
-  <string name="Day5">П\'ятниця\n %1$d пари</string>
-  <string name="Day6">Субота\n %1$d пари</string>
   <string name="Monday">ПH</string>
   <string name="Tuesday">ВТ</string>
   <string name="Wednesday">СР</string>
   <string name="Thursday">ЧТ</string>
   <string name="Friday">ПТ</string>
   <string name="Saturday">СБ</string>
-  <string name="Reload">Reload</string>
-  <string name="lesson_count">%1$d пари</string>
-  <string name="current_group">GroupLoaded</string>
   <string name="week1_adapter_name">week1</string>
   <string name="week2_adapter_name">week2</string>
-  <string-array name="week_selection">
-    <item>Тиждень 1</item>
-    <item>Тиждень 2</item>
-  </string-array>
-  <string name="title_activity_main2">Activity 2</string>
-  <string name="notifications_title">Нотифікації</string>
-  <string name="choose_week_title">Виберіть поточний тиждень</string>
-  <string name="current_week">Поточний тиждень</string>
-  <string name="key_current_week">key_current_week</string>
-  <string name="key_notifications">key_notifications</string>
-  <string name="main_settings">Основні налаштування</string>
-  <string name="go_to_market">Перейти на сторінку в плеймаркеті</string>
-  <string name="url_to_playstore">market://details?id=com.knu.krasn.knuscheduler</string>
-  <string name="notifications_enabled">Нотифікації ввімкнено</string>
-  <string name="notifications_disabled">Нотифікації вимкнено</string>
-  <string name="key_go_to_market">key_go_to_market</string>
-  <string name="key_reload">reload</string>
-  <string name="title_reload_schedule">Обрати інший розклад</string>
   <string name="week">Тиждень</string>
-  <string name="key_current_week_of_year">CurrentWeekOfYear</string>
   <string name="choose_fac_title">Виберіть факультет</string>
-  <string name="key_get_group">getGroup</string>
-
-  <string name="are_you_sure">Ви впевнені?</string>
 
   <string name="no_connetction">Немає з\'єднання</string>
   <string name="choose_group">Виберіть групу</string>
-  <string name="corps">корпус %1$s</string>
-  <string name="chooseWeek_dialog_title">Виберіть поточний тиждень, будь ласка</string>
-  <string name="setting_title">Налаштування</string>
-  <string name="did_not_choose_week">Ви не вибрали поточний тиждень</string>
-  <string name="yes">Так</string>
-  <string name="no">Ні</string>
-  <string name="press_again">Натисніть знову для виходу</string>
-  <string name="lesson_number_time">Пара %1$d (%2$s - %3$s)</string>
-  <string name="room_corps_number"> %1$s ауд. корпус %2$s</string>
-  <string name="no_data_available">Немає пар</string>
-  <string name="faculty_title">Виберіть факультет</string>
   <string name="cant_connect">Невдалося підключитись до сервера</string>
   <string name="lesson">Пари</string>
 </resources>

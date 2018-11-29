@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.GridLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
@@ -16,6 +15,7 @@ import geek.owl.com.ua.KNUSchedule.Util.DayView
 import geek.owl.com.ua.KNUSchedule.Util.getDayTitle
 import geek.owl.com.ua.KNUSchedule.ViewModel.ScheduleViewModel.ScheduleViewModel
 import kotlinx.android.synthetic.main.week_fragment.*
+import java.util.*
 
 class WeekFragment : androidx.fragment.app.Fragment(), OnDayClick {
 
@@ -72,12 +72,13 @@ class WeekFragment : androidx.fragment.app.Fragment(), OnDayClick {
           week.list.forEach { day ->
             run {
               week1.addView(this.context?.let { it1 ->
-                DayView(it1, day, this@WeekFragment).also {
+                DayView(it1, day, this@WeekFragment, day.number == Calendar.getInstance().get(Calendar.DAY_OF_WEEK)).also {
                   it.title.text = (getDayTitle(day.number))
                   it.lessonCount.text = if (day.scheduleList.size == 1)
                     "1 пара"
                   else
                     "${day.scheduleList.size} ${context?.resources?.getString(R.string.lesson)}"
+
                 }
               })
             }
@@ -87,12 +88,13 @@ class WeekFragment : androidx.fragment.app.Fragment(), OnDayClick {
           week.list.forEach { day ->
             run {
               week2.addView(this.context?.let { it1 ->
-                DayView(it1, day, this@WeekFragment).also {
+                DayView(it1, day, this@WeekFragment, day.number == Calendar.getInstance().get(Calendar.DAY_OF_WEEK)).also {
                   it.title.text = (getDayTitle(day.number))
                   it.lessonCount.text = if (day.scheduleList.size == 1)
                     "1 пара"
                   else
                     "${day.scheduleList.size} ${context?.resources?.getString(R.string.lesson)}"
+
                 }
               })
             }

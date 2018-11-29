@@ -68,9 +68,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:background="@color/primary"
+        app:useDefaultMargins="true"
         app:columnCount="3"
         app:rowCount="3"
-
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.5"
         app:layout_constraintHorizontal_bias="0.0"
@@ -88,6 +88,7 @@
         android:layout_marginBottom="16dp"
         app:columnCount="3"
         app:rowCount="3"
+        app:useDefaultMargins="true"
 
         android:background="@color/primary"
         app:layout_constraintBottom_toBottomOf="parent"
