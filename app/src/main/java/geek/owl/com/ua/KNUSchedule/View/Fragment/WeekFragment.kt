@@ -71,14 +71,24 @@ class WeekFragment : androidx.fragment.app.Fragment(), OnDayClick {
         1 -> {
           week.list.forEach { day ->
             run {
+              val isToday = day.number == Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
+
               week1.addView(this.context?.let { it1 ->
-                DayView(it1, day, this@WeekFragment, day.number == Calendar.getInstance().get(Calendar.DAY_OF_WEEK)).also {
+                DayView(it1, null, day, day.number == Calendar.getInstance().get(Calendar.DAY_OF_WEEK)).also {
                   it.title.text = (getDayTitle(day.number))
                   it.lessonCount.text = if (day.scheduleList.size == 1)
                     "1 пара"
                   else
                     "${day.scheduleList.size} ${context?.resources?.getString(R.string.lesson)}"
-
+                  if (isToday) {
+                    it.mainLayout.background =
+                        resources.getDrawable(R.drawable.day_background_active)
+                    it.title.background = resources.getDrawable(R.drawable.text_view_background_active)
+                  } else {
+                    it.mainLayout.background =
+                        resources.getDrawable(R.drawable.day_background_inactive)
+                    it.title.background = resources.getDrawable(R.drawable.text_view_background_inactive)
+                  }
                 }
               })
             }
@@ -86,15 +96,25 @@ class WeekFragment : androidx.fragment.app.Fragment(), OnDayClick {
         }
         2 -> {
           week.list.forEach { day ->
+            val isToday = day.number == Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
+
             run {
               week2.addView(this.context?.let { it1 ->
-                DayView(it1, day, this@WeekFragment, day.number == Calendar.getInstance().get(Calendar.DAY_OF_WEEK)).also {
+                DayView(it1, null, day, day.number == Calendar.getInstance().get(Calendar.DAY_OF_WEEK)).also {
                   it.title.text = (getDayTitle(day.number))
                   it.lessonCount.text = if (day.scheduleList.size == 1)
                     "1 пара"
                   else
                     "${day.scheduleList.size} ${context?.resources?.getString(R.string.lesson)}"
-
+                  if (isToday) {
+                    it.mainLayout.background =
+                        resources.getDrawable(R.drawable.day_background_active)
+                    it.title.background = resources.getDrawable(R.drawable.text_view_background_active)
+                  } else {
+                    it.mainLayout.background =
+                        resources.getDrawable(R.drawable.day_background_inactive)
+                    it.title.background = resources.getDrawable(R.drawable.text_view_background_inactive)
+                  }
                 }
               })
             }

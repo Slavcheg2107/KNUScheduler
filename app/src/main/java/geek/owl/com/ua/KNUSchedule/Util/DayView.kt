@@ -10,10 +10,9 @@ import androidx.gridlayout.widget.GridLayout
 import geek.owl.com.ua.KNUSchedule.R
 import geek.owl.com.ua.KNUSchedule.Repository.DayPojo
 import geek.owl.com.ua.KNUSchedule.Util.Adapters.OnDayClick
-import java.util.*
 
 
-class DayView : CardView {
+class DayView : FrameLayout {
   private lateinit var onItemClick: OnDayClick
   lateinit var day: DayPojo
 
@@ -24,7 +23,7 @@ class DayView : CardView {
   var mainLayout : FrameLayout
   var title: TextView
   var lessonCount: TextView
-  var isToday: Boolean
+  var isToday: Boolean = false
 
   constructor(context: Context, day: DayPojo, onDayClick: OnDayClick) : super(context) {
     this.day = day
@@ -40,12 +39,13 @@ class DayView : CardView {
           GridLayout.spec(GridLayout.UNDEFINED, GridLayout.CENTER, 1f))
       it.layoutParams = param
     }
-    isToday = day.number == Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
+
     mainLayout = findViewById(R.id.day_main_layout)
     title = findViewById(R.id.day_of_week)
     lessonCount = findViewById(R.id.num_of_lessons)
     val attributes = context.obtainStyledAttributes(R.styleable.DayView)
-
+    mainLayout.background = if(isToday)resources.getDrawable(R.drawable.day_background_active)else resources.getDrawable(R.drawable.day_background_active)
+    title.background = if(isToday)resources.getDrawable(R.drawable.text_view_background_active) else resources.getDrawable(R.drawable.text_view_background_inactive)
     title.text = attributes?.getString(R.styleable.DayView_title)
     lessonCount.text = attributes?.getString(R.styleable.DayView_lesson_count)
     attributes?.recycle()
