@@ -11,6 +11,7 @@ import geek.owl.com.ua.KNUSchedule.R
 import geek.owl.com.ua.KNUSchedule.Repository.DayPojo
 import geek.owl.com.ua.KNUSchedule.Repository.WeekPojo
 import geek.owl.com.ua.KNUSchedule.Util.Adapters.OnDayClick
+import geek.owl.com.ua.KNUSchedule.Util.AppSettings
 import geek.owl.com.ua.KNUSchedule.Util.DayView
 import geek.owl.com.ua.KNUSchedule.Util.getDayTitle
 import geek.owl.com.ua.KNUSchedule.ViewModel.ScheduleViewModel.ScheduleViewModel
@@ -37,7 +38,7 @@ class WeekFragment : androidx.fragment.app.Fragment(), OnDayClick {
     initWeekView()
 
     viewModel = ViewModelProviders.of(this).get(ScheduleViewModel::class.java)
-    toolbar?.subtitle = group
+    day_toolbar?.subtitle = group
 
     subscribeForData()
     viewModel.scheduleRepo.group.value = group
@@ -71,11 +72,13 @@ class WeekFragment : androidx.fragment.app.Fragment(), OnDayClick {
         1 -> {
           week.list.forEach { day ->
             run {
-              val isToday = day.number == Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
+              val isToday = day.number == Calendar.getInstance().get(Calendar.DAY_OF_WEEK)&& AppSettings()
+                      .getInt("WeekNumber", -1) == 0
 
               week1.addView(this.context?.let { it1 ->
-                DayView(it1, null, day, day.number == Calendar.getInstance().get(Calendar.DAY_OF_WEEK)).also {
+                DayView(it1, null, day, isToday, this@WeekFragment).also {
                   it.title.text = (getDayTitle(day.number))
+                  it.setOnClickListener { onDayClick(day) }
                   it.lessonCount.text = if (day.scheduleList.size == 1)
                     "1 пара"
                   else
@@ -96,12 +99,15 @@ class WeekFragment : androidx.fragment.app.Fragment(), OnDayClick {
         }
         2 -> {
           week.list.forEach { day ->
-            val isToday = day.number == Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
+            val dayOfWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK)-1
+            val isToday = day.number == dayOfWeek &&AppSettings()
+                    .getInt("WeekNumber", -1) == 1
 
             run {
               week2.addView(this.context?.let { it1 ->
-                DayView(it1, null, day, day.number == Calendar.getInstance().get(Calendar.DAY_OF_WEEK)).also {
+                DayView(it1, null, day, isToday, this@WeekFragment ).also {
                   it.title.text = (getDayTitle(day.number))
+                  it.setOnClickListener { onDayClick(day) }
                   it.lessonCount.text = if (day.scheduleList.size == 1)
                     "1 пара"
                   else
@@ -129,8 +135,8 @@ class WeekFragment : androidx.fragment.app.Fragment(), OnDayClick {
     findNavController().navigate(R.id.action_weekFragment_to_dayFragment, Bundle().apply {
       this.putString("groupName", group)
       arguments?.getLong("facultyId")?.or(-1L)?.let { this.putLong("facultyId", it) }
-      this.putLong("weekNumber", day.weekNumber.toLong())
-      this.putInt("DayNumber", day.number)
+      this.putInt("weekNumber", day.week)
+      this.putInt("dayNumber", day.number)
     })
   }
 }

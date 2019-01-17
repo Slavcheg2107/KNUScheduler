@@ -1,5 +1,7 @@
 package geek.owl.com.ua.KNUSchedule.View.Fragment
 
+import android.app.Dialog
+import android.content.DialogInterface
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
@@ -13,13 +15,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ListAdapter
 
 import geek.owl.com.ua.KNUSchedule.R
 import geek.owl.com.ua.KNUSchedule.Repository.FacultyPojo
 import geek.owl.com.ua.KNUSchedule.Util.Adapters.OnItemClick
 import geek.owl.com.ua.KNUSchedule.Util.Adapters.SimpleAdapter
+import geek.owl.com.ua.KNUSchedule.Util.AppSettings
 import geek.owl.com.ua.KNUSchedule.Util.KNUDiffUtil
 import geek.owl.com.ua.KNUSchedule.Util.StaticVariables.Companion.ERROR
 import geek.owl.com.ua.KNUSchedule.Util.StaticVariables.Companion.TIMEOUT
@@ -31,8 +37,7 @@ class FacultyFragment : androidx.fragment.app.Fragment(), OnItemClick {
   private lateinit var viewModel: FacultyViewModel
   private lateinit var facAdapter: SimpleAdapter
   private var refreshLayout: androidx.swiperefreshlayout.widget.SwipeRefreshLayout? = null
-  private var runnable = Runnable { refreshLayout?.isRefreshing = true }
-  private val handler = Handler()
+
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
     val view = inflater.inflate(R.layout.faculty_fragment, container, false)
@@ -44,8 +49,30 @@ class FacultyFragment : androidx.fragment.app.Fragment(), OnItemClick {
       refreshLayout?.isRefreshing = false
       viewModel.updateFaculties()
     }
+    showSelectWeekDialog()
     subscribeForData()
     return view
+  }
+
+  private fun showSelectWeekDialog() {
+    if(AppSettings().getInt("WeekNumber", -1)==-1) {
+      var selectedPosition = -1
+      val list = ArrayList<String>().also {
+        it.add(getString(R.string.week)+"1")
+        it.add(getString(R.string.week)+"2")
+      }
+      val arrayAdapter = ArrayAdapter(this.context!!, android.R.layout.simple_list_item_single_choice, list)
+
+      val dialog = AlertDialog.Builder(this.context!!)
+              .setTitle(getString(R.string.selectCurrentWeek))
+              .setSingleChoiceItems(arrayAdapter, -1) { dialog, which ->
+                selectedPosition = which
+              }.setPositiveButton("Ok") { dialog, which ->
+                AppSettings().edit().putInt("WeekNumber", selectedPosition+1).apply()
+              }.setCancelable(false)
+              .create()
+      dialog.show()
+    }
   }
 
   private fun subscribeForData() {

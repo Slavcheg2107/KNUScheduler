@@ -21,3 +21,6 @@ class ScheduleResponse {
   @Expose
   var schedules: List<SchedulePojo> = emptyList()
 }
+
+data class ClassTimeResponse(val data:List<ClassTime>)
+

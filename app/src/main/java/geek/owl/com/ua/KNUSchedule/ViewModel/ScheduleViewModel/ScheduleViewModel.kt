@@ -13,5 +13,5 @@ class ScheduleViewModel : ScopedViewModel() {
   val action = MutableLiveData<String>()
   val scheduleRepo: ScheduleRepo = ScheduleRepo(action)
 
-
+//  fun getSchedule(day:Int)= scheduleRepo.searchSchedule(day.toString())
 }

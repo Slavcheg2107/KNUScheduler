@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="app_name">КНУ Расписание</string>
-  <string name="Monday">Понедельник</string>
-  <string name="Tuesday">Вторник</string>
-  <string name="Wednesday">Среда</string>
-  <string name="Thursday">Четверг</string>
-  <string name="Friday">Пятница</string>
-  <string name="Saturday">Субота</string>
+  <string name="Monday">ПH</string>
+  <string name="Tuesday">ВТ</string>
+  <string name="Wednesday">СР</string>
+  <string name="Thursday">ЧТ</string>
+  <string name="Friday">ПТ</string>
+  <string name="Saturday">СБ</string>
   <string name="week1_adapter_name">week1</string>
   <string name="week2_adapter_name">week2</string>
   <string name="week">Неделя</string>
@@ -14,5 +14,8 @@
   <string name="no_connetction">Нет соединения</string>
   <string name="choose_group">Виберите группу</string>
   <string name="cant_connect">Не получилось загрузить данные</string>
-  <string name="lesson">Пары</string>
+  <string name="lesson">Пара(ы)</string>
+  <string name="selectCurrentWeek">Выберите текущую неделю</string>
+  <string name="unknown_error">Неизвестная ошибка</string>
+
 </resources>

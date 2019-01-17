@@ -42,8 +42,8 @@ class GroupFragment : BaseFragment(), OnItemClick {
         viewModel.refresh()
       }
     }
-    view.toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_material)
-    view.toolbar.setNavigationOnClickListener { activity?.onBackPressed() }
+    view.day_toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_material)
+    view.day_toolbar.setNavigationOnClickListener { activity?.onBackPressed() }
     viewModel = ViewModelProviders.of(this).get(GroupViewModel::class.java)
     subscribeForData()
     return view

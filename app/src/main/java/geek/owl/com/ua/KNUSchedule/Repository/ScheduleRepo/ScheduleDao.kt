@@ -5,6 +5,8 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import geek.owl.com.ua.KNUSchedule.Repository.ClassTime
+import geek.owl.com.ua.KNUSchedule.Repository.Result
 import geek.owl.com.ua.KNUSchedule.Repository.SchedulePojo
 
 @Dao
@@ -28,4 +30,8 @@ interface ScheduleDao {
 
   @Query("DELETE FROM schedulepojo WHERE `group`=:group AND week=:week")
   fun deleteSchedules(group: String, week: Int)
+
+  @Query("SELECT * FROM schedulepojo WHERE `group`=:group AND week =:weekNumber AND day=:dayNumber")
+  fun getSchedule( dayNumber: Int, weekNumber: Int, group: String): LiveData<List<SchedulePojo>>
+
 }

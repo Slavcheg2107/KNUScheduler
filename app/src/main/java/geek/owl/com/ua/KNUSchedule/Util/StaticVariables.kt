@@ -3,6 +3,8 @@ package geek.owl.com.ua.KNUSchedule.Util
 import androidx.annotation.StringRes
 import geek.owl.com.ua.KNUSchedule.AppClass
 import geek.owl.com.ua.KNUSchedule.R
+import geek.owl.com.ua.KNUSchedule.Repository.ClassTime
+import geek.owl.com.ua.KNUSchedule.Repository.SchedulePojo
 
 class StaticVariables {
   companion object {
@@ -34,9 +36,9 @@ enum class WeekDays(@StringRes int: Int) {
   @StringRes
   fun getText() = text
 
-
-
   }
+
+
 fun getDayTitle(number: Int): String {
 
   val resources = AppClass.INSTANCE.resources

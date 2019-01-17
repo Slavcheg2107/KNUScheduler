@@ -15,15 +15,16 @@ import geek.owl.com.ua.KNUSchedule.Util.Adapters.OnDayClick
 class DayView : FrameLayout {
   private lateinit var onItemClick: OnDayClick
   lateinit var day: DayPojo
-
-  constructor(context: Context, attributeSet: AttributeSet?, day: DayPojo, isToday: Boolean) : super(context, attributeSet) {
-    this.day = day
-    this.isToday = isToday
-  }
   var mainLayout : FrameLayout
   var title: TextView
   var lessonCount: TextView
   var isToday: Boolean = false
+  constructor(context: Context, attributeSet: AttributeSet?, day: DayPojo, isToday: Boolean, onDayClick: OnDayClick) : super(context, attributeSet) {
+    this.day = day
+    this.isToday = isToday
+    this.onItemClick = onDayClick
+  }
+
 
   constructor(context: Context, day: DayPojo, onDayClick: OnDayClick) : super(context) {
     this.day = day
@@ -52,8 +53,5 @@ class DayView : FrameLayout {
   }
 
 
-  override fun callOnClick(): Boolean {
-    onItemClick.onDayClick(day)
-    return super.callOnClick()
-  }
+
 }

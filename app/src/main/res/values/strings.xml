@@ -12,7 +12,9 @@
   <string name="choose_fac_title">Виберіть факультет</string>
 
   <string name="no_connetction">Немає з\'єднання</string>
+  <string name="unknown_error">Невiдома помилка</string>
   <string name="choose_group">Виберіть групу</string>
   <string name="cant_connect">Невдалося підключитись до сервера</string>
-  <string name="lesson">Пари</string>
+  <string name="lesson">Пара(и)</string>
+  <string name="selectCurrentWeek">Виберiть поточний тиждень</string>
 </resources>

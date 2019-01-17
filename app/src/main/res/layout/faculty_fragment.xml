@@ -9,7 +9,7 @@
   >
 
   <androidx.appcompat.widget.Toolbar
-    android:id="@+id/toolbar"
+    android:id="@+id/day_toolbar"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:background="@color/colorPrimaryDark"
@@ -27,14 +27,14 @@
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/toolbar">
+    app:layout_constraintTop_toBottomOf="@+id/day_toolbar">
 
     <androidx.recyclerview.widget.RecyclerView
       android:id="@+id/recycler_view"
       android:layout_width="0dp"
       android:layout_height="0dp"
       android:background="@color/primary"
-      app:layout_constraintTop_toBottomOf="@+id/toolbar"
+      app:layout_constraintTop_toBottomOf="@+id/day_toolbar"
       tools:listitem="@layout/faculty_item" />
   </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

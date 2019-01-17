@@ -9,7 +9,7 @@ import geek.owl.com.ua.KNUSchedule.Repository.*
 import geek.owl.com.ua.KNUSchedule.Util.KNUDiffUtil
 
 
-class SimpleAdapter(var data: MutableList<ItemModel>, private val itemClickListener: OnItemClick) : androidx.recyclerview.widget.RecyclerView.Adapter<androidx.recyclerview.widget.RecyclerView.ViewHolder>() {
+class SimpleAdapter(var data: MutableList<ItemModel>, private val itemClickListener: OnItemClick) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 
   var itemOffset = 0
@@ -22,7 +22,7 @@ class SimpleAdapter(var data: MutableList<ItemModel>, private val itemClickListe
 
   private val renderer: ViewRenderer = ViewRenderer()
 
-  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): androidx.recyclerview.widget.RecyclerView.ViewHolder {
+  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
     return renderer.createViewHolder(parent, viewType)
 
   }
@@ -46,7 +46,7 @@ class SimpleAdapter(var data: MutableList<ItemModel>, private val itemClickListe
 
   }
 
-  override fun onBindViewHolder(holder: androidx.recyclerview.widget.RecyclerView.ViewHolder, position: Int) {
+  override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
     val item: ItemModel = if (isFiltering) filteredData[position] else data[position]
     when (holder.itemViewType) {
       ItemType.FACULTY.ordinal -> {
@@ -63,8 +63,7 @@ class SimpleAdapter(var data: MutableList<ItemModel>, private val itemClickListe
       ItemType.WEEK.ordinal -> {
         item as DayPojo
         holder as ViewRenderer.WeekViewHolder
-        holder.itemView.context
-        holder.bind("${AppClass.INSTANCE.getString(R.string.week)} ${item.weekNumber}", itemClickListener)
+        holder.bind("${AppClass.INSTANCE.getString(R.string.week)} ${item.week}", itemClickListener)
       }
 
       ItemType.SCHEDULE.ordinal -> {
@@ -89,10 +88,10 @@ class SimpleAdapter(var data: MutableList<ItemModel>, private val itemClickListe
       if (type == ItemType.DAY.ordinal) {
         data.let { list ->
           list as MutableList<DayPojo>
-          list.sortByDescending { dayPojo -> dayPojo.weekNumber }
+          list.sortByDescending { dayPojo -> dayPojo.week }
           return when {
             position == 0 -> ItemType.WEEK.ordinal
-            list[position].weekNumber != list[position + 1].weekNumber -> ItemType.DAY.ordinal
+            list[position].week != list[position + 1].week -> ItemType.DAY.ordinal
             else -> ItemType.WEEK.ordinal
           }
         }
@@ -101,6 +100,8 @@ class SimpleAdapter(var data: MutableList<ItemModel>, private val itemClickListe
       }
     } else filteredData[position].getType()
   }
+
+
 
 
 }

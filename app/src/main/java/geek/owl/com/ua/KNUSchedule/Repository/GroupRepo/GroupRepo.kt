@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import geek.owl.com.ua.KNUSchedule.Repository.GroupPojo
 import geek.owl.com.ua.KNUSchedule.Util.Network.ApiService
-import geek.owl.com.ua.KNUSchedule.Util.Network.ErrorHandler
+import geek.owl.com.ua.KNUSchedule.Util.Network.getMessage
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -38,7 +38,7 @@ class GroupRepo(val action: MutableLiveData<String>) {
           }
         }
       } catch (e: Exception) {
-        action.postValue(ErrorHandler.getMessage(e))
+        action.postValue(e.getMessage())
 
       }
     }
