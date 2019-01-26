@@ -10,7 +10,6 @@ import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import geek.owl.com.ua.KNUSchedule.R
 import geek.owl.com.ua.KNUSchedule.Repository.SchedulePojo
 import geek.owl.com.ua.KNUSchedule.Repository.ScheduleQuery
 import geek.owl.com.ua.KNUSchedule.Util.Adapters.OnItemClick
@@ -19,6 +18,14 @@ import geek.owl.com.ua.KNUSchedule.Util.Adapters.SimpleAdapter
 import geek.owl.com.ua.KNUSchedule.ViewModel.ScheduleViewModel.SearchViewModel
 import kotlinx.android.synthetic.main.day_fragment_layout.*
 import kotlinx.android.synthetic.main.search_fragment_layout.*
+import android.widget.TextView
+import android.graphics.Color
+import geek.owl.com.ua.KNUSchedule.R
+import android.R.id
+import android.widget.EditText
+
+
+
 
 class SearchFragment : BaseFragment(), OnItemClick {
     override fun onClick(item: SimpleAdapter.ItemModel) {
@@ -79,6 +86,7 @@ class SearchFragment : BaseFragment(), OnItemClick {
         searchView.onActionViewExpanded()
         searchView.setQuery("", false)
         searchView.queryHint = getString(R.string.search_hint)
+        (searchView.findViewById(R.id.search_src_text) as EditText).setHintTextColor(Color.WHITE)
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextChange(newText: String?): Boolean {
                 if (!newText.isNullOrEmpty()) {

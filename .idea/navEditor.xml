@@ -111,6 +111,11 @@
                                 <LayoutPositions />
                               </value>
                             </entry>
+                            <entry key="action_weekFragment_to_searchFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                             <entry key="action_weekFragment_to_settingsFragment">
                               <value>
                                 <LayoutPositions />

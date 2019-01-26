@@ -112,7 +112,7 @@ class ScheduleRepo(val action: MutableLiveData<String>) {
         try{
             val response = job.await()
             if(response.isSuccessful){
-                searchResult.postValue(response.body())
+                searchResult.postValue(response.body()?.schedules)
             }
         }catch (e : Exception){
             action.postValue(e.getMessage())
