@@ -62,6 +62,39 @@
                       </LayoutPositions>
                     </value>
                   </entry>
+                  <entry key="searchFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="486" />
+                            <option name="y" value="366" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="settingsFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="499" />
+                            <option name="y" value="-313" />
+                          </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_settingsFragment_to_facultyFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="weekFragment">
                     <value>
                       <LayoutPositions>
@@ -74,6 +107,11 @@
                         <option name="myPositions">
                           <map>
                             <entry key="action_weekFragment_to_dayFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_weekFragment_to_settingsFragment">
                               <value>
                                 <LayoutPositions />
                               </value>

@@ -6,6 +6,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.os.Handler
+import android.preference.PreferenceManager
 import androidx.fragment.app.Fragment
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.recyclerview.widget.DiffUtil
@@ -25,12 +26,15 @@ import geek.owl.com.ua.KNUSchedule.R
 import geek.owl.com.ua.KNUSchedule.Repository.FacultyPojo
 import geek.owl.com.ua.KNUSchedule.Util.Adapters.OnItemClick
 import geek.owl.com.ua.KNUSchedule.Util.Adapters.SimpleAdapter
-import geek.owl.com.ua.KNUSchedule.Util.AppSettings
 import geek.owl.com.ua.KNUSchedule.Util.KNUDiffUtil
+import geek.owl.com.ua.KNUSchedule.Util.StaticVariables.Companion.CURRENT_FACULTY
+import geek.owl.com.ua.KNUSchedule.Util.StaticVariables.Companion.CURRENT_WEEK
 import geek.owl.com.ua.KNUSchedule.Util.StaticVariables.Companion.ERROR
 import geek.owl.com.ua.KNUSchedule.Util.StaticVariables.Companion.TIMEOUT
+import geek.owl.com.ua.KNUSchedule.Util.StaticVariables.Companion.UNKNOWN_HOST
 import geek.owl.com.ua.KNUSchedule.View.Activity.MainActivity
 import geek.owl.com.ua.KNUSchedule.ViewModel.FacultyViewModel.FacultyViewModel
+import org.threeten.bp.LocalTime
 
 class FacultyFragment : androidx.fragment.app.Fragment(), OnItemClick {
   private lateinit var recyclerView: androidx.recyclerview.widget.RecyclerView
@@ -41,34 +45,33 @@ class FacultyFragment : androidx.fragment.app.Fragment(), OnItemClick {
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
     val view = inflater.inflate(R.layout.faculty_fragment, container, false)
-    refreshLayout = view.findViewById(R.id.refresh_layout)
 
-    initRecyclerView(view)
-    viewModel = ViewModelProviders.of(this).get(FacultyViewModel::class.java)
-    refreshLayout?.setOnRefreshListener {
-      refreshLayout?.isRefreshing = false
-      viewModel.updateFaculties()
-    }
-    showSelectWeekDialog()
-    subscribeForData()
+
     return view
   }
 
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+    initRecyclerView(view)
+    viewModel = ViewModelProviders.of(this).get(FacultyViewModel::class.java)
+
+    showSelectWeekDialog()
+    subscribeForData()
+  }
   private fun showSelectWeekDialog() {
-    if(AppSettings().getInt("WeekNumber", -1)==-1) {
-      var selectedPosition = -1
-      val list = ArrayList<String>().also {
-        it.add(getString(R.string.week)+"1")
-        it.add(getString(R.string.week)+"2")
+    val prefs = PreferenceManager.getDefaultSharedPreferences(this.context)
+    if(prefs.getInt(CURRENT_WEEK, -1)==-1) {
+      val list:List<String> = ArrayList<String>().also {
+        it.add("${getString(R.string.week)} 1")
+        it.add("${getString(R.string.week)} 2")
       }
-      val arrayAdapter = ArrayAdapter(this.context!!, android.R.layout.simple_list_item_single_choice, list)
 
       val dialog = AlertDialog.Builder(this.context!!)
               .setTitle(getString(R.string.selectCurrentWeek))
-              .setSingleChoiceItems(arrayAdapter, -1) { dialog, which ->
-                selectedPosition = which
+              .setItems(list.toTypedArray()) { dialog, which ->
+                prefs.edit().putInt(CURRENT_WEEK, which+1).apply()
+
               }.setPositiveButton("Ok") { dialog, which ->
-                AppSettings().edit().putInt("WeekNumber", selectedPosition+1).apply()
               }.setCancelable(false)
               .create()
       dialog.show()
@@ -81,12 +84,11 @@ class FacultyFragment : androidx.fragment.app.Fragment(), OnItemClick {
     })
     viewModel.actionLiveData.observe(this, Observer {
       when (it) {
-        ERROR -> showMessage(getString(R.string.no_connetction))
-        TIMEOUT -> showMessage(getString(R.string.cant_connect))
+        ERROR-> showMessage(getString(R.string.no_connetction))
+        TIMEOUT, UNKNOWN_HOST  -> showMessage(getString(R.string.cant_connect))
       }
     })
   }
-
 
 
   private fun showMessage(string: String) {
@@ -112,7 +114,7 @@ class FacultyFragment : androidx.fragment.app.Fragment(), OnItemClick {
 
   override fun onClick(item: SimpleAdapter.ItemModel) {
     item as FacultyPojo
-    val b = Bundle().also { it.putLong("facultyId", item.id) }
+    val b = Bundle().also { it.putLong(CURRENT_FACULTY, item.id) }
    findNavController().navigate(R.id.action_facultyFragment_to_groupFragment, b)
   }
 }

@@ -2,6 +2,7 @@ package geek.owl.com.ua.KNUSchedule.ViewModel.FacultyViewModel
 
 import androidx.lifecycle.MutableLiveData
 import geek.owl.com.ua.KNUSchedule.Repository.FacultyRepo.FacultyRepo
+import geek.owl.com.ua.KNUSchedule.Repository.Result
 import geek.owl.com.ua.KNUSchedule.ViewModel.ScopedViewModel
 import kotlinx.coroutines.launch
 

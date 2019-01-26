@@ -29,5 +29,8 @@ interface WebApi {
   @GET("get_classes_time")
   fun getClassesTime(): Deferred<Response<ClassTimeResponse>>
 
+  @GET("get_advanced_schedule")
+  fun searchSchedule(@Query("query") query: String) : Deferred<Response<List<SchedulePojo>>>
+
 }
 

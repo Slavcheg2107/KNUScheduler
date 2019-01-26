@@ -10,6 +10,11 @@
   <string name="week1_adapter_name">week1</string>
   <string name="week2_adapter_name">week2</string>
   <string name="week">Неделя</string>
+  <string-array name="week_list">
+    <item>I Неделя</item>
+    <item>II Неделя</item>
+  </string-array>
+  <string name="help_project">Помочь проекту</string>
   <string name="choose_fac_title">Выберите факультет</string>
   <string name="no_connetction">Нет соединения</string>
   <string name="choose_group">Виберите группу</string>
@@ -17,5 +22,16 @@
   <string name="lesson">Пара(ы)</string>
   <string name="selectCurrentWeek">Выберите текущую неделю</string>
   <string name="unknown_error">Неизвестная ошибка</string>
+    <string name="settings">Настройки</string>
+  <string name="notification_preference_title">Уведомления</string>
+  <string name="week_preference_title">Выбор недели</string>
+  <string name="group_preference_title">Другая группа</string>
+  <string name="refresh_preference_title">Обновить данные</string>
+  <string name="help_project_title">Помочь проекту</string>
+    <string name="lecture">Лекция</string>
+  <string name="practic">Практические</string>
+  <string name="lesson_start_soon">Скоро начнется пара</string>
+  <string name="search_title">Поиск</string>
+  <string name="search_hint">Введите группу, преподавателя, предмет</string>
 
 </resources>

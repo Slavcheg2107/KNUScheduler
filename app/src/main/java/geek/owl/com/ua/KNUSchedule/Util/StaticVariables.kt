@@ -1,10 +1,14 @@
 package geek.owl.com.ua.KNUSchedule.Util
 
 import androidx.annotation.StringRes
+import androidx.room.TypeConverter
+import androidx.room.TypeConverters
 import geek.owl.com.ua.KNUSchedule.AppClass
 import geek.owl.com.ua.KNUSchedule.R
 import geek.owl.com.ua.KNUSchedule.Repository.ClassTime
 import geek.owl.com.ua.KNUSchedule.Repository.SchedulePojo
+import org.threeten.bp.LocalTime
+import org.threeten.bp.format.DateTimeFormatter
 
 class StaticVariables {
   companion object {
@@ -14,10 +18,12 @@ class StaticVariables {
     const val LOADING: String = "Loading"
     const val LOADED: String = "Loaded"
     const val UNKNOWN: String = "Unknown"
-    const val WEEK_NUMBER: String = "Week_number"
+    const val CURRENT_WEEK: String = "Week_number"
     const val CURRENT_FACULTY: String = "CurrentFaculty"
     const val CURRENT_GROUP: String = "CurrentGroup"
-
+    const val CURRENT_DAY: String = "CurrentDay"
+    const val NOTIFICATION:String = "NotificationSetting"
+    const val WEEK_COUNT:String = "WeekCount"
   }
 
 }
@@ -65,4 +71,13 @@ fun getDayTitle(number: Int): String {
       ""
     }
   }
+}
+
+class TimeTypeConverter{
+
+  @TypeConverter
+  fun toLocalTime(time:String):LocalTime = LocalTime.parse(time)
+
+  @TypeConverter
+  fun fromLocalTime(localTime:LocalTime):String = localTime.toString()
 }

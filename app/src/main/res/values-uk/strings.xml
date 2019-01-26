@@ -1,22 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="app_name">КНУ Розклад</string>
-  <string name="Monday">ПH</string>
-  <string name="Tuesday">ВТ</string>
-  <string name="Wednesday">СР</string>
-  <string name="Thursday">ЧТ</string>
-  <string name="Friday">ПТ</string>
-  <string name="Saturday">СБ</string>
-  <string name="week1_adapter_name">week1</string>
-  <string name="week2_adapter_name">week2</string>
-  <string name="week">Тиждень</string>
-  <string name="choose_fac_title">Виберіть факультет</string>
+    <string name="app_name">КНУ Розклад</string>
+    <string name="Monday">ПH</string>
+    <string name="Tuesday">ВТ</string>
+    <string name="Wednesday">СР</string>
+    <string name="Thursday">ЧТ</string>
+    <string name="Friday">ПТ</string>
+    <string name="Saturday">СБ</string>
+    <string name="week1_adapter_name">week1</string>
+    <string name="week2_adapter_name">week2</string>
+    <string name="week">Тиждень</string>
+    <string name="choose_fac_title">Виберіть факультет</string>
+    <string-array name="week_list">
+        <item>I Тиждень</item>
+        <item>II Тиждень</item>
+    </string-array>
+    <string name="help_project">Допомогти проекту</string>
+    <string name="lesson_start_soon">Скоро почнется пара</string>
 
-  <string name="no_connetction">Немає з\'єднання</string>
-  <string name="choose_group">Виберіть групу</string>
-  <string name="cant_connect">Невдалося завантажити даннi</string>
-  <string name="lesson">Пара(и)</string>
-  <string name="selectCurrentWeek">Виберiть поточний тиждень</string>
-  <string name="unknown_error">Невiдома помилка</string>
+    <string name="no_connetction">Немає з\'єднання</string>
+    <string name="choose_group">Виберіть групу</string>
+    <string name="cant_connect">Невдалося завантажити даннi</string>
+    <string name="lesson">Пара(и)</string>
+    <string name="selectCurrentWeek">Виберiть поточний тиждень</string>
+    <string name="unknown_error">Невiдома помилка</string>
+    <string name="settings">Налаштування</string>
+    <string name="notification_preference_title">Нотифiкацiї</string>
+    <string name="week_preference_title">Вибiр тижня</string>
+    <string name="group_preference_title">Iнша група</string>
+    <string name="refresh_preference_title">Оновити данi</string>
+    <string name="help_project_title">Допомогти проекту</string>
+    <string name="lecture">Лекцiя</string>
+    <string name="practic">Практичнi</string>
+    <string name="search_title">Пошук</string>
+    <string name="search_hint">Введiть групу, вчителя, предмет</string>
 
 </resources>

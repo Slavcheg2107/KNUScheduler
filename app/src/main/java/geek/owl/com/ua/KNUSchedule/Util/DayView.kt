@@ -12,7 +12,7 @@ import geek.owl.com.ua.KNUSchedule.Repository.DayPojo
 import geek.owl.com.ua.KNUSchedule.Util.Adapters.OnDayClick
 
 
-class DayView : FrameLayout {
+class DayView : CardView {
   private lateinit var onItemClick: OnDayClick
   lateinit var day: DayPojo
   var mainLayout : FrameLayout
@@ -38,6 +38,8 @@ class DayView : FrameLayout {
       val param = GridLayout.LayoutParams(GridLayout.spec(
           GridLayout.UNDEFINED, GridLayout.CENTER, 1f),
           GridLayout.spec(GridLayout.UNDEFINED, GridLayout.CENTER, 1f))
+      it.background = null
+      it.elevation = 5F
       it.layoutParams = param
     }
 
@@ -45,13 +47,13 @@ class DayView : FrameLayout {
     title = findViewById(R.id.day_of_week)
     lessonCount = findViewById(R.id.num_of_lessons)
     val attributes = context.obtainStyledAttributes(R.styleable.DayView)
-    mainLayout.background = if(isToday)resources.getDrawable(R.drawable.day_background_active)else resources.getDrawable(R.drawable.day_background_active)
-    title.background = if(isToday)resources.getDrawable(R.drawable.text_view_background_active) else resources.getDrawable(R.drawable.text_view_background_inactive)
+
+    mainLayout.background = if(isToday)resources.getDrawable(R.drawable.day_background_active,null)else resources.getDrawable(R.drawable.day_background_active, null)
+
+    title.background = if(isToday)resources.getDrawable(R.drawable.text_view_background_active, null) else resources.getDrawable(R.drawable.text_view_background_inactive, null)
     title.text = attributes?.getString(R.styleable.DayView_title)
     lessonCount.text = attributes?.getString(R.styleable.DayView_lesson_count)
     attributes?.recycle()
   }
-
-
 
 }

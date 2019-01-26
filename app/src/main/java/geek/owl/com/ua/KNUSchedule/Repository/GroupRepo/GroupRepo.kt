@@ -26,9 +26,9 @@ class GroupRepo(val action: MutableLiveData<String>) {
   private fun updateGroups() {
     GlobalScope.launch {
       val request = apiService.getGroups(currentFacultyId.toString())
-      val response = request.await()
 
       try {
+        val response = request.await()
         if (response.isSuccessful) {
           response.body()?.let { it ->
             it.groups.forEach { group ->
@@ -42,7 +42,6 @@ class GroupRepo(val action: MutableLiveData<String>) {
 
       }
     }
-
   }
 
   fun refresh() {

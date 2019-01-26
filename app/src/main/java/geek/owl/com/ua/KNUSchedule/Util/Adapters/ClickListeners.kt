@@ -15,3 +15,4 @@ interface OnScheduleClick {
 interface OnDayClick{
   fun onDayClick(day:DayPojo)
 }
+

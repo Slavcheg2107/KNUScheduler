@@ -3,10 +3,14 @@ package geek.owl.com.ua.KNUSchedule.Repository
 import androidx.lifecycle.MutableLiveData
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import geek.owl.com.ua.KNUSchedule.Util.Adapters.SimpleAdapter
 import geek.owl.com.ua.KNUSchedule.Util.Network.getMessage
+import geek.owl.com.ua.KNUSchedule.Util.TimeTypeConverter
+import org.threeten.bp.LocalTime
+import org.threeten.bp.format.DateTimeFormatter
 
 
 @Entity
@@ -77,6 +81,11 @@ data class SchedulePojo(@PrimaryKey var id: Long) : SimpleAdapter.ItemModel {
   var corps: String = ""
   var lessonNumber: Int = 0
 
+  @TypeConverters(TimeTypeConverter::class)
+  var start:LocalTime=LocalTime.now()
+
+  @TypeConverters(TimeTypeConverter::class)
+  var end:LocalTime = LocalTime.now()
 }
 
 data class DayPojo(val number: Int,val week: Int) : SimpleAdapter.ItemModel {
@@ -99,7 +108,7 @@ data class WeekPojo(val list: ArrayList<DayPojo>, val weekNumber: Int) : SimpleA
 data class DayRequestBody(val offset:Int, val limit:Int , val day: Int, val week: Int, val group: String)
 
 enum class ItemType {
-  FACULTY, GROUP, SCHEDULE, WEEK, DAY
+  FACULTY, GROUP, SCHEDULE, WEEK, DAY, SWITCH_SETTING, LINK_SETTING, LIST_SETTING, GROUP_SETTING, WALLET_SETTING
 }
 
 sealed class Result<out T>{
@@ -107,6 +116,37 @@ sealed class Result<out T>{
   data class Success<out T>(val data:T): Result<T>()
   data class Error<out T>(val exception: Exception, var message:String = exception.getMessage()): Result<T>()
 }
+
+data class SwitchSetting(val title:String):SimpleAdapter.ItemModel{
+  override fun getType(): Int {
+    return ItemType.SWITCH_SETTING.ordinal
+  }
+}
+
+data class LinkSetting(val title:String):SimpleAdapter.ItemModel{
+  override fun getType(): Int {
+    return ItemType.LINK_SETTING.ordinal
+  }
+}
+
+data class ListSetting(val title:String):SimpleAdapter.ItemModel{
+  override fun getType(): Int {
+    return ItemType.LIST_SETTING.ordinal
+  }
+}
+
+data class GroupSetting(val title:String):SimpleAdapter.ItemModel{
+  override fun getType(): Int {
+    return ItemType.GROUP_SETTING.ordinal
+  }
+}
+
+data class Wallet(val title:String, val subtitle:String):SimpleAdapter.ItemModel{
+  override fun getType(): Int {
+    return ItemType.WALLET_SETTING.ordinal
+  }
+}
+
 
 
 
