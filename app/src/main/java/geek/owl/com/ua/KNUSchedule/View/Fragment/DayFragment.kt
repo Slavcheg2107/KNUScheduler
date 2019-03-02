@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
+import com.google.firebase.analytics.FirebaseAnalytics
 import geek.owl.com.ua.KNUSchedule.R
 import geek.owl.com.ua.KNUSchedule.Repository.Result
 import geek.owl.com.ua.KNUSchedule.Repository.SchedulePojo
@@ -31,7 +32,7 @@ import kotlinx.android.synthetic.main.day_fragment_layout.*
 import java.util.concurrent.TimeUnit
 
 class DayFragment : androidx.fragment.app.Fragment(), OnItemClick {
-
+  lateinit var firebase:FirebaseAnalytics
   private lateinit var adapter: SimpleAdapter
 
   lateinit var dayViewModel: DayViewModel

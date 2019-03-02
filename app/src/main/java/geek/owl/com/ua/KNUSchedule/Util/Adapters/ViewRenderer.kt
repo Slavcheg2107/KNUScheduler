@@ -15,12 +15,22 @@ import android.R.attr.label
 import androidx.core.content.ContextCompat.getSystemService
 import android.content.*
 import android.content.Context.CLIPBOARD_SERVICE
+import android.os.Bundle
 import android.widget.ImageView
 import androidx.core.content.ContextCompat.getSystemService
 import android.widget.Toast
+import com.google.firebase.analytics.FirebaseAnalytics
+import geek.owl.com.ua.KNUSchedule.AppClass
 import geek.owl.com.ua.KNUSchedule.R
 import geek.owl.com.ua.KNUSchedule.Util.StaticVariables.Companion.CURRENT_FACULTY
 import geek.owl.com.ua.KNUSchedule.Util.StaticVariables.Companion.CURRENT_GROUP
+import org.threeten.bp.LocalDateTime
+import org.threeten.bp.LocalTime
+import org.threeten.bp.format.DateTimeFormatter
+import org.threeten.bp.temporal.ChronoUnit
+import org.threeten.bp.temporal.Temporal
+import org.threeten.bp.temporal.TemporalUnit
+import java.util.*
 
 
 class ViewRenderer {
@@ -113,9 +123,12 @@ class ViewRenderer {
 
         private val lessonTitle: TextView = view.findViewById(R.id.lessonTitle)
         private val lessonTime: TextView = view.findViewById(R.id.lessonTime)
+        private val startIn:TextView = view.findViewById(R.id.startIn)
         private val lessonPlace: TextView = view.findViewById(R.id.lessonPlace)
         private val lessonTeachers: TextView = view.findViewById(R.id.lessonTeachers)
         private val shareButton:ImageView = view.findViewById(R.id.share)
+        private val prefs = PreferenceManager.getDefaultSharedPreferences(itemView.context)
+
         val lecture = itemView.context.getString(R.string.lecture)
         private val practic = itemView.context.getString(R.string.practic)
         fun bind(item: SchedulePojo, itemClickListener: OnItemClick) {
@@ -123,11 +136,19 @@ class ViewRenderer {
             lessonTitle.text = item.discipline
             lessonTeachers.text = item.teachers
             lessonPlace.text = String.format("в ${item.corps} корп. ${item.room} ауд.")
+            val day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1
+
+            if(day == item.day && item.week == prefs.getInt(CURRENT_WEEK, -1)){
+            val time = LocalTime.now().minusMinutes(item.start.minute.toLong()).minusHours(item.start.hour.toLong())
+            startIn.text = "${itemView.context.getString(R.string.start_in)} ${time.format(DateTimeFormatter.ofPattern("hh:mm"))}"
+            }else startIn.text = ""
             shareButton.setOnClickListener {
                 val intent = Intent(Intent.ACTION_SEND)
                 intent.type = "text/plain"
-                intent.putExtra(Intent.EXTRA_TEXT,"${item.discipline}\n${item.beginTime} - ${item.endTime}\nауд. ${item.room}\n${item.teachers}\n(здесь будет ссылка на приложение)")
-
+                val text = "${item.discipline}\n${item.beginTime} - ${item.endTime}\nауд. ${item.room}\n${item.teachers}\n(здесь будет ссылка на приложение)"
+                intent.putExtra(Intent.EXTRA_TEXT,text)
+                AppClass.mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.VIEW_SEARCH_RESULTS, Bundle()
+                        .also { it.putString("AnalyticsEventShare", text) })
                 itemView.context.startActivity(Intent.createChooser(intent, "Share via"))
             }
         }
@@ -143,9 +164,11 @@ class ViewRenderer {
 
     inner class LinkSettingViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val linkSettingTitle: TextView = view.findViewById(R.id.link_settings_title)
+        private val icon:ImageView = view.findViewById(R.id.imageView3)
         private val prefs = PreferenceManager.getDefaultSharedPreferences(itemView.context)
         fun bind(item: LinkSetting, settingsClickListener: OnItemClick) {
             linkSettingTitle.text = item.title
+            icon.setImageDrawable(if(item.title == itemView.context.getString(R.string.group_preference_title)) itemView.context.getDrawable(R.drawable.new_schedule) else itemView.context.getDrawable(R.drawable.refresh))
             itemView.setOnClickListener {
                 prefs.edit().remove(CURRENT_GROUP).remove(CURRENT_FACULTY).apply()
                 settingsClickListener.onClick(item)
@@ -189,6 +212,7 @@ class ViewRenderer {
 
     inner class SwitchSettingViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val title: TextView = view.findViewById(R.id.swithc_title)
+        val icon:ImageView = view.findViewById(R.id.imageView)
         private val switch: Switch = view.findViewById(R.id.switch1)
         val prefs = PreferenceManager.getDefaultSharedPreferences(itemView.context)
 
@@ -197,6 +221,7 @@ class ViewRenderer {
                 if(key == NOTIFICATION)
                 prefs.getBoolean(key, true)
             }
+            icon.setImageDrawable(this.itemView.resources.getDrawable(R.drawable.ic_notification, null))
             title.text = item.title
             switch.isChecked = prefs.getBoolean(NOTIFICATION, true)
             switch.setOnCheckedChangeListener { buttonView, isChecked ->

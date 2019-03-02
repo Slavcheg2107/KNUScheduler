@@ -14,6 +14,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
+import com.google.firebase.analytics.FirebaseAnalytics
+import geek.owl.com.ua.KNUSchedule.AppClass
 import geek.owl.com.ua.KNUSchedule.R
 import geek.owl.com.ua.KNUSchedule.Repository.GroupPojo
 import geek.owl.com.ua.KNUSchedule.Util.Adapters.OnItemClick
@@ -121,6 +123,8 @@ class GroupFragment : BaseFragment(), OnItemClick {
 
     override fun onClick(item: SimpleAdapter.ItemModel) {
         item as GroupPojo
+        AppClass.mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.VIEW_SEARCH_RESULTS, Bundle()
+                .also { it.putString("did_pick_group", item.name) })
 
         findNavController().navigate(R.id.action_groupFragment_to_weekFragment, Bundle().apply {
             this.putString(CURRENT_GROUP, item.name)

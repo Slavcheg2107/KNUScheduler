@@ -36,4 +36,5 @@
     <string name="practic">Практичнi</string>
     <string name="search_title">Пошук</string>
     <string name="search_hint">Введiть групу, вчителя, предмет</string>
+    <string name="start_in">Початок через</string>
 </resources>

@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "135206858086",
+    "firebase_url": "https://knuschedule-d3bc2.firebaseio.com",
+    "project_id": "knuschedule-d3bc2",
+    "storage_bucket": "knuschedule-d3bc2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:135206858086:android:a182d70f5b3290ea",
+        "android_client_info": {
+          "package_name": "geek.owl.com.ua.KNUSchedule"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "135206858086-sshlu74r63lb2l8kavqseihok4jnrsgp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "geek.owl.com.ua.KNUSchedule",
+            "certificate_hash": "f98ee3dc63a7360e3f4b5a90baf330047031c690"
+          }
+        },
+        {
+          "client_id": "135206858086-15f5oihohr6cn90ridinrr8upaao1jc0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDGx2Ozv-sHLtvV2UaGILyAsHL0mftcDkk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "135206858086-15f5oihohr6cn90ridinrr8upaao1jc0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "135206858086-fhksjv6bf170cffpuv5vhs5g4ggtauhl.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "geekowl.com.ua.KNUSchedule",
+                "app_store_id": "1337864403"
+              }
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

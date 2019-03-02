@@ -14,6 +14,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.analytics.FirebaseAnalytics
+import geek.owl.com.ua.KNUSchedule.AppClass
 import geek.owl.com.ua.KNUSchedule.R
 import geek.owl.com.ua.KNUSchedule.Repository.*
 import geek.owl.com.ua.KNUSchedule.Util.Adapters.OnItemClick
@@ -24,8 +26,11 @@ import kotlinx.android.synthetic.main.settings_fragment_layout.*
 class SettingsFragment : BaseFragment(), SharedPreferences.OnSharedPreferenceChangeListener, OnItemClick {
     override fun onClick(item: SimpleAdapter.ItemModel) {
         if(item.getType() == ItemType.LINK_SETTING.ordinal){
-           item as LinkSetting
-                findNavController().navigate(R.id.action_settingsFragment_to_facultyFragment)
+            AppClass.mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.VIEW_SEARCH_RESULTS, Bundle()
+                    .also { it.putString("will_pick_another_schedule", null) })
+
+            item as LinkSetting
+            findNavController().navigate(R.id.action_settingsFragment_to_facultyFragment)
         }
     }
 

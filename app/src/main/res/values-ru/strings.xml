@@ -33,5 +33,6 @@
   <string name="lesson_start_soon">Скоро начнется пара</string>
   <string name="search_title">Поиск</string>
   <string name="search_hint">Введите группу, преподавателя, предмет</string>
+    <string name="start_in">Начало через</string>
 
 </resources>

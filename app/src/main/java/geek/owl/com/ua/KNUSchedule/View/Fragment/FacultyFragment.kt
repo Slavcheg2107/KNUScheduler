@@ -21,6 +21,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ListAdapter
+import com.google.firebase.analytics.FirebaseAnalytics
+import geek.owl.com.ua.KNUSchedule.AppClass
 
 import geek.owl.com.ua.KNUSchedule.R
 import geek.owl.com.ua.KNUSchedule.Repository.FacultyPojo
@@ -114,6 +116,9 @@ class FacultyFragment : androidx.fragment.app.Fragment(), OnItemClick {
 
   override fun onClick(item: SimpleAdapter.ItemModel) {
     item as FacultyPojo
+    AppClass.mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.VIEW_SEARCH_RESULTS, Bundle()
+            .also { it.putString("did_pick_faculty", item.name) })
+
     val b = Bundle().also { it.putLong(CURRENT_FACULTY, item.id) }
    findNavController().navigate(R.id.action_facultyFragment_to_groupFragment, b)
   }

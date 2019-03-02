@@ -4,6 +4,9 @@ import android.app.Application
 import androidx.room.Room
 import com.jakewharton.threetenabp.AndroidThreeTen
 import geek.owl.com.ua.KNUSchedule.Util.Database
+import com.google.firebase.analytics.FirebaseAnalytics
+
+
 
 class AppClass : Application() {
   override fun onCreate() {
@@ -11,10 +14,13 @@ class AppClass : Application() {
     AndroidThreeTen.init(this)
     geek.owl.com.ua.KNUSchedule.AppClass.database = Room.databaseBuilder(this, Database::class.java, "KNUDb").fallbackToDestructiveMigration().build()
     geek.owl.com.ua.KNUSchedule.AppClass.INSTANCE = this
+
   }
 
   companion object {
     lateinit var database: Database
     lateinit var INSTANCE: geek.owl.com.ua.KNUSchedule.AppClass
+    val mFirebaseAnalytics = FirebaseAnalytics.getInstance(INSTANCE)
+
   }
 }

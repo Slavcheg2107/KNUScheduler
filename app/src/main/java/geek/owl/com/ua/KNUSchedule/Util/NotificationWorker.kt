@@ -53,7 +53,7 @@ class NotificationWorker(val context: Context, params: WorkerParameters) : Worke
         val notification = NotificationCompat.Builder(context, notificationId)
                 .setContentTitle(context.getString(R.string.lesson_start_soon))
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setSmallIcon(R.drawable.ic_runer)
+                .setSmallIcon(R.drawable.alarm)
                 .setContentText("${item.discipline}\n${item.beginTime}\nауд.${item.room} корп.${item.corps}\n${item.teachers}")
                 .setStyle(NotificationCompat.BigTextStyle())
                 .build()

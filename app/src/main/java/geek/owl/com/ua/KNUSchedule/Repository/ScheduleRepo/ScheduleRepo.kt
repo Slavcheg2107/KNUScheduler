@@ -1,8 +1,10 @@
 package geek.owl.com.ua.KNUSchedule.Repository.ScheduleRepo
 
+import android.os.Bundle
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
+import com.google.firebase.analytics.FirebaseAnalytics.Event.VIEW_SEARCH_RESULTS
 import geek.owl.com.ua.KNUSchedule.AppClass
 import geek.owl.com.ua.KNUSchedule.Repository.*
 import geek.owl.com.ua.KNUSchedule.Util.Network.ApiService
@@ -102,6 +104,7 @@ class ScheduleRepo(val action: MutableLiveData<String>) {
     }
 
     suspend fun searchSchedule(query:String, page: Int){
+
         if (page== 1) {
             offset = 0
             limit = 100
@@ -112,6 +115,7 @@ class ScheduleRepo(val action: MutableLiveData<String>) {
         try{
             val response = job.await()
             if(response.isSuccessful){
+                AppClass.mFirebaseAnalytics.logEvent(VIEW_SEARCH_RESULTS, Bundle().also { response.body()?.schedules?.size?.let { it1 -> it.putInt("AnalyticsEventViewSearchResults", it1) } })
                 searchResult.postValue(response.body()?.schedules)
             }
         }catch (e : Exception){
