@@ -26,6 +26,7 @@ import geek.owl.com.ua.KNUSchedule.Util.StaticVariables.Companion.CURRENT_GROUP
 import geek.owl.com.ua.KNUSchedule.Util.StaticVariables.Companion.TIMEOUT
 import geek.owl.com.ua.KNUSchedule.Util.StaticVariables.Companion.UNKNOWN_HOST
 import geek.owl.com.ua.KNUSchedule.ViewModel.GroupViewModel.GroupViewModel
+import geek.owl.com.ua.KNUSchedule.mFirebaseAnalytics
 import kotlinx.android.synthetic.main.group_fragment.*
 import kotlinx.android.synthetic.main.group_fragment.view.*
 
@@ -123,7 +124,7 @@ class GroupFragment : BaseFragment(), OnItemClick {
 
     override fun onClick(item: SimpleAdapter.ItemModel) {
         item as GroupPojo
-        AppClass.mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.VIEW_SEARCH_RESULTS, Bundle()
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.VIEW_SEARCH_RESULTS, Bundle()
                 .also { it.putString("did_pick_group", item.name) })
 
         findNavController().navigate(R.id.action_groupFragment_to_weekFragment, Bundle().apply {

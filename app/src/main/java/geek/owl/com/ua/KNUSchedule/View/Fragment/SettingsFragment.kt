@@ -21,12 +21,13 @@ import geek.owl.com.ua.KNUSchedule.Repository.*
 import geek.owl.com.ua.KNUSchedule.Util.Adapters.OnItemClick
 import geek.owl.com.ua.KNUSchedule.Util.Adapters.SettingsAdapter
 import geek.owl.com.ua.KNUSchedule.Util.Adapters.SimpleAdapter
+import geek.owl.com.ua.KNUSchedule.mFirebaseAnalytics
 import kotlinx.android.synthetic.main.settings_fragment_layout.*
 
 class SettingsFragment : BaseFragment(), SharedPreferences.OnSharedPreferenceChangeListener, OnItemClick {
     override fun onClick(item: SimpleAdapter.ItemModel) {
         if(item.getType() == ItemType.LINK_SETTING.ordinal){
-            AppClass.mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.VIEW_SEARCH_RESULTS, Bundle()
+            mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.VIEW_SEARCH_RESULTS, Bundle()
                     .also { it.putString("will_pick_another_schedule", null) })
 
             item as LinkSetting

@@ -24,6 +24,7 @@ import geek.owl.com.ua.KNUSchedule.AppClass
 import geek.owl.com.ua.KNUSchedule.R
 import geek.owl.com.ua.KNUSchedule.Util.StaticVariables.Companion.CURRENT_FACULTY
 import geek.owl.com.ua.KNUSchedule.Util.StaticVariables.Companion.CURRENT_GROUP
+import geek.owl.com.ua.KNUSchedule.mFirebaseAnalytics
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.LocalTime
 import org.threeten.bp.format.DateTimeFormatter
@@ -147,7 +148,7 @@ class ViewRenderer {
                 intent.type = "text/plain"
                 val text = "${item.discipline}\n${item.beginTime} - ${item.endTime}\nауд. ${item.room}\n${item.teachers}\n(здесь будет ссылка на приложение)"
                 intent.putExtra(Intent.EXTRA_TEXT,text)
-                AppClass.mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.VIEW_SEARCH_RESULTS, Bundle()
+                mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.VIEW_SEARCH_RESULTS, Bundle()
                         .also { it.putString("AnalyticsEventShare", text) })
                 itemView.context.startActivity(Intent.createChooser(intent, "Share via"))
             }

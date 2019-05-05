@@ -31,7 +31,7 @@ class NotificationWorker(val context: Context, params: WorkerParameters) : Worke
                 showNotification()
             }
         }
-        return Result.SUCCESS
+        return Result.success()
     }
 
     private fun showNotification() {

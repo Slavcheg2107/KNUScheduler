@@ -11,8 +11,8 @@ import java.util.*
 class WeekChecker(val context: Context, workerParams:WorkerParameters ) : Worker(context, workerParams){
     override fun doWork(): Result {
         return if(checkWeekChange())
-            Result.SUCCESS
-        else Result.FAILURE
+            Result.success()
+        else Result.failure()
     }
 
     private fun checkWeekChange():Boolean {

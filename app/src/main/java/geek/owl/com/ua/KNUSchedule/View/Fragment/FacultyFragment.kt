@@ -1,28 +1,19 @@
 package geek.owl.com.ua.KNUSchedule.View.Fragment
 
-import android.app.Dialog
-import android.content.DialogInterface
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.os.Handler
 import android.preference.PreferenceManager
-import androidx.fragment.app.Fragment
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.analytics.FirebaseAnalytics
-import geek.owl.com.ua.KNUSchedule.AppClass
 
 import geek.owl.com.ua.KNUSchedule.R
 import geek.owl.com.ua.KNUSchedule.Repository.FacultyPojo
@@ -34,9 +25,10 @@ import geek.owl.com.ua.KNUSchedule.Util.StaticVariables.Companion.CURRENT_WEEK
 import geek.owl.com.ua.KNUSchedule.Util.StaticVariables.Companion.ERROR
 import geek.owl.com.ua.KNUSchedule.Util.StaticVariables.Companion.TIMEOUT
 import geek.owl.com.ua.KNUSchedule.Util.StaticVariables.Companion.UNKNOWN_HOST
-import geek.owl.com.ua.KNUSchedule.View.Activity.MainActivity
 import geek.owl.com.ua.KNUSchedule.ViewModel.FacultyViewModel.FacultyViewModel
-import org.threeten.bp.LocalTime
+import geek.owl.com.ua.KNUSchedule.mFirebaseAnalytics
+
+
 
 class FacultyFragment : androidx.fragment.app.Fragment(), OnItemClick {
   private lateinit var recyclerView: androidx.recyclerview.widget.RecyclerView
@@ -46,17 +38,15 @@ class FacultyFragment : androidx.fragment.app.Fragment(), OnItemClick {
 
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-    val view = inflater.inflate(R.layout.faculty_fragment, container, false)
 
 
-    return view
+    return inflater.inflate(R.layout.faculty_fragment, container, false)
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     initRecyclerView(view)
     viewModel = ViewModelProviders.of(this).get(FacultyViewModel::class.java)
-
     showSelectWeekDialog()
     subscribeForData()
   }
@@ -116,7 +106,7 @@ class FacultyFragment : androidx.fragment.app.Fragment(), OnItemClick {
 
   override fun onClick(item: SimpleAdapter.ItemModel) {
     item as FacultyPojo
-    AppClass.mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.VIEW_SEARCH_RESULTS, Bundle()
+    mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.VIEW_SEARCH_RESULTS, Bundle()
             .also { it.putString("did_pick_faculty", item.name) })
 
     val b = Bundle().also { it.putLong(CURRENT_FACULTY, item.id) }
